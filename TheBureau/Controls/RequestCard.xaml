@@ -1,0 +1,50 @@
+﻿<UserControl x:Class="TheBureau.Controls.RequestCard"
+             xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
+             xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
+             xmlns:local="clr-namespace:TheBureau.Controls"
+             mc:Ignorable="d" Height="142" Width="800" >
+    <Border CornerRadius="7" Background="#f7f7f7">
+        <Grid>
+            <Rectangle Fill="#FFF4F4F5" HorizontalAlignment="Left" Height="79" Margin="29,51,0,0" Stroke="Black" VerticalAlignment="Top" Width="199"/>
+            <Label Content="Номер заявки" HorizontalAlignment="Left" Margin="29,21,0,0" VerticalAlignment="Top" Height="49" Width="199"/>
+            <Label Content="Заказчик (развернуть инфу)" HorizontalAlignment="Left" Margin="264,21,0,0" VerticalAlignment="Top" Height="49" Width="199"/>
+            <Label Content="Адрес" HorizontalAlignment="Left" Margin="264,70,0,0" VerticalAlignment="Top" Height="31" Width="558"/>
+            <Label Content="Черновая или чистовая работа" HorizontalAlignment="Left" Margin="264,106,0,0" VerticalAlignment="Top"/>
+            <Label Content="Статус заявки" HorizontalAlignment="Left" Margin="619,21,0,0" VerticalAlignment="Top" Width="90"/>
+            <Label Content="Дата" HorizontalAlignment="Left" Margin="619,113,0,0" VerticalAlignment="Top" Width="90"/>
+            <!--<Grid>
+            <Grid.RowDefinitions>
+                <RowDefinition Height="220"/>
+                <RowDefinition/>
+            </Grid.RowDefinitions>
+            <Border CornerRadius="12" HorizontalAlignment="Left" Height="235" VerticalAlignment="Top" Width="1095" Margin="10,10,0,0" Grid.Row="0" Grid.RowSpan="2">
+                <Border.Background>
+                    <LinearGradientBrush StartPoint="0,0.5" EndPoint="1,0.5">
+                        <GradientStop Offset="0.0" Color="#f7f7f7" />
+                        <GradientStop Offset="1.0" Color="#f7f7f7" />
+                    </LinearGradientBrush>
+                </Border.Background>
+                <Grid>
+                    <Grid HorizontalAlignment="Center" VerticalAlignment="Top" Width="150" Margin="0,100,0,0">
+                        <TextBlock Text="Заявка" FontSize="30" HorizontalAlignment="Center" Foreground="Black"/>
+                    </Grid>
+                </Grid>
+            </Border>
+            <Grid Grid.Column="1">
+                <Border>
+                    <StackPanel Orientation="Horizontal">
+                        <local:EmployeeCard Margin="20, 15, 0,0"/>
+                        <local:EmployeeCard Margin="10, 15, 0,0"/>
+                        <local:EmployeeCard Margin="10, 15, 0,0"/>
+                        <local:EmployeeCard Margin="10, 15, 0,0"/>
+                        <local:EmployeeCard Margin="10, 15, 0,0"/>
+                    </StackPanel>
+                </Border>
+            </Grid>
+        </Grid>-->
+
+        </Grid>
+    </Border>
+</UserControl>

@@ -1,0 +1,53 @@
+﻿<UserControl x:Class="TheBureau.Views.BrigadeMainView"
+             xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
+             xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
+             xmlns:local="clr-namespace:TheBureau.Views" 
+             xmlns:controls="clr-namespace:TheBureau.Controls"
+             mc:Ignorable="d" 
+             Width="1210" Height="690" >
+    <Border Background="Transparent" CornerRadius="15">
+        <StackPanel Margin="10,10,10,5">
+            <controls:Toolbar Margin="10"/>
+            <controls:BrigadeCard ></controls:BrigadeCard>
+            <controls:BrigadeCard Margin="0,10,0,0"></controls:BrigadeCard>
+            <Image Source="C:\Users\Professional\TheBureau\TheBureau\TheBureau\Image1.png" Height="148" Margin="937,0,-0.4,0"/>
+            <!--<Border Background="#FFEEEEEE" CornerRadius="15" HorizontalAlignment="Left" Height="255" Margin="52,40,0,0" VerticalAlignment="Top" Width="1115">
+                <Grid>
+                    <Grid.RowDefinitions>
+                        <RowDefinition Height="220"/>
+                        <RowDefinition/>
+                    </Grid.RowDefinitions>
+                    <Border CornerRadius="12" HorizontalAlignment="Left" Height="235" VerticalAlignment="Top" Width="1095" Margin="10,10,0,0" Grid.Row="0" Grid.RowSpan="2">
+                        <Border.Background>
+                            <LinearGradientBrush StartPoint="0,0.5" EndPoint="1,0.5">
+                                <LinearGradientBrush.GradientStops>
+                                    <GradientStop Offset="0.0" Color="#F0FF00" />
+                                    <GradientStop Offset="1.0" Color="#58CFFB" />
+                                </LinearGradientBrush.GradientStops>
+                            </LinearGradientBrush>
+                        </Border.Background>
+                        <Grid>
+                            <Grid HorizontalAlignment="Center" VerticalAlignment="Top" Width="150" Margin="0,100,0,0">
+                                <TextBlock Text="БРИГАДА 1" FontSize="30" HorizontalAlignment="Center" Foreground="White"/>
+                            </Grid>
+                        </Grid>
+                    </Border>
+                    <Grid Grid.Column="1">
+                        <Border>
+                            <StackPanel Orientation="Horizontal">
+                                <controls:EmployeeCard Margin="20, 15, 0,0"/>
+                                <controls:EmployeeCard Margin="10, 15, 0,0"/>
+                                <controls:EmployeeCard Margin="10, 15, 0,0"/>
+                                <controls:EmployeeCard Margin="10, 15, 0,0"/>
+                                <controls:EmployeeCard Margin="10, 15, 0,0"/>
+                            </StackPanel>
+                        </Border>
+                    </Grid>
+                </Grid>
+            </Border>-->
+
+        </StackPanel>
+    </Border>
+</UserControl>
