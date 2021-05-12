@@ -1,4 +1,4 @@
-namespace TheBureau.Models
+namespace TheBureau
 {
     using System;
     using System.Collections.Generic;

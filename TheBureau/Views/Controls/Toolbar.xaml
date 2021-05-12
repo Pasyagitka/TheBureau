@@ -1,0 +1,61 @@
+﻿<UserControl x:Class="TheBureau.Controls.Toolbar"
+             xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
+             xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
+             xmlns:local="clr-namespace:TheBureau.Controls" xmlns:materialDesign="http://materialdesigninxaml.net/winfx/xaml/themes"
+             mc:Ignorable="d" >
+
+    <ToolBarTray>
+        <ToolBar Style="{DynamicResource MaterialDesignToolBar}" ClipToBounds="False">
+            <Button ToolTip="Сохранить">
+                <Image Source="../../Resources/Images/save.png" Width="30"/>
+            </Button>
+            <Separator/>
+            <Button  ToolTip="Добавить">
+                <Image Source= "../../Resources/Images/add.png" Width="30"/>
+            </Button>
+            <Button   ToolTip="Редактировать">
+                <Image Source="../../Resources/Images/edit.png" Width="30"/>
+            </Button>
+            <Button   ToolTip="Удалить">
+                <Image Source="../../Resources/Images/delete.png" Width="30"/>
+            </Button>
+            <Separator/>
+            <Button ToolTip="Очистить" Foreground="{DynamicResource LightGreenColor}" ToolBar.OverflowMode="AsNeeded" Content="{materialDesign:PackIcon Kind=Clear}"/>
+                     <!--  -->
+                     <!-- --><!-- when badging in a toolbar, make sure the parent ToolBar.ClipToBounds="False", and -->
+                     <!--            manually apply the button style --><!-- -->
+                     <!-- -->
+                     <!-- <ListBox SelectedIndex="0"> -->
+                     <!--     <ListBox.ToolTip> -->
+                     <!--         <StackPanel> -->
+                     <!--             <TextBlock Text="MaterialDesignToolToggleFlatListBox" /> -->
+                     <!--             <TextBlock Text="Exclusive selection" /> -->
+                     <!--             <TextBlock Text="ListBoxAssist.IsToggle allows more natural toggle behaviour" /> -->
+                     <!--         </StackPanel> -->
+                     <!--     </ListBox.ToolTip> -->
+                     <!--     <ListBoxItem Content="{materialDesign:PackIcon Kind=FormatAlignLeft}" /> -->
+                     <!--     <ListBoxItem Content="{materialDesign:PackIcon Kind=FormatAlignCenter}" /> -->
+                     <!-- </ListBox> -->
+                     <!-- <Separator /> -->
+                     <!-- <ListBox SelectionMode="Extended"> -->
+                     <!--     <ListBox.ToolTip> -->
+                     <!--         <StackPanel> -->
+                     <!--             <TextBlock Text="MaterialDesignToolToggleListBox" /> -->
+                     <!--             <TextBlock Text="Multiple selection" /> -->
+                     <!--             <TextBlock Text="ListBoxAssist.IsToggle allows more natural toggle behaviour" /> -->
+                     <!--         </StackPanel> -->
+                     <!--     </ListBox.ToolTip> -->
+                     <!-- </ListBox> -->
+                     <!-- <CheckBox  Content="Check" /> -->
+                     <!-- <Button  ToolTip="Take a nap" ToolBar.OverflowMode="Always" Content="{materialDesign:PackIcon Kind=Hotel}" /> -->
+                     <!-- <RadioButton  GroupName="XXX" Content="Radio" /> -->
+                     <!-- <Separator/> -->
+                     <!-- <RadioButton GroupName="YYY" Style="{DynamicResource MaterialDesignToolRadioButton}" Content="{materialDesign:PackIcon Kind=Radio}" /> -->
+                     <!-- <RadioButton GroupName="YYY" Style="{DynamicResource MaterialDesignToolRadioButton}" Content="{materialDesign:PackIcon Kind=EmoticonPoop}" /> -->
+                     <!-- <Separator /> -->
+                     <!-- <ToggleButton />-->
+        </ToolBar>
+    </ToolBarTray>
+</UserControl>

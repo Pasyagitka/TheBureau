@@ -1,4 +1,4 @@
-namespace TheBureau.Models
+namespace TheBureau
 {
     using System;
     using System.Collections.Generic;
@@ -10,15 +10,13 @@ namespace TheBureau.Models
     public partial class RequestEquipment
     {
         public int id { get; set; }
-
         public int requestId { get; set; }
+        public int quantity { get; set; }
 
         [Required]
         [StringLength(2)]
         public string equipmentId { get; set; }
-
         public virtual Equipment Equipment { get; set; }
-
         public virtual Request Request { get; set; }
     }
 }

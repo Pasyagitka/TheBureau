@@ -1,4 +1,4 @@
-namespace TheBureau.Models
+namespace TheBureau
 {
     using System;
     using System.Collections.Generic;
@@ -37,7 +37,7 @@ namespace TheBureau.Models
 
         public virtual Brigade Brigade { get; set; }
 
-        public virtual Сlient Сlient { get; set; }
+        public virtual Client Client { get; set; }
 
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
         public virtual ICollection<RequestEquipment> RequestEquipments { get; set; }

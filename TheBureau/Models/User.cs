@@ -1,10 +1,10 @@
-namespace TheBureau.Models
+
+namespace TheBureau
 {
     using System;
     using System.Collections.Generic;
     using System.ComponentModel.DataAnnotations;
     using System.ComponentModel.DataAnnotations.Schema;
-    using System.Data.Entity.Spatial;
 
     [Table("User")]
     public partial class User
@@ -16,7 +16,7 @@ namespace TheBureau.Models
         public string login { get; set; }
 
         [Required]
-        [StringLength(50)]
+        [StringLength(70)]
         public string password { get; set; }
 
         public int role { get; set; }

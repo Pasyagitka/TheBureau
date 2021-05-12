@@ -1,113 +1,98 @@
-﻿// using System.ComponentModel;
-//
-// namespace TheBureau.ViewModels
-// {
-//     public class MainWindowViewModel: INotifyPropertyChanged
-//     {
-//         int selectedIndex;
-//         object content;
-//         string userName;
-//         string firstSymbols;
-//
-//         public int SelectedIndex
-//         {
-//             get { return selectedIndex; }
-//             set
-//             {
-//                 selectedIndex = value;
-//                 setPage(selectedIndex);
-//                 OnPropertyChanged("SelectedIndex");
-//             }
-//         }
-//         public object Content
-//         {
-//             get { return content; }
-//             set
-//             {
-//                 content = value;
-//                 OnPropertyChanged("Content");
-//             }
-//         }
-//
-//         public string UserName
-//         {
-//             get { return userName; }
-//             set
-//             {
-//                 userName = value;
-//                 OnPropertyChanged("UserName");
-//             }
-//         }
-//         
-//         public string FirstSymbols
-//         {
-//             get { return firstSymbols; }
-//             set
-//             {
-//                 firstSymbols = CurrentUser.User.firstName.Substring(0, 1) + CurrentUser.User.secondName.Substring(0, 1);
-//                 OnPropertyChanged("FirstSymbols");
-//             }
-//         }
-//
-//         public MainWindowViewModel()
-//         {            
-//             Content = new AllAnnouncement(); 
-//             UserName = CurrentUser.User.firstName + " " + CurrentUser.User.secondName;
-//             FirstSymbols = CurrentUser.User.firstName.Substring(0, 1) + CurrentUser.User.secondName.Substring(0, 1);
-//             SelectedIndex = 0;
-//         }
-//
-//         public void setPage(int index)
-//         {
-//             switch (index)
-//             {
-//                 case 0:
-//                     Content = new AllAnnouncement();
-//                     break;
-//                 case 1:
-//                     Content = new MyAnnouncementPage();                    
-//                     break;
-//                 case 2:
-//                     Content = new PersonAreaPage();
-//                     break;
-//                 case 3:
-//                     {
-//                         if (CurrentUser.isAdmin() || CurrentUser.isModerator())
-//                             Content = new AdminPage();
-//                         else
-//                         {
-//                             AlertWindow alertWindow = new AlertWindow("У вас нет прав зайти в это меню");
-//                             alertWindow.ShowDialog();
-//                         }
-//
-//                         break;
-//                         
-//                     }
-//                 default:
-//                     Content = new AllAnnouncement();
-//                     break;                    
-//             }
-//             
-//         }
-//
-//         // public void update()
-//         // {
-//         //     FirstSymbols = CurrentUser.User.firstName.Substring(0, 1) + CurrentUser.User.secondName.Substring(0, 1);
-//         //     UserName = CurrentUser.User.ToString();  
-//         // }
-//
-//         // public void outFromMain()
-//         // {
-//         //     CurrentUser.User = null;            
-//         //     App.authWindow = new AuthWindow();
-//         //     App.authWindow.Show();
-//         // }
-//         public event PropertyChangedEventHandler PropertyChanged;
-//
-//         void OnPropertyChanged(string propertyName)
-//         {
-//             if (PropertyChanged != null)
-//                 PropertyChanged(this, new PropertyChangedEventArgs(propertyName));
-//         }
-//     }
-// }
+﻿using System.Collections.ObjectModel;
+using System.Windows;
+using TheBureau.Repositories;
+using TheBureau.Views;
+
+namespace TheBureau.ViewModels
+{
+    public class MainWindowViewModel : ViewModelBase
+    {
+        RequestRepository _requestRepository = new RequestRepository();
+
+        int selectedIndex;
+        private string mainTop;
+        object content;
+        int countRed;
+        public object Content
+        {
+            get { return content; }
+            set
+            {
+                content = value;
+                OnPropertyChanged("Content");
+            }
+        }
+
+        public string MainTopText
+        {
+            get => mainTop;
+            set
+            {
+                mainTop = value;
+                OnPropertyChanged("MainTopText");
+            }
+        }
+        public int SelectedIndex
+        {
+            get => selectedIndex;
+            set
+            {
+                selectedIndex = value;
+                setPage(selectedIndex);
+                OnPropertyChanged("SelectedIndex");
+            }
+        }
+        public int CountRed
+        {
+            get { return countRed; }
+            set
+            {
+                countRed = value;
+                OnPropertyChanged("CountRed");
+            }
+        }
+
+  
+        public MainWindowViewModel()
+        {            
+            Content = new StatisticsView(); 
+            countRed = _requestRepository.GetRedRequestsCount();
+
+            //UserName = CurrentUser.User.firstName + " " + CurrentUser.User.secondName;
+            SelectedIndex = 1;
+        }
+       
+        public void setPage(int index)
+        {
+            switch (index)
+            {
+                case 0:
+                    Content = new StatisticsView();
+                    MainTopText = "БЮРО МОНТАЖНИКА";
+                    break;
+                case 1:
+                    Content = new RequestView();
+                    MainTopText = "ЗАЯВКИ";
+                    break;
+                case 2:
+                    Content = new BrigadeView();
+                    MainTopText = "БРИГАДЫ";
+                    break;
+                case 3:
+                    Content = new ClientView();
+                    MainTopText = "КЛИЕНТЫ";
+                    break;
+                case 4:
+                    Content = new StorageView();
+                    MainTopText = "СКЛАД";
+                    break;
+                default:
+                    Content = new StatisticsView();
+                    MainTopText = "БЮРО МОНТАЖНИКА";
+                    break;                    
+            }
+            
+        }
+
+    }
+}

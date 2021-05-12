@@ -1,0 +1,56 @@
+﻿<Page x:Class="TheBureau.Views.RequestView"
+             xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
+             xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
+             xmlns:local="clr-namespace:TheBureau.Views" xmlns:controls="clr-namespace:TheBureau.Controls" 
+             xmlns:viewmodels="clr-namespace:TheBureau.ViewModels"
+             Title="Заявки"
+             mc:Ignorable="d" 
+             Width="1210" Height="690">
+    <Page.DataContext>
+       <viewmodels:RequestViewModel/>
+   </Page.DataContext>
+    <Border Background="Transparent" CornerRadius="15">
+        <Grid>
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition Width="Auto"/>
+                <ColumnDefinition Width="250"/>
+            </Grid.ColumnDefinitions>
+
+            <StackPanel Grid.Column="0" Orientation="Horizontal" Background="{DynamicResource PrimaryLightGrayColor}">
+                <ListView Name="RequestsListView" Width="960" ItemsSource="{Binding Requests}" SelectedItem="{Binding SelectedItem, Mode=TwoWay}">
+                    <ListView.ItemTemplate>
+                        <HierarchicalDataTemplate>
+                            <Border CornerRadius="10" Background="White" Margin="10" Width="800">
+                            <StackPanel Orientation="Vertical" Margin="5">
+                                <controls:RequestCard/>
+                                <Separator Width="500" Background="Orange"/>
+                                <Expander IsExpanded="False">
+                                    <controls:AdminRequestPanel/>
+                                </Expander>
+                            </StackPanel>
+                        </Border>
+                        </HierarchicalDataTemplate>
+                    </ListView.ItemTemplate>
+                </ListView>
+            </StackPanel>
+            <ScrollViewer Grid.Column="1">
+                <Border BorderThickness="1, 0,0,0" BorderBrush="Orange">
+                    <ListView ItemsSource="{Binding Brigades}">
+                        <ListView.ItemsPanel>
+                            <ItemsPanelTemplate>
+                                <StackPanel Background="{DynamicResource PrimaryLightGrayColor}" HorizontalAlignment="Center"/>
+                            </ItemsPanelTemplate>
+                        </ListView.ItemsPanel>
+                        <ListView.ItemTemplate>
+                            <HierarchicalDataTemplate>
+                                <controls:BrigadeCardSmall Margin="0,20, 0, 0" Width="215"/>
+                            </HierarchicalDataTemplate>
+                        </ListView.ItemTemplate>
+                    </ListView>
+                </Border>
+            </ScrollViewer>
+        </Grid>
+    </Border>
+</Page>

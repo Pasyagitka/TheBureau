@@ -1,4 +1,4 @@
-namespace TheBureau.Models
+namespace TheBureau
 {
     using System;
     using System.Collections.Generic;
@@ -11,12 +11,15 @@ namespace TheBureau.Models
     {
         public int id { get; set; }
 
+        [StringLength(15)]
+        public string art { get; set; }
+
         [Required]
         [StringLength(2)]
         public string equipmentId { get; set; }
 
         [Required]
-        [StringLength(70)]
+        [StringLength(150)]
         public string name { get; set; }
 
         public decimal price { get; set; }
