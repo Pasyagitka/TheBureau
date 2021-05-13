@@ -56,8 +56,8 @@ namespace TheBureau.ViewModels
         public MainWindowViewModel()
         {            
             Content = new StatisticsView(); 
+            //todo только 1 раз
             countRed = _requestRepository.GetRedRequestsCount();
-
             //UserName = CurrentUser.User.firstName + " " + CurrentUser.User.secondName;
             SelectedIndex = 1;
         }

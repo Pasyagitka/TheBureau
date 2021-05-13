@@ -25,11 +25,6 @@ namespace TheBureau.Views
 
         private void LoginButton_Click(object sender, RoutedEventArgs e)
         {
-            TryLogin();
-        }
-        private void TryLogin()
-        {
-           
         }
     }
 }

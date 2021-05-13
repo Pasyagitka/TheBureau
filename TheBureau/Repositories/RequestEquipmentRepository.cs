@@ -1,5 +1,6 @@
 ﻿using System.Collections.Generic;
 using System.Data.Entity;
+using System.Linq;
 
 namespace TheBureau.Repositories
 {
@@ -33,6 +34,25 @@ namespace TheBureau.Repositories
             {
                 _context.RequestEquipments.Remove(requestequipment);
             }
+        }
+
+        public IEnumerable<RequestEquipment> FindByRequestId(int requestId)
+        {
+            return GetAll().Where(x => x.requestId == requestId);
+        }
+
+        public void DeleteByRequestId(int requestId)
+        {
+            var requests = GetAll().Where(x => x.requestId == requestId);
+            foreach (var r in requests)
+            {
+                Delete(r.id);
+            }
+        }
+        
+        public void Save()
+        {
+            _context.SaveChanges();
         }
     }
 }

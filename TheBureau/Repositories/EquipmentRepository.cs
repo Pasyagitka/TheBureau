@@ -18,5 +18,9 @@ namespace TheBureau.Repositories
         {
             return _context.Equipments.Where(x => x.id == id);
         }
+        public void Save()
+        {
+            _context.SaveChanges();
+        }
     }
 }

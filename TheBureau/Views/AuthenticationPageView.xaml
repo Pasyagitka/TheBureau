@@ -48,7 +48,7 @@
                              HorizontalContentAlignment="Left"
                              Opacity="0.5"
                              Height="25"
-                             Margin="63,0,0,0"/>
+                             Margin="63,0,0,1"/>
                     <materialDesign:PackIcon Kind="Account"
                                              VerticalAlignment="Center"
                                              HorizontalAlignment="Center"
@@ -70,7 +70,7 @@
                                   HorizontalContentAlignment="Left"
                                   Opacity="0.5"
                                   Height="25"
-                                  Margin="63,0,0,0"/>
+                                  Margin="63,0,0,1"/>
                     <materialDesign:PackIcon Kind="Password"
                                              VerticalAlignment="Center"
                                              HorizontalAlignment="Center"

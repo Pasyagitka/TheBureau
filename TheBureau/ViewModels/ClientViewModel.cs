@@ -11,6 +11,8 @@ namespace TheBureau.ViewModels
 {
     public class ClientViewModel : ViewModelBase
     {
+        private AddressRepository _addressRepository = new AddressRepository();
+        private RequestEquipmentRepository _requestEquipmentRepository = new RequestEquipmentRepository();
         private ClientRepository _clientRepository = new ClientRepository();
         private RequestRepository _requestRepository = new RequestRepository();
         private ObservableCollection<Client> _clients;
@@ -32,7 +34,30 @@ namespace TheBureau.ViewModels
                 return deleteCommand ??
                        (deleteCommand = new RelayCommand(obj =>
                        {
-                           _clientRepository.Delete((SelectedItem as Client).id);
+                           int clientid = (SelectedItem as Client).id;
+                           var clientRequests = _requestRepository.FindByClientId(clientid);
+                           var addresses = clientRequests.Select(x=>x.addressId).ToList();
+                           var requestsid = clientRequests.Select(x=>x.id).ToList();
+  
+                           foreach (var id in requestsid)
+                           {
+                               _requestEquipmentRepository.DeleteByRequestId(id);
+                           }
+                           _requestEquipmentRepository.Save();
+                           
+                           foreach (var request in clientRequests.ToList())
+                           {
+                               _requestRepository.Delete(request.id);
+                           }
+                           _requestRepository.Save();
+                           
+                           foreach (var id in addresses)
+                           {
+                               _addressRepository.Delete(id);
+                           }
+                           _addressRepository.Save();
+                           _clientRepository.Delete(clientid);
+                           _clientRepository.Save();
                            Clients = new ObservableCollection<Client>(_clientRepository.GetAll());
                            SelectedItem = Clients.First();
                            OnPropertyChanged("DeleteCommand");

@@ -21,6 +21,7 @@ namespace TheBureau.Repositories
         {
             _context.Addresses.Add(item);
         }
+        
 
         public void Update(Address item)
         {
@@ -34,6 +35,10 @@ namespace TheBureau.Repositories
             {
                 _context.Addresses.Remove(address);
             }
+        }
+        public void Save()
+        {
+            _context.SaveChanges();
         }
     }
 }

@@ -28,7 +28,7 @@ namespace TheBureau
 
         public decimal? contactNumber { get; set; }
 
-        public int brigadeId { get; set; }
+        public int? brigadeId { get; set; }
 
         public virtual Brigade Brigade { get; set; }
     }

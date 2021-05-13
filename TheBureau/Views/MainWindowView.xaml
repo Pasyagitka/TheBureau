@@ -92,7 +92,7 @@
                         </StackPanel>
                     </ListViewItem>
                     <ListViewItem Height="60" ToolTip="Заявки">
-                            <materialDesign:Badged Badge="{Binding CountRed}" Width="45" Height="39" BadgeBackground="{DynamicResource DangerRedColor}">
+                            <materialDesign:Badged Badge="{Binding CountRed, Mode=TwoWay}" Width="45" Height="39" BadgeBackground="{DynamicResource DangerRedColor}">
                             <Grid>
                                 <Image Source="../Resources/Images/orders.png" Margin="0,0,0.2,0.2"/>
                                 <TextBlock Text="Заявки" VerticalAlignment="Center"  Margin="64,11,-92.8,11.2"/>

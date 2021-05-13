@@ -2,6 +2,7 @@
 using System.Collections.ObjectModel;
 using System.Data.Entity;
 using System.Linq;
+using System.Windows.Forms;
 
 namespace TheBureau.Repositories
 {
@@ -31,19 +32,20 @@ namespace TheBureau.Repositories
 
         public void Update(Client forUpdate)
         {
+            _context.Clients.Attach(forUpdate);
             _context.Entry(forUpdate).State = EntityState.Modified;
+            SaveChanges();
             //todo может в этом проблема обновления?????
         }
 
         public void Delete(int id)
         {
             var client = _context.Clients.Find(id);
-            
             if (client != null)
             {
                 _context.Clients.Remove(client);
             }
-            _context.SaveChanges();
+            // _context.SaveChanges();
         }
 
         public IEnumerable<Client> FindClientsByCriteria(string criteria)
@@ -54,6 +56,10 @@ namespace TheBureau.Repositories
             || x.email.ToLower().Contains(criteria.ToLower())
             || x.contactNumber.ToString().Contains(criteria)
             || x.id.ToString().Contains(criteria));
+        }
+        public void Save()
+        {
+            _context.SaveChanges();
         }
     }
 }
