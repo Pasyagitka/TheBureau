@@ -19,5 +19,15 @@ namespace TheBureau.Repositories
         {
             return _context.Accessories.Where(x => x.Equipment.id == id);
         }
+
+        public decimal TotalPrice(IEnumerable<Accessory> accessories)
+        {
+            decimal totalPrice = 0;
+            foreach (var accessory in accessories)
+            {
+                totalPrice += accessory.price;
+            }
+            return totalPrice;
+        }
     }
 }

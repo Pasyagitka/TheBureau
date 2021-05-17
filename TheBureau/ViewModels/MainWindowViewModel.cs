@@ -1,5 +1,6 @@
 ﻿using System.Collections.ObjectModel;
 using System.Windows;
+using System.Windows.Input;
 using TheBureau.Repositories;
 using TheBureau.Views;
 
@@ -13,6 +14,24 @@ namespace TheBureau.ViewModels
         private string mainTop;
         object content;
         int countRed;
+
+        private ICommand openSettingsCommand;
+
+        public ICommand OpenSettingsCommand
+        {
+            get
+            {
+                return openSettingsCommand = new RelayCommand(obj =>
+                {
+                    SettingsWindow sw = new SettingsWindow();
+                    if (sw.ShowDialog() == true)
+                    {
+                       
+                    }
+                    OnPropertyChanged("OpenSettingsCommand");
+                });
+            }
+        }
         public object Content
         {
             get { return content; }
@@ -83,6 +102,10 @@ namespace TheBureau.ViewModels
                     MainTopText = "КЛИЕНТЫ";
                     break;
                 case 4:
+                    Content = new EmployeeView();
+                    MainTopText = "РАБОТНИКИ";
+                    break;
+                case 5:
                     Content = new StorageView();
                     MainTopText = "СКЛАД";
                     break;

@@ -21,17 +21,16 @@ namespace TheBureau.Views
     /// </summary>
     public partial class ClientView : Page
     {
-        private ClientViewModel _clientViewModel = new ClientViewModel();
+        // private ClientViewModel _clientViewModel = new ClientViewModel();
         public ClientView()
         {
             InitializeComponent();
-            DataContext = _clientViewModel;
+            // DataContext = _clientViewModel;
         }
-
 
         private void ButtonBase_OnClick(object sender, RoutedEventArgs e)
         {
-           _clientViewModel.Update();
+           // _clientViewModel.Update();
         }
     }
 }

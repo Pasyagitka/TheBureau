@@ -1,5 +1,7 @@
 ﻿using System;
+using System.Collections.Generic;
 using System.Collections.ObjectModel;
+using LiveCharts;
 using TheBureau.Repositories;
 
 namespace TheBureau.ViewModels
@@ -14,6 +16,30 @@ namespace TheBureau.ViewModels
         private ObservableCollection<Request> requests;
         private ObservableCollection<Brigade> brigades;
         int countRed;
+        private int countYellow;
+        private int countGreen;
+
+        private ChartValues<int> redValues;
+        private ChartValues<int> yellowValues;
+        private ChartValues<int> greenValues;
+
+        public ChartValues<int> RedValues
+        {
+            get => redValues;
+            set { redValues = value; OnPropertyChanged("RedValues");}
+        }
+
+        public ChartValues<int> YellowValues
+        {
+            get => yellowValues;
+            set { yellowValues = value;  OnPropertyChanged("YellowValues");}
+        }
+
+        public ChartValues<int> GreenValues
+        {
+            get => greenValues;
+            set { greenValues = value; OnPropertyChanged("GreenValues");}
+        }
 
         public ObservableCollection<Client> Clients
         {
@@ -41,13 +67,50 @@ namespace TheBureau.ViewModels
             }
         }
 
+        public int CountRed1
+        {
+            get => countRed;
+            set
+            {
+                countRed = value;
+                OnPropertyChanged("CountRed1");
+            }
+        }
+        public int CountYellow
+        {
+            get => countYellow;
+            set
+            {
+                countYellow = value;
+                OnPropertyChanged("CountYellow");
+            }
+        }
+        public int CountGreen
+        {
+            get => countGreen;
+            set
+            {
+                countGreen = value;
+                OnPropertyChanged("CountGreen");
+            }
+        }
+
+
 
         public StatisticsViewModel()
         {
             Clients = new ObservableCollection<Client>(_clientRepository.GetAll());
             Requests = new ObservableCollection<Request>(_requestRepository.GetAll());
             Brigades = new ObservableCollection<Brigade>(_brigadeRepository.GetAll());
-            CountRed = _requestRepository.GetRedRequestsCount().ToString();
+            CountRed1 = _requestRepository.GetRedRequestsCount();
+            CountGreen = _requestRepository.GetGreenRequestsCount();
+            CountYellow = _requestRepository.GetYellowRequestsCount();
+
+            GreenValues = new ChartValues<int>();
+            GreenValues.Add(CountGreen);
+            //GreenValues = new ChartValues<int>(new[] {CountGreen});
+            RedValues = new ChartValues<int>(new[] {CountRed1});
+            YellowValues = new ChartValues<int>(new[] {CountYellow});
         }
     }
 }

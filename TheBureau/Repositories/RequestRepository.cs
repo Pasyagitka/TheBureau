@@ -10,8 +10,7 @@ namespace TheBureau.Repositories
 {
     public class RequestRepository
     {
-        //getclientsrequest
-        private Model _context = new Model();
+        private Model _context = new();
         public IEnumerable<Request> GetAll()
         {
             return _context.Requests;
@@ -29,16 +28,29 @@ namespace TheBureau.Repositories
         {
             return _context.Requests.Count(x => x.status == 1);
         }
+        public int GetYellowRequestsCount()
+        {
+            return _context.Requests.Count(x => x.status == 2);
+        }
+        public int GetGreenRequestsCount()
+        {
+            return _context.Requests.Count(x => x.status == 3);
+        }
+
+        public IEnumerable<Request> GetToDoRequests()
+        {
+            return _context.Requests.Where(x => x.status ==1 || x.status == 2);
+        }
         public IEnumerable<Request> GetRequestsByBrigadeId(int id)
         {
-            return GetAll().Where(x => x.brigadeId == id);
+            return _context.Requests.Where(x => x.brigadeId == id);
         }
 
         public IEnumerable<Request> GetToDoRequestsForBrigade()
         {
-            return GetAll().Where(x => x.status is 1 or 2);
+            return _context.Requests.Where(x => x.status ==1 || x.status == 2);
         }
-        
+
         public void Update(Request forUpdate)
         {
             _context.Entry(forUpdate).State = EntityState.Modified;
@@ -46,7 +58,6 @@ namespace TheBureau.Repositories
         public void Save()
         {
             _context.SaveChanges();
-            //todo убрать все savechanges
         }
         public void Delete(int id)
         {
@@ -55,7 +66,6 @@ namespace TheBureau.Repositories
             {
                 _context.Requests.Remove(request);
             }
-            // _context.SaveChanges();
         }
 
         public IEnumerable<Request> FindByClientId(int clientId)

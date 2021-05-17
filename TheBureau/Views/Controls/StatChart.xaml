@@ -5,21 +5,23 @@
              xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
              xmlns:local="clr-namespace:TheBureau.Views.Controls"
              xmlns:wpf="clr-namespace:LiveCharts.Wpf;assembly=LiveCharts.Wpf"
+             xmlns:viewModels="clr-namespace:TheBureau.ViewModels"
              mc:Ignorable="d"
              d:DesignHeight="300" d:DesignWidth="300"
              d:DataContext="{d:DesignInstance local:StatChart}"
              >
+    <UserControl.DataContext>
+        <viewModels:StatisticsViewModel/>
+    </UserControl.DataContext>
     <Grid>
-        <wpf:PieChart LegendLocation="Bottom" DataClick="Chart_OnDataClick" Hoverable="False" DataTooltip="{x:Null}">
+        <wpf:PieChart  LegendLocation="Bottom"  DataTooltip="{x:Null}">
             <wpf:PieChart.Series>
-                <wpf:PieSeries Title="Maria" Values="8" DataLabels="True"
-                               LabelPoint="{Binding PointLabel}"/>
-                <wpf:PieSeries Title="Charles" Values="4" DataLabels="True" 
-                               LabelPoint="{Binding PointLabel}"/>
-                <wpf:PieSeries Title="Frida" Values="6" DataLabels="False" 
-                               LabelPoint="{Binding PointLabel}"/>
-                <wpf:PieSeries Title="Frederic" Values="2" DataLabels="True" Fill="Fuchsia"
-                               LabelPoint="{Binding PointLabel}"/>
+                <wpf:PieSeries Title="В обработке"  Values="{Binding RedValues}" DataLabels="True" Fill="{DynamicResource LightOrangeColor}" LabelPosition="OutsideSlice" 
+                               Foreground="{DynamicResource LightOrangeColor}" FontSize="20"/>
+                <wpf:PieSeries Title="В процессе" Values="{Binding YellowValues}" DataLabels="True"  Fill="{DynamicResource LightYellowColor}" LabelPosition="OutsideSlice" 
+                               Foreground="{DynamicResource LightYellowColor}"  FontSize="20" />
+                <wpf:PieSeries Title="Готово" Values="{Binding GreenValues}" DataLabels="True" Fill="{DynamicResource LightGreenColor}" LabelPosition="OutsideSlice" 
+                               Foreground="{DynamicResource LightGreenColor}" FontSize="20"/>
             </wpf:PieChart.Series>
         </wpf:PieChart>  
     </Grid>

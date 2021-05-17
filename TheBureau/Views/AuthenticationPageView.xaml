@@ -24,15 +24,9 @@
                 </Button>
             </Border>
             <StackPanel VerticalAlignment="Center">
-                <TextBlock Name="SignInTB"
-                    Text="Войти"
-                           FontWeight="Light"
-                           FontFamily="helvetica"
-                           FontSize="38"
-                           Foreground="{DynamicResource FontDarkGrayColor}"
-                           HorizontalAlignment="Center"/>
+                <TextBlock Name="SignInTB" Text="Войти" FontWeight="Light" FontFamily="helvetica" FontSize="38" Foreground="{DynamicResource FontDarkGrayColor}" HorizontalAlignment="Center"/>
+                <TextBlock Text="{Binding Info}" FontSize="20" HorizontalAlignment="Center"/>
             </StackPanel>
-
             <StackPanel Grid.Row="1" >
                 <StackPanel Orientation="Horizontal">
                     <TextBox Name="LoginTextBox"
@@ -83,9 +77,9 @@
 
 
                 <StackPanel Orientation="Horizontal" Margin="0,40,0,0" HorizontalAlignment="Center">
-                    <Button Name="LoginButton" Content="Войти" Click="LoginButton_Click" Height="40" Style="{StaticResource DefaultButton}"
-                            Command="{Binding SigninCommand}"
-                            CommandParameter="{Binding ElementName=PasswordBox}"/>
+                    <Button  IsDefault="True"  Name="LoginButton" Content="Войти" Click="LoginButton_Click" Height="40" Style="{StaticResource DefaultButton}"
+                             Command="{Binding SigninCommand}"
+                             CommandParameter="{Binding ElementName=PasswordBox}"/>
                 </StackPanel>
 
             </StackPanel>

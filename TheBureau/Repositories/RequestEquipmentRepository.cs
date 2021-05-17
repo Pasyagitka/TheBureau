@@ -12,6 +12,10 @@ namespace TheBureau.Repositories
             return _context.RequestEquipments;
         }
 
+        public IEnumerable<RequestEquipment> GetAllByRequestId(int requestId)
+        {
+            return GetAll().Where(x => x.requestId == requestId);
+        }
         public RequestEquipment Get(int id)
         {
             return _context.RequestEquipments.Find(id);
@@ -53,6 +57,17 @@ namespace TheBureau.Repositories
         public void Save()
         {
             _context.SaveChanges();
+        }
+
+        public IEnumerable<Accessory> GetAccessories(IEnumerable<RequestEquipment> equipment)
+        { //todo accessories
+            var types = equipment.Select(x => x.equipmentId).Distinct();
+            IEnumerable<Accessory> result = new List<Accessory>();
+            foreach (var type in types)
+            {
+                result = _context.Accessories.Where(x => x.equipmentId == type);
+            }
+            return result;
         }
     }
 }

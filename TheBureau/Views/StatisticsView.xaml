@@ -9,12 +9,12 @@
              xmlns:viewModels="clr-namespace:TheBureau.ViewModels"
              xmlns:controls1="clr-namespace:TheBureau.Views.Controls"
              Title="Статистика"
-             mc:Ignorable="d" 
-             Width="1210" Height="690">
+             mc:Ignorable="d"  d:DesignHeight="690" d:DesignWidth="1210"
+             >
     <Page.DataContext>
         <viewModels:StatisticsViewModel/>
     </Page.DataContext>
-    <Border Background="White">
+    <Border Background="Transparent">
         <Grid Background="Transparent">
             <Grid.RowDefinitions>
                 <RowDefinition Height="40"/>
@@ -49,7 +49,7 @@
                     </StackPanel>
                 </Border>
                 <Grid Height="300" Margin="10, 40, 10, 40">
-                  <!-- <controls1:StatChart/> -->
+                  <controls1:StatChart/>
                 </Grid>
             </StackPanel>
 

@@ -1,4 +1,5 @@
 ﻿using System.Collections.Generic;
+using System.Data.Entity;
 using System.Linq;
 using TheBureau.Models.DataManipulating;
 
@@ -23,14 +24,28 @@ namespace TheBureau.Repositories
             return PasswordHash.ValidatePassword(password, user.password) ? user : null;
         }
 
+        public void Update(User item)
+        {
+            _context.Entry(item).State = EntityState.Modified;
+        }
+
         public void Add(User item)
         {
-            throw new System.NotImplementedException();
+            _context.Users.Add(item);
         }
         
         public void Delete(int id)
         {
-            throw new System.NotImplementedException();
+            var user = _context.Users.Find(id);
+            if (user != null)
+            {
+                _context.Users.Remove(user);
+            }
+        }
+
+        public void Save()
+        {
+            _context.SaveChanges();
         }
     }
 }

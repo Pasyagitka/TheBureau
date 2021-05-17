@@ -9,7 +9,7 @@
              xmlns:materialDesign="http://materialdesigninxaml.net/winfx/xaml/themes"
              xmlns:converters="clr-namespace:TheBureau.Converters"
              mc:Ignorable="d" 
-             Width="1210" Height="690" >
+             d:DesignWidth="1210" d:DesignHeight="690" >
 <Page.DataContext>
     <viewModels:BrigadeViewModel/>
 </Page.DataContext>
@@ -20,57 +20,47 @@
         <StackPanel Margin="10,10,10,5">
            <ToolBarTray>
         <ToolBar Style="{DynamicResource MaterialDesignToolBar}" ClipToBounds="False">
-            <Button ToolTip="Сохранить">
-                <Image Source="../../Resources/Images/save.png" Width="30"/>
-            </Button>
-            <Separator/>
-            <Button  ToolTip="Добавить" Command="{Binding AddBrigade}">
+            <Button ToolTip="Добавить" Command="{Binding AddBrigade}">
                 <Image Source= "../../Resources/Images/add.png" Width="30"/>
             </Button>
-            <Button   ToolTip="Редактировать">
-                <Image Source="../../Resources/Images/edit.png" Width="30"/>
-            </Button>
-            <Button   ToolTip="Удалить">
+            <Button ToolTip="Удалить" Command="{Binding DeleteBrigade}">
                 <Image Source="../../Resources/Images/delete.png" Width="30"/>
             </Button>
         </ToolBar>
     </ToolBarTray>
-            <StackPanel HorizontalAlignment="Center" Orientation="Horizontal">
-                <TextBlock Text="{Binding Employees.Count, Converter={StaticResource CountConverter}}" FontSize="20" HorizontalAlignment="Center" FontWeight="DemiBold"/>
-            </StackPanel>
-            <ListView Height="95" ItemsSource="{Binding Employees}">
-                <ListView.ItemsPanel>
-                    <ItemsPanelTemplate>
-                        <StackPanel Orientation="Horizontal" Background="{DynamicResource PrimaryLightGrayColor}" HorizontalAlignment="Center"/>
-                    </ItemsPanelTemplate>
-                </ListView.ItemsPanel>
-                <ListView.ItemTemplate>
-                    <DataTemplate>
-                    <controls:EmployeeCard/>
-                    </DataTemplate>
-                </ListView.ItemTemplate>
-            </ListView>
-            <TextBlock Text="Бригады" HorizontalAlignment="Center" FontSize="20" FontWeight="DemiBold"/>
-            <ListView Height="440" ItemsSource="{Binding Brigades}"  ScrollViewer.VerticalScrollBarVisibility="Auto" ScrollViewer.HorizontalScrollBarVisibility="Disabled" ScrollViewer.CanContentScroll="True">
-                <ListView.ItemContainerStyle>
-                    <Style TargetType="{x:Type ListViewItem}">
-                        <Setter Property="Background" Value="Transparent" />
-                        <Setter Property="Focusable" Value="False"/>
-                        <Setter Property="Template">
-                            <Setter.Value>
-                                <ControlTemplate TargetType="{x:Type ListViewItem}">
-                                    <ContentPresenter />
-                                </ControlTemplate>
-                            </Setter.Value>
-                        </Setter>
-                    </Style>
-                </ListView.ItemContainerStyle>
-                <ListView.ItemTemplate>
-                    <HierarchicalDataTemplate>
-                        <controls:BrigadeCard Margin="10"></controls:BrigadeCard>
-                    </HierarchicalDataTemplate>
-                </ListView.ItemTemplate>
-            </ListView>
+            <Grid>
+                <Grid.RowDefinitions>
+                    <RowDefinition Height="25"/>
+                    <RowDefinition/>
+                </Grid.RowDefinitions>
+                <TextBlock Grid.Row="0"  Padding="0" Text="{Binding Brigades.Count, Converter={StaticResource CountConverter}}" HorizontalAlignment="Center" FontSize="20" FontWeight="DemiBold"/>
+                <ScrollViewer Grid.Row="1" HorizontalAlignment="Center">
+                    <Border>
+                        <ListView   HorizontalAlignment="Center"
+                                    ItemsSource="{Binding Brigades}" 
+                                    SelectedItem="{Binding SelectedItem, Mode=TwoWay}" >
+                        <!-- <ListView.ItemContainerStyle> -->
+                        <!--     <Style TargetType="{x:Type ListViewItem}"> -->
+                        <!--         <Setter Property="Background" Value="Transparent" /> -->
+                        <!--         <Setter Property="Focusable" Value="False"/> -->
+                        <!--         <Setter Property="Template"> -->
+                        <!--             <Setter.Value> -->
+                        <!--                 <ControlTemplate TargetType="{x:Type ListViewItem}"> -->
+                        <!--                     <ContentPresenter /> -->
+                        <!--                 </ControlTemplate> -->
+                        <!--             </Setter.Value> -->
+                        <!--         </Setter> -->
+                        <!--     </Style> -->
+                        <!-- </ListView.ItemContainerStyle> -->
+                        <ListView.ItemTemplate>
+                            <HierarchicalDataTemplate>
+                                <controls:BrigadeCard Margin="10"/>
+                            </HierarchicalDataTemplate>
+                        </ListView.ItemTemplate>
+                    </ListView>
+                    </Border>
+                </ScrollViewer>
+            </Grid>
         </StackPanel>
     </Border>
 </Page>

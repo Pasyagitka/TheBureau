@@ -1,5 +1,4 @@
 using System;
-using System.Collections.ObjectModel;
 using System.ComponentModel.DataAnnotations.Schema;
 using System.Data.Entity;
 using System.Linq;
@@ -17,6 +16,7 @@ namespace TheBureau
         public virtual DbSet<Address> Addresses { get; set; }
         public virtual DbSet<Brigade> Brigades { get; set; }
         public virtual DbSet<Client> Clients { get; set; }
+        public virtual DbSet<Company> Companies { get; set; }
         public virtual DbSet<Employee> Employees { get; set; }
         public virtual DbSet<Equipment> Equipments { get; set; }
         public virtual DbSet<Request> Requests { get; set; }
@@ -39,11 +39,6 @@ namespace TheBureau
             modelBuilder.Entity<Address>()
                 .HasMany(e => e.Requests)
                 .WithRequired(e => e.Address)
-                .WillCascadeOnDelete(false);
-
-            modelBuilder.Entity<Brigade>()
-                .HasMany(e => e.Employees)
-                .WithRequired(e => e.Brigade)
                 .WillCascadeOnDelete(false);
 
             modelBuilder.Entity<Client>()
@@ -89,6 +84,7 @@ namespace TheBureau
                 .WithRequired(e => e.Role1)
                 .HasForeignKey(e => e.role)
                 .WillCascadeOnDelete(false);
+
         }
     }
 }

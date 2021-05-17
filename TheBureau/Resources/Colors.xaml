@@ -7,10 +7,12 @@
     <Color x:Key="PrimaryLightGray">#f7f7f7f7</Color>
     <Color x:Key="LightYellow">#fce38a</Color>
     <Color x:Key="LightGreen">#cceabb</Color>
+    <Color x:Key="LightGrayGreen">#e3eddd</Color>
     <Color x:Key="LightOrange">#ffc56e</Color>
     <Color x:Key="FontDarkGray">#555555</Color>
     <Color x:Key="DangerRed">#e40017</Color>
-    
+    <Color x:Key="DarkMainGray">#d6d6d6</Color>
+
     <SolidColorBrush x:Key="NiceGrayColor" Color="{StaticResource NiceGray}"></SolidColorBrush>
     <SolidColorBrush x:Key="NiceDarkWhiteColor" Color="{StaticResource NiceDarkWhite}"></SolidColorBrush>
     <SolidColorBrush x:Key="LogoColor" Color="{StaticResource Logo}"></SolidColorBrush>
@@ -18,7 +20,9 @@
     <SolidColorBrush x:Key="PrimaryLightGrayColor" Color="{StaticResource PrimaryLightGray}"></SolidColorBrush>
     <SolidColorBrush x:Key="LightYellowColor" Color="{StaticResource LightYellow}"></SolidColorBrush>
     <SolidColorBrush x:Key="LightGreenColor" Color="{StaticResource LightGreen}"></SolidColorBrush>
+    <SolidColorBrush x:Key="LightGrayGreenColor" Color="{StaticResource LightGrayGreen}"></SolidColorBrush>
     <SolidColorBrush x:Key="LightOrangeColor" Color="{StaticResource LightOrange}"></SolidColorBrush>
     <SolidColorBrush x:Key="FontDarkGrayColor" Color="{StaticResource FontDarkGray}"></SolidColorBrush>
+    <SolidColorBrush x:Key="DarkMainGrayColor" Color="{StaticResource DarkMainGray}"></SolidColorBrush>
     <SolidColorBrush x:Key="DangerRedColor" Color="{StaticResource DangerRed}"></SolidColorBrush>
 </ResourceDictionary>

@@ -8,10 +8,9 @@
              xmlns:materialDesign="http://materialdesigninxaml.net/winfx/xaml/themes"
              xmlns:system="clr-namespace:System;assembly=mscorlib"
              mc:Ignorable="d">
-    <UserControl.Resources>
-        <viewModels:BrigadeViewModel x:Key="BrigadeViewModel"/>
-        <viewModels:RequestViewModel x:Key="RequestViewModel"/>
-    </UserControl.Resources>
+    <!-- <UserControl.DataContext> -->
+    <!--     <viewModels:RequestViewModel/> -->
+    <!-- </UserControl.DataContext> -->
     <Border CornerRadius="5" Background="{DynamicResource PrimaryLightGrayColor}" Margin="7" Width="675">
         <StackPanel Orientation="Horizontal">
             <Grid>
@@ -26,13 +25,16 @@
                     <RowDefinition/>
                 </Grid.RowDefinitions>
                 <TextBlock Grid.Column="0" Grid.Row="0" Text="Отправить заявку бригаде" HorizontalAlignment="Center" Margin="2"></TextBlock>
-                <StackPanel Grid.Column="0" Grid.Row="1" DataContext="{StaticResource BrigadeViewModel }" Orientation="Horizontal">
-                    <ComboBox Width="150" Margin="5" Height="25" ItemsSource="{Binding Brigades}" DisplayMemberPath="id"/>
-                    <Button Background="Transparent" BorderThickness="0" Width="30" Padding="0"><materialDesign:PackIcon Kind="ClearThick"/></Button>
+                <StackPanel Grid.Column="0" Grid.Row="1" Orientation="Horizontal">
+                    <ComboBox SelectedValue="{Binding RequestViewModel.SelectedBrigade}" SelectedValuePath="id" IsSynchronizedWithCurrentItem="True"  
+                              Width="150" Margin="5" Height="25" ItemsSource="{Binding RequestViewModel.Brigades}" DisplayMemberPath="id"/>
+                    <Button Background="Transparent" BorderThickness="0" Width="30" Padding="0">
+                        <materialDesign:PackIcon Kind="ClearThick"/>
+                    </Button>
                 </StackPanel>
                 <TextBlock Grid.Column="1" Grid.Row="0" Text="Сменить статус заявки" HorizontalAlignment="Center" Margin="2"></TextBlock>
-                <StackPanel Grid.Column="1" Grid.Row="1" DataContext="{StaticResource RequestViewModel}">
-                    <ComboBox Margin="5" Height="25" SelectedValue="{Binding RequestStatus, UpdateSourceTrigger=PropertyChanged}" SelectedValuePath="Content">
+                <StackPanel Grid.Column="1" Grid.Row="1">
+                    <ComboBox Margin="5" Height="25" SelectedValue="{Binding RequestViewModel.RequestStatus}" IsSynchronizedWithCurrentItem="True">
                         <ComboBoxItem Content="В обработке" Background="{DynamicResource LightOrangeColor}"/>
                         <ComboBoxItem Content="В процессе" Background="{DynamicResource LightYellowColor}"/>
                         <ComboBoxItem Content="Готово" Background="{DynamicResource LightGreenColor}"/>
@@ -41,10 +43,15 @@
                 <CheckBox Grid.Column="2" Grid.RowSpan="2" IsChecked="True" Margin="10">
                     <TextBlock Text="Уведомить клиента"/>
                 </CheckBox>
-                <StackPanel DataContext="{StaticResource RequestViewModel}" Grid.Column="3"  Grid.RowSpan="2">
+                <StackPanel Grid.Column="3"  Grid.RowSpan="2">
+                    <!-- <TextBlock Name="IdTextBlock" DataContext="{Binding Requests}" Visibility="Visible" Text="{Binding id}"></TextBlock> -->
+                    <!-- <Button BorderThickness="0" Background="White" Margin="10" HorizontalAlignment="Center" Style="{StaticResource MaterialDesignIconButton}" -->
+                    <!--         Command="{Binding UpdateRequestCommand}" CommandParameter="{Binding ElementName=IdTextBlock, Path=Text}"> -->
+                    <!-- <Image Source="../../Resources/Images/check.png" Width="40"/> -->
+                    <!-- </Button> -->
                     <Button BorderThickness="0" Background="White" Margin="10" HorizontalAlignment="Center" Style="{StaticResource MaterialDesignIconButton}"
-                            Command="{Binding UpdateRequestCommand}">
-                        <Image Source="../../Resources/Images/check.png" Width="40"/> 
+                            Command="{Binding RequestViewModel.UpdateRequestCommand}" CommandParameter="1002">
+                        <Image Source="../../Resources/Images/check.png" Width="40"/>
                     </Button>
                 </StackPanel>
             </Grid>

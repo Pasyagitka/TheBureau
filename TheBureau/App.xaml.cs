@@ -1,40 +1,23 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Configuration;
-using System.Data;
-using System.Linq;
-using System.Net;
-using System.Net.Mail;
-using System.Threading.Tasks;
-using System.Windows;
-using TheBureau.ViewModels;
-using TheBureau.Views;
+﻿using System.Windows;
+using TheBureau.Repositories;
 
 namespace TheBureau
 {
-    /// <summary>
-    /// Логика взаимодействия для App.xaml
-    /// </summary>
     public partial class App : Application
     {
         private void App_OnStartup(object sender, StartupEventArgs e)
         {
             Application.Current.Properties["User"] = null;
-            //todo email
-            // using (MailMessage mm = new MailMessage("БЮРО МОНТАЖНИКА<thebureaunotificationcenter@gmail.com>", "lizavetazinovich@gmail.com"))
-            // {
-            //     mm.Subject = "Ваша заявка на монтаж принята!";
-            //     mm.Body = "<h2>Текущий статус заявки: В обработке</h2><p>Мы уведомим вас о смене статуса.</p>";
-            //     mm.IsBodyHtml = true;
-            //     using (SmtpClient sc = new SmtpClient("smtp.gmail.com", 587))
-            //     {
-            //         sc.EnableSsl = true;
-            //         sc.DeliveryMethod = SmtpDeliveryMethod.Network;
-            //         sc.UseDefaultCredentials = false;
-            //         sc.Credentials = new NetworkCredential("thebureaunotificationcenter@gmail.com", "thebureau");
-            //         sc.Send(mm);
-            //     }
-            // }
+            RequestRepository requestRepository = new RequestRepository();
+            ToolRepository toolRepository = new ToolRepository();
+            RequestEquipmentRepository requestEquipmentRepository = new RequestEquipmentRepository();
+            AccessoryRepository accessoryRepository = new AccessoryRepository();
+            
+            var request = requestRepository.Get(1014);
+            var tools = toolRepository.GetByStage(request.stage);
+            var accessories = requestEquipmentRepository.GetAccessories(request.RequestEquipments);
+            //Notifications.SendRequestAccept(request, tools, accessories);
+            //Notifications.SendRequestStatusChanged(request);
         }
     }
 }

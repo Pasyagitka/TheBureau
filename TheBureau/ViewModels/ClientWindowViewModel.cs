@@ -10,11 +10,10 @@ namespace TheBureau.ViewModels
 {
     public class ClientWindowViewModel : ViewModelBase
     {
-        //todo по чекбоксу блокировать
-        private RequestRepository _requestRepository = new RequestRepository();
-        private ClientRepository _clientRepository = new ClientRepository();
-        private AddressRepository _addressRepository = new AddressRepository();
-        private RequestEquipmentRepository _requestEquipmentRepository = new RequestEquipmentRepository();
+        private RequestRepository _requestRepository;
+        private ClientRepository _clientRepository;
+        private AddressRepository _addressRepository;
+        private RequestEquipmentRepository _requestEquipmentRepository;
         
         private ObservableCollection<Request> _requests;
         private RelayCommand sendRequestCommand;
@@ -25,7 +24,6 @@ namespace TheBureau.ViewModels
         private string _patronymic;
         private decimal _contactNumber;
         private string _email;
-        private string _country;
         private string _city;
         private string _street;
         private int _house;
@@ -43,14 +41,7 @@ namespace TheBureau.ViewModels
         private bool _isClean;
         private string _comment;
         private DateTime _mountingDate;
-        private int _expectedTime;
         
-        public int ExpectedTime
-        {
-            //todo ожидаемое время выполнения
-            get => _expectedTime;
-            set { _expectedTime = value; OnPropertyChanged("ExpectedTime"); }
-        }
 
         public DateTime MountingDate
         {
@@ -182,8 +173,8 @@ namespace TheBureau.ViewModels
                     }
                    
                     _requestEquipmentRepository.Save();
-                    
-                    
+
+                    Update();
                     OnPropertyChanged("SendRequestCommand");
                 });
             }
@@ -324,8 +315,17 @@ namespace TheBureau.ViewModels
         }
 
         public ClientWindowViewModel()
+        { 
+            Update();
+            MountingDate = DateTime.Today;
+        }
+
+        public void Update()
         {
-           MountingDate = DateTime.Today;
+            _requestRepository = new RequestRepository();
+            _clientRepository = new ClientRepository();
+            _addressRepository = new AddressRepository();
+            _requestEquipmentRepository = new RequestEquipmentRepository();
         }
 
     }

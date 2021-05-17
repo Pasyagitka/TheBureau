@@ -1,5 +1,3 @@
-using System.ComponentModel;
-
 namespace TheBureau
 {
     using System;
@@ -9,7 +7,7 @@ namespace TheBureau
     using System.Data.Entity.Spatial;
 
     [Table("Client")]
-    public partial class Client : INotifyPropertyChanged
+    public partial class Client
     {
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2214:DoNotCallOverridableMethodsInConstructors")]
         public Client()
@@ -19,9 +17,10 @@ namespace TheBureau
 
         public int id { get; set; }
 
-        [Required] [StringLength(20)] 
+        [Required]
+        [StringLength(20)]
         public string firstname { get; set; }
-        
+
         [Required]
         [StringLength(20)]
         public string patronymic { get; set; }
@@ -38,12 +37,5 @@ namespace TheBureau
 
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
         public virtual ICollection<Request> Requests { get; set; }
-
-        public event PropertyChangedEventHandler PropertyChanged;
-        void OnPropertyChanged(string propertyName)
-        {
-            if (PropertyChanged != null)
-                PropertyChanged(this, new PropertyChangedEventArgs(propertyName));
-        }
     }
 }

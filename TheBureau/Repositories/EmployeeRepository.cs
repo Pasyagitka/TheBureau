@@ -30,5 +30,9 @@ namespace TheBureau.Repositories
                 _context.Employees.Remove(employee);
             }
         }
+        public void SaveChanges()
+        {
+            _context.SaveChanges();
+        }
     }
 }

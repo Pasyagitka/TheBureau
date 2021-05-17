@@ -1,4 +1,7 @@
-﻿using System.Windows.Documents.DocumentStructures;
+﻿using System;
+using System.Windows;
+using System.Windows.Documents.DocumentStructures;
+using System.Windows.Input;
 using TheBureau.Repositories;
 
 namespace TheBureau.ViewModels
@@ -6,99 +9,105 @@ namespace TheBureau.ViewModels
     public class EditClientViewModel : ViewModelBase
     {
         private ClientRepository _clientRepository = new ClientRepository();
-
-        private int id;
-        private string surname;
-        private string firstname;
-        private string patronymic;
-        private string email;
-        private decimal contactNumber;
-
-        private RelayCommand updateCommand;
-
+        
+        private int _id;
+        private string _surname;
+        private string _firstname;
+        private string _patronymic;
+        private string _email;
+        private decimal _contactNumber;
+        
+        Client _client;
+        
+        private RelayCommand _editClientCommand;
+        
         #region propetries
 
         public int Id
         {
-            get => id;
+            get => _id;
             set
             {
-                id = value;
+                _id = value;
                 OnPropertyChanged("Id");
             }
         }
         
         public string Surname
         {
-            get => surname;
-            set { surname = value; OnPropertyChanged("Surname");}
+            get => _surname;
+            set { _surname = value; OnPropertyChanged("Surname");}
 
         }
 
         public string Firstname
         {
-            get => firstname;
-            set { firstname = value; OnPropertyChanged("Firstname");}
+            get => _firstname;
+            set { _firstname = value; OnPropertyChanged("Firstname");}
         }
 
         public string Patronymic
         {
-            get => patronymic;
-            set { patronymic = value; OnPropertyChanged("Patronymic");}
+            get => _patronymic;
+            set { _patronymic = value; OnPropertyChanged("Patronymic");}
         }
 
         public string Email
         {
-            get => email;
-            set { email = value; OnPropertyChanged("Email");}
+            get => _email;
+            set { _email = value; OnPropertyChanged("Email");}
         }
 
         public decimal ContactNumber
         {
-            get => contactNumber;
+            get => _contactNumber;
             set
             {
-                contactNumber = value; OnPropertyChanged("ContactNumber");
+                _contactNumber = value; OnPropertyChanged("ContactNumber");
                 
             }
         }
         #endregion propetries
-        
-        Client client;
+
         public Client Client
         {
-            get => client;
+            get => _client;
             set
             { 
-                client = value;
+                _client = value;
                 Id = Client.id;
                 Firstname = Client.firstname;
                 Surname = Client.surname;
                 Patronymic = Client.patronymic;
-                email = Client.email;
-                contactNumber = Client.contactNumber;
+                _email = Client.email;
+                _contactNumber = Client.contactNumber;
                 OnPropertyChanged("Client");
             }
         }
-        
-        public RelayCommand EditCommand
-        {
-            get
-            {
-                return updateCommand ??= new RelayCommand(obj =>
-                {
-                    var clientUpdate = _clientRepository.Get(Id);
-                    clientUpdate.firstname = Firstname;
-                    clientUpdate.surname = Surname;
-                    clientUpdate.patronymic = Patronymic;
-                    clientUpdate.email = Email;
-                    clientUpdate.contactNumber = ContactNumber;
-                    _clientRepository.Update(clientUpdate);
-                    _clientRepository.SaveChanges();
 
-                    OnPropertyChanged("EditCommand");
-                });
-            }
+        public ICommand EditClientCommand
+        {
+            get { return _editClientCommand ??= new RelayCommand(EditClient, CanEdit); }
+        }
+
+        private void EditClient(object sender)
+        {
+            var clientUpdate = _clientRepository.Get(Id);
+            clientUpdate.firstname = Firstname;
+            clientUpdate.surname = Surname;
+            clientUpdate.patronymic = Patronymic;
+            clientUpdate.email = Email;
+            clientUpdate.contactNumber = ContactNumber;
+            _clientRepository.Update(clientUpdate);
+            _clientRepository.SaveChanges();
+        }
+        public bool CanEdit(object sender)
+        {
+            return true;
+        }
+        public EditClientViewModel(Client selectedClient)
+        {
+            Client = selectedClient;
         }
     }
 }

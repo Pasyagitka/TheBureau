@@ -6,7 +6,13 @@ namespace TheBureau.Repositories
     public class AddressRepository : IRepository<Address>
     {
         private Model _context = new Model();
-        
+        //private Model db;
+
+        //public AddressRepository(Model db)
+        //{
+        //    this.db = db;
+        //}
+
         public IEnumerable<Address> GetAll()
         {
            return _context.Addresses;

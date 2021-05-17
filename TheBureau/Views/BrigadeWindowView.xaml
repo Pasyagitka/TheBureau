@@ -49,7 +49,7 @@
                         <TextBlock Text="БРИГАДА" VerticalAlignment="Center" Foreground="White" FontWeight="Bold" HorizontalAlignment="Center"/>
                     </DockPanel>
                 </Border>
-                <ContentControl Width="920" Content="{Binding Brigades}">
+                <ContentControl Width="920" Content="{Binding CurrentBrigade}">
                     <ContentControl.ContentTemplate>
                         <DataTemplate>
                              <Border HorizontalAlignment="Stretch">
@@ -60,7 +60,7 @@
                 </ContentControl>
                 <ScrollViewer>
                     <Border Margin="50,30,50,50"  Background="White" CornerRadius="15" Height="403">
-                        <ListView ScrollViewer.CanContentScroll="False"
+                        <ListView ScrollViewer.CanContentScroll="True"
                                   ItemTemplate="{StaticResource RequestListForBrigadeTemplate}"
                                   ItemsSource="{Binding BrigadeRequests }">
                         </ListView>

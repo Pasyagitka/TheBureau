@@ -5,39 +5,68 @@
              xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
              xmlns:local="clr-namespace:TheBureau.Views" xmlns:controls="clr-namespace:TheBureau.Controls" 
              xmlns:viewmodels="clr-namespace:TheBureau.ViewModels"
+             xmlns:materialDesign="http://materialdesigninxaml.net/winfx/xaml/themes"
              Title="Заявки"
-             mc:Ignorable="d" 
-             Width="1210" Height="690">
+             mc:Ignorable="d"   d:DesignHeight="690" d:DesignWidth="1210">
     <Page.DataContext>
        <viewmodels:RequestViewModel/>
    </Page.DataContext>
+    <Page.Resources>
+        <viewmodels:RequestViewModel x:Key="RequestViewModel"/>
+    </Page.Resources>
     <Border Background="Transparent" CornerRadius="15">
         <Grid>
             <Grid.ColumnDefinitions>
-                <ColumnDefinition Width="Auto"/>
-                <ColumnDefinition Width="250"/>
+                <ColumnDefinition/>
+                <ColumnDefinition Width="260"/>
             </Grid.ColumnDefinitions>
-
-            <StackPanel Grid.Column="0" Orientation="Horizontal" Background="{DynamicResource PrimaryLightGrayColor}">
-                <ListView Name="RequestsListView" Width="960" ItemsSource="{Binding Requests}" SelectedItem="{Binding SelectedItem, Mode=TwoWay}">
-                    <ListView.ItemTemplate>
-                        <HierarchicalDataTemplate>
-                            <Border CornerRadius="10" Background="White" Margin="10" Width="800">
-                            <StackPanel Orientation="Vertical" Margin="5">
-                                <controls:RequestCard/>
-                                <Separator Width="500" Background="Orange"/>
-                                <Expander IsExpanded="False">
-                                    <controls:AdminRequestPanel/>
-                                </Expander>
-                            </StackPanel>
-                        </Border>
-                        </HierarchicalDataTemplate>
-                    </ListView.ItemTemplate>
-                </ListView>
+            <Grid.RowDefinitions>
+                <RowDefinition Height="65"/>
+                <RowDefinition Height="Auto"/>
+                <RowDefinition/>
+            </Grid.RowDefinitions>
+            <ToolBarTray Grid.Row="0" Grid.Column="0" Width="300">
+                <ToolBar ClipToBounds="False">
+                    <Button ToolTip="Редактировать" Command="{Binding UpdateRequestCommand}">
+                        <Image Source="../../Resources/Images/edit.png" Width="30"/>
+                    </Button>
+                    <Button ToolTip="Скрыть готовые заявки" Command="{Binding HideGreenRequestsCommand}">
+                        <Image Source="../../Resources/Images/done.png" Width="30"/>
+                    </Button>
+                    <Button ToolTip="Показать все заявки" Command="{Binding ShowAllRequestsCommand}">
+                        <Image Source="../../Resources/Images/allrequests.png" Width="30"/>
+                    </Button>
+                    <ToggleButton ToolTip="Развернуть оборудование" Name="InfoToggle">
+                        <materialDesign:PackIcon  Kind="InfoVariant" Height="21" Width="21"/>
+                    </ToggleButton>
+                </ToolBar>
+            </ToolBarTray>
+            <StackPanel Visibility="{Binding ElementName=InfoToggle, Path=IsChecked, Converter={StaticResource BooleanToVisibilityConverter}}" Grid.Row="1" Grid.Column="0"  Margin="10"  Width="800" Background="{DynamicResource PrimaryLightGrayColor}" Height="100">
+                <DataGrid ItemsSource="{Binding RequestEquipments}" AutoGenerateColumns="True"/>
             </StackPanel>
-            <ScrollViewer Grid.Column="1">
+
+                <ScrollViewer Margin="10"  Grid.Row="2" Grid.Column="0">
+                    <StackPanel HorizontalAlignment="Center" Orientation="Horizontal" Background="{DynamicResource PrimaryLightGrayColor}">
+                    <ListView HorizontalAlignment="Stretch" HorizontalContentAlignment="Center" Background="White"
+                              ItemsSource="{Binding Requests, Mode=TwoWay}" 
+                              SelectedItem="{Binding SelectedItem}">
+                        <ListView.ItemTemplate>
+                            <HierarchicalDataTemplate>
+                                <Border CornerRadius="10" Background="White" Margin="10" Width="800">
+                                <StackPanel Orientation="Vertical" Margin="5">
+                                    <controls:RequestCard/>
+                                    <Separator Width="500" Background="{StaticResource LightOrangeColor}"/>
+                                </StackPanel>
+                                </Border>
+                            </HierarchicalDataTemplate>
+                        </ListView.ItemTemplate>
+                    </ListView>
+                </StackPanel>
+                </ScrollViewer>
+            <ScrollViewer Grid.Row="0" Grid.Column="1" Width="260" Grid.RowSpan="3">
                 <Border BorderThickness="1, 0,0,0" BorderBrush="Orange">
-                    <ListView ItemsSource="{Binding Brigades}">
+                    <ListView ItemsSource="{Binding Path=Brigades}" ScrollViewer.CanContentScroll="True"
+                              SelectedItem="{Binding SelectedItem, Mode=TwoWay}">
                         <ListView.ItemsPanel>
                             <ItemsPanelTemplate>
                                 <StackPanel Background="{DynamicResource PrimaryLightGrayColor}" HorizontalAlignment="Center"/>

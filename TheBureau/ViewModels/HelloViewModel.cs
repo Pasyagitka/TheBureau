@@ -10,6 +10,7 @@ namespace TheBureau.ViewModels
 {
     public class HelloViewModel : ViewModelBase
     {
+      
         //todo переключение страниц в viewmodel
         private string login;
         private string password;
@@ -54,7 +55,7 @@ namespace TheBureau.ViewModels
                     if (passwordBox == null)
                         return;
                     Password = passwordBox.Password;
-
+                    
                     if (TryLogin())
                     {
                         var user = Application.Current.Properties["User"] as User;
@@ -72,10 +73,9 @@ namespace TheBureau.ViewModels
                         }
                         else
                         {
-                            MessageBox.Show("Что-то пошло не так.");
+                           Info = "Что-то пошло не так.";
                         }
                     }
-                    else MessageBox.Show(Info);
                 });
             }
         }

@@ -95,11 +95,13 @@
     <Compile Include="Converters\AddressConverter.cs" />
     <Compile Include="Converters\BoolToReadOnlyConverter.cs" />
     <Compile Include="Converters\CountConverter.cs" />
+    <Compile Include="Converters\CountRedConverter.cs" />
     <Compile Include="Converters\EditingBorderConverter.cs" />
     <Compile Include="Converters\NameConverter.cs" />
     <Compile Include="Converters\StatusColorConverter.cs" />
     <Compile Include="Converters\StageConverter.cs" />
     <Compile Include="Converters\StatusConverter.cs" />
+    <Compile Include="DataManipulating\Notifications.cs" />
     <Compile Include="DataManipulating\PasswordHash.cs" />
     <Compile Include="Enums\Stage.cs" />
     <Compile Include="Enums\Status.cs" />
@@ -107,6 +109,7 @@
     <Compile Include="Models\Address.cs" />
     <Compile Include="Models\Brigade.cs" />
     <Compile Include="Models\Client.cs" />
+    <Compile Include="Models\Company.cs" />
     <Compile Include="Models\Employee.cs" />
     <Compile Include="Models\Equipment.cs" />
     <Compile Include="Models\Model.cs" />
@@ -120,6 +123,7 @@
     <Compile Include="Repositories\AddressRepository.cs" />
     <Compile Include="Repositories\BrigadeRepository.cs" />
     <Compile Include="Repositories\ClientRepository.cs" />
+    <Compile Include="Repositories\CompanyRepository.cs" />
     <Compile Include="Repositories\EmployeeRepository.cs" />
     <Compile Include="Repositories\EquipmentRepository.cs" />
     <Compile Include="Repositories\IRepository.cs" />
@@ -127,24 +131,43 @@
     <Compile Include="Repositories\RequestRepository.cs" />
     <Compile Include="Repositories\ToolRepository.cs" />
     <Compile Include="Repositories\UserRepository.cs" />
+    <Compile Include="ViewModels\AddEmployeeViewModel.cs" />
     <Compile Include="ViewModels\BrigadeWindowViewModel.cs" />
     <Compile Include="ViewModels\ClientWindowViewModel.cs" />
+    <Compile Include="ViewModels\ConfirmWindowViewModel.cs" />
+    <Compile Include="ViewModels\DelegateCommand.cs" />
     <Compile Include="ViewModels\EditBrigadeViewModel.cs" />
     <Compile Include="ViewModels\EditClientViewModel.cs" />
+    <Compile Include="ViewModels\EditEmployeeViewModel.cs" />
+    <Compile Include="ViewModels\EditRequestViewModel.cs" />
+    <Compile Include="ViewModels\EmployeeViewModel.cs" />
     <Compile Include="ViewModels\HelloViewModel.cs" />
     <Compile Include="ViewModels\MainWindowViewModel.cs" />
     <Compile Include="ViewModels\RelayCommand.cs" />
+    <Compile Include="ViewModels\SettingsWindowViewModel.cs" />
     <Compile Include="ViewModels\StatisticsViewModel.cs" />
     <Compile Include="ViewModels\BrigadeViewModel.cs" />
     <Compile Include="ViewModels\ClientViewModel.cs" />
     <Compile Include="ViewModels\RequestViewModel.cs" />
     <Compile Include="ViewModels\StorageViewModel.cs" />
     <Compile Include="ViewModels\ViewModelBase.cs" />
+    <Compile Include="Views\AddEmployeeWindow.xaml.cs">
+      <DependentUpon>AddEmployeeWindow.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Views\Controls\AdminRequestCard.xaml.cs">
+      <DependentUpon>AdminRequestCard.xaml</DependentUpon>
+    </Compile>
     <Compile Include="Views\Controls\AdminRequestPanel.xaml.cs">
       <DependentUpon>AdminRequestPanel.xaml</DependentUpon>
     </Compile>
     <Compile Include="Views\Controls\BrigadeStatChart.xaml.cs">
       <DependentUpon>BrigadeStatChart.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Views\Controls\ConfirmWindow.xaml.cs">
+      <DependentUpon>ConfirmWindow.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Views\Controls\EmployeeCardSmall.xaml.cs">
+      <DependentUpon>EmployeeCardSmall.xaml</DependentUpon>
     </Compile>
     <Compile Include="Views\Controls\SingleBrigadeChart.xaml.cs">
       <DependentUpon>SingleBrigadeChart.xaml</DependentUpon>
@@ -154,6 +177,18 @@
     </Compile>
     <Compile Include="Views\EditClientView.xaml.cs">
       <DependentUpon>EditClientView.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Views\EditEmployeeView.xaml.cs">
+      <DependentUpon>EditEmployeeView.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Views\EditRequestView.xaml.cs">
+      <DependentUpon>EditRequestView.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Views\EmployeeView.xaml.cs">
+      <DependentUpon>EmployeeView.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Views\SettingsWindow.xaml.cs">
+      <DependentUpon>SettingsWindow.xaml</DependentUpon>
     </Compile>
     <Compile Include="Views\StatisticsView.xaml.cs">
       <DependentUpon>StatisticsView.xaml</DependentUpon>
@@ -246,11 +281,19 @@
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
+    <Page Include="Views\AddEmployeeWindow.xaml" />
+    <Page Include="Views\Controls\AdminRequestCard.xaml" />
     <Page Include="Views\Controls\AdminRequestPanel.xaml" />
     <Page Include="Views\Controls\BrigadeStatChart.xaml" />
+    <Page Include="Views\Controls\ConfirmWindow.xaml" />
+    <Page Include="Views\Controls\EmployeeCardSmall.xaml" />
     <Page Include="Views\Controls\SingleBrigadeChart.xaml" />
     <Page Include="Views\Controls\StatChart.xaml" />
     <Page Include="Views\EditClientView.xaml" />
+    <Page Include="Views\EditEmployeeView.xaml" />
+    <Page Include="Views\EditRequestView.xaml" />
+    <Page Include="Views\EmployeeView.xaml" />
+    <Page Include="Views\SettingsWindow.xaml" />
     <Page Include="Views\StatisticsView.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
@@ -349,6 +392,14 @@
   </ItemGroup>
   <ItemGroup>
     <Resource Include="logo_dark.ico" />
+  </ItemGroup>
+  <ItemGroup>
+    <Resource Include="Resources\Images\allrequests.png" />
+    <Resource Include="Resources\Images\done.png" />
+    <Resource Include="Resources\Images\employeecard.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <Folder Include="Models\" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <Target Name="EnsureNuGetPackageBuildImports" BeforeTargets="PrepareForBuild">

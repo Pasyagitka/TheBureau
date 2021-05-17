@@ -6,12 +6,12 @@
         xmlns:local="clr-namespace:TheBureau.Views"
         xmlns:materialDesign="http://materialdesigninxaml.net/winfx/xaml/themes"
         xmlns:viewModels="clr-namespace:TheBureau.ViewModels"
+        xmlns:converters="clr-namespace:TheBureau.Converters"
         mc:Ignorable="d"
-        Title="Статистика" Height="720" Width="1280"
+        Title="Статистика" MinHeight="720" MinWidth="1280"
         WindowStyle="None" Background="Transparent" 
-        ResizeMode="NoResize"
-        WindowStartupLocation="CenterScreen"
-        >
+        ResizeMode="CanResize"
+        WindowStartupLocation="CenterScreen">
     <Window.DataContext>
         <viewModels:MainWindowViewModel/>
     </Window.DataContext>
@@ -37,27 +37,32 @@
             <BeginStoryboard Storyboard="{StaticResource CloseMenu}"/>
         </EventTrigger>
     </Window.Triggers>
-    <Grid Background="White">
-        <Frame Content="{Binding Content, Mode=TwoWay}" HorizontalAlignment="Right" VerticalAlignment="Bottom"  Width="1210" Height="690" Background="White" NavigationUIVisibility="Hidden"/>
+    <Grid Background="White" Name="MainWindowGrid">
+        <Grid.RowDefinitions>
+            <RowDefinition Height="30"/>
+            <RowDefinition Height="*"/>
+        </Grid.RowDefinitions>
+        
+        <Frame MinWidth="1210" MinHeight="690" 
+               
+               Margin="70, 0,0,0"
+                Grid.Row="1" Content="{Binding Content, Mode=TwoWay}" 
+                NavigationUIVisibility="Hidden">
+            <Frame.Background>
+                <ImageBrush ImageSource="C:\Users\Professional\Desktop\images\чб.png" Opacity="0.1"></ImageBrush>
+            </Frame.Background>
+        </Frame>
+        
        
-        <Grid Name="TopGrid" Height="30" VerticalAlignment="Top"  Width="{Binding ElementName=MainWindowMainGrid, Path=ActualWidth}" Background="{DynamicResource NiceGrayColor}" MouseDown="TopGrid_OnMouseDown">
+        <Grid  Grid.Column="0" Grid.Row="0" Name="TopGrid" Height="30" VerticalAlignment="Top" Background="{DynamicResource DarkMainGrayColor}" MouseDown="TopGrid_OnMouseDown">
             <StackPanel HorizontalAlignment="Right" Orientation="Horizontal"/>
             <StackPanel Orientation="Horizontal" HorizontalAlignment="Right">
-                <TextBlock Text="ADMIN" VerticalAlignment="Center" FontSize="16"/>
-                <materialDesign:PopupBox PlacementMode="BottomAndAlignRightEdges" StaysOpen="False" Margin="2">
-                    <StackPanel Width="150">
-                        <Button Content="Settings"/>
-                        <Button Content="Account"/>
-                        <Button Content="Help"/>
-                        <Separator/>
-                        <Button Content="Logout"/>
-                    </StackPanel>
-                </materialDesign:PopupBox>
+                <Button Content="Настройки" VerticalAlignment="Center" FontSize="16" Command="{Binding OpenSettingsCommand}"/>
                 <Button Name="MainWindowClose"  Width="50"  Height="auto" BorderBrush="Transparent" Background="Transparent" DockPanel.Dock="Right" Click="MainWindowClose_OnClick">
                     <materialDesign:PackIcon Kind="Close" Foreground="White"/>
                 </Button>
                 <Button Name="MainWindowResize" Width="50"  Height="auto" BorderBrush="Transparent" Background="Transparent" DockPanel.Dock="Right">
-                    <materialDesign:PackIcon Name="MainWindowResizeIcon"  Kind="Resize" Foreground="White"/>
+                    <materialDesign:PackIcon Name="MainWindowResizeIcon"  Kind="Resize" Foreground="White" MouseDoubleClick="MainWindowResize_Click"/>
                 </Button>
                 <Button   Width="50" Height="auto"  BorderBrush="Transparent" Background="Transparent" DockPanel.Dock="Right" Click="MainWindowMinimize_Click">
                     <materialDesign:PackIcon Kind="WindowMinimize"  Foreground="White" />
@@ -65,7 +70,7 @@
             </StackPanel>
             <TextBlock Name="MainTopName" HorizontalAlignment="Center" VerticalAlignment="Center" FontSize="20" Foreground="White" Text="{Binding MainTopText}"></TextBlock>
         </Grid>
-        <Grid x:Name="GridMenu" Width="70" HorizontalAlignment="Left" Background="{DynamicResource NiceGrayColor}">
+        <Grid Grid.Row="0" Grid.RowSpan="2" Grid.Column="0" x:Name="GridMenu" Width="70" HorizontalAlignment="Left" Background="{DynamicResource DarkMainGrayColor}">
             <StackPanel>
                 <Grid Height="150" Background="White" RenderTransformOrigin="0.5,0.5">
                     <Grid.RenderTransform>
@@ -79,7 +84,7 @@
                     <Button x:Name="ButtonOpenMenu" ToolTip="Развернуть" Height="60" Width="60" Margin="5" HorizontalAlignment="Right" VerticalAlignment="Top" Style="{StaticResource MaterialDesignFlatButton}" Click="ButtonOpenMenu_Click">
                         <Image Source="../Resources/Images/list.png"/>
                     </Button>
-                    <Button x:Name="ButtonCloseMenu" Visibility="Collapsed" Height="60" Width="60" Margin="5" HorizontalAlignment="Right" VerticalAlignment="Top" Style="{StaticResource MaterialDesignFloatingActionMiniButton}" Background="Transparent" Click="ButtonCloseMenu_Click">
+                    <Button x:Name="ButtonCloseMenu" Visibility="Collapsed" Height="60" Width="60" Margin="5" HorizontalAlignment="Right" VerticalAlignment="Top" Background="Transparent" Click="ButtonCloseMenu_Click" BorderThickness="0">
                         <Image Source="../Resources/Images/back.png" Width="30"/>
                     </Button>
                     <Image Height="80" VerticalAlignment="Bottom"/>
@@ -111,7 +116,12 @@
                             <TextBlock Text="Клиенты" VerticalAlignment="Center"  Margin="20 10"/>
                         </StackPanel>
                     </ListViewItem>
-
+                    <ListViewItem Height="60" ToolTip="Работники">
+                        <StackPanel Orientation="Horizontal">
+                            <Image Source="../Resources/Images/employeecard.png"/>
+                            <TextBlock Text="Работники" VerticalAlignment="Center"  Margin="20 10"/>
+                        </StackPanel>
+                    </ListViewItem>
                     <ListViewItem Height="60" ToolTip="Склад">
                         <StackPanel Orientation="Horizontal">
                             <Image Source="../Resources/Images/box.png"/>

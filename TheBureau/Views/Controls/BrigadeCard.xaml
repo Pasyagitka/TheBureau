@@ -5,6 +5,7 @@
              xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
              xmlns:local="clr-namespace:TheBureau.Controls"
              xmlns:viewModels="clr-namespace:TheBureau.ViewModels"
+             xmlns:materialDesign="http://materialdesigninxaml.net/winfx/xaml/themes"
              mc:Ignorable="d"  Width="1115" Height="220" >
 
     <Border Background="#FFEEEEEE" CornerRadius="15" HorizontalAlignment="Left"  VerticalAlignment="Top">
@@ -30,7 +31,7 @@
             </Border.Background>
 
             </Border>
-            <ListView Grid.ColumnSpan="5" ItemsSource="{Binding Employees}" Height="220" ScrollViewer.VerticalScrollBarVisibility="Disabled" ScrollViewer.HorizontalScrollBarVisibility="Disabled" ScrollViewer.CanContentScroll="False">
+            <ListView Grid.ColumnSpan="5" Grid.Column="0" ItemsSource="{Binding Employees}" Height="220">
                 <ListView.ItemContainerStyle>
                     <Style TargetType="{x:Type ListViewItem}">
                         <Setter Property="Background" Value="Transparent" />
@@ -45,7 +46,7 @@
                 </ListView.ItemContainerStyle>
                 <ListView.ItemsPanel>
                     <ItemsPanelTemplate>
-                        <StackPanel Orientation="Horizontal" Width="1115" VerticalAlignment="Top"/>
+                        <StackPanel Orientation="Horizontal"  VerticalAlignment="Top"  Width="1115"/>
                     </ItemsPanelTemplate>
                 </ListView.ItemsPanel>
                 <ListView.ItemTemplate>

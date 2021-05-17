@@ -21,19 +21,19 @@ namespace TheBureau.Views
         }
         //
         //
-        // private void MainWindowResize_Click(object sender, RoutedEventArgs e)
-        // {
-        //     if (this.WindowState != WindowState.Maximized)
-        //     {
-        //         this.WindowState = WindowState.Maximized;
-        //         MainWindowResizeIcon.Kind = MaterialDesignThemes.Wpf.PackIconKind.WindowMaximize;
-        //     }
-        //     else
-        //     {
-        //         this.WindowState = WindowState.Normal;
-        //         MainWindowResizeIcon.Kind = MaterialDesignThemes.Wpf.PackIconKind.Resize;
-        //     }
-        // }
+        private void MainWindowResize_Click(object sender, RoutedEventArgs e)
+        {
+            if (this.WindowState != WindowState.Maximized)
+            {
+                this.WindowState = WindowState.Maximized;
+                MainWindowResizeIcon.Kind = MaterialDesignThemes.Wpf.PackIconKind.WindowMaximize;
+            }
+            else
+            {
+                this.WindowState = WindowState.Normal;
+                MainWindowResizeIcon.Kind = MaterialDesignThemes.Wpf.PackIconKind.Resize;
+            }
+        }
        
         
         private void ButtonOpenMenu_Click(object sender, RoutedEventArgs e)

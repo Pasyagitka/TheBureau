@@ -5,12 +5,17 @@ namespace TheBureau.Views
 {
     public partial class EditClientView : Window
     {
-        readonly EditClientViewModel _editClientViewModel = new EditClientViewModel();
-        public EditClientView(Client client)
+        public EditClientView()
         {
             InitializeComponent();
+        }
+
+        public EditClientView(Client selected)
+        {
+            InitializeComponent();
+            EditClientViewModel _editClientViewModel = new EditClientViewModel(selected);
             DataContext = _editClientViewModel;
-            _editClientViewModel.Client = client;
+            //_editClientViewModel.Client = client;
         }
 
         private void Save_OnClick(object sender, RoutedEventArgs e)

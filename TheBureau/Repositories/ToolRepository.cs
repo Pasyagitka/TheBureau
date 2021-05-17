@@ -15,9 +15,9 @@ namespace TheBureau.Repositories
         {
             return _context.Tools.Find(id);
         }
-        public IEnumerable<Tool> GetByStage(Stage stage)
+        public IEnumerable<Tool> GetByStage(int stage)
         {
-            return _context.Tools.Where(x => x.stage== (int)stage);
+            return _context.Tools.Where(x => x.stage== stage);
         }
     }
 }

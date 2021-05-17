@@ -126,18 +126,7 @@
                 <DatePicker SelectedDate="{Binding MountingDate}" Grid.Column="1" 
                             DisplayDateStart="{Binding Mode=OneWay, Source={x:Static System:DateTime.Today}}" materialDesign:HintAssist.IsFloating="True" VerticalAlignment="Bottom" Height="35" Margin="0,0,0.5,0" Padding="0"/>
             </Grid>
-            <Grid Width="350">
-                <Grid.ColumnDefinitions>
-                    <ColumnDefinition Width="255"/>
-                    <ColumnDefinition/>
-                    <ColumnDefinition/>
-                </Grid.ColumnDefinitions>
-                <TextBlock  Style="{StaticResource MaterialDesignBody1TextBlock}" Text="Приблизительное время работы: "  Padding="5" Foreground="Gray"/>
-                <TextBlock Grid.Column="1" Style="{StaticResource MaterialDesignBody1TextBlock}" Text="{Binding ExpectedTime, Mode=OneWay}"  Padding="5" Foreground="Gray" HorizontalAlignment="Right"/>
-                <TextBlock Grid.Column="2" Style="{StaticResource MaterialDesignBody1TextBlock}" Text="часов"  Padding="5" Foreground="Gray"/>
-            </Grid>
-            <Grid
-              Width="124">
+            <Grid Width="124">
                 <Button Command="{Binding SendRequestCommand}"
                         Style="{StaticResource MaterialDesignRaisedLightButton}"
                         materialDesign:ButtonProgressAssist.Value="-1"

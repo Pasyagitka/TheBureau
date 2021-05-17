@@ -13,7 +13,7 @@
             <StackPanel Margin="0,80,0,0" Orientation="Horizontal" DockPanel.Dock="Top" HorizontalAlignment="Center">
                 <Image Source="../Resources/Images/logo.png" Width="290"></Image>
             </StackPanel>
-            <Button Name="EnterAsClient" Content="Войти как клиент"  Width="200" Height="50" Style="{StaticResource DefaultButtonGray}" Click="EnterAsClient_Click"/>
+            <Button Name="EnterAsClient" IsDefault="True" Content="Войти как клиент"  Width="200" Height="50" Style="{StaticResource DefaultButtonGray}" Click="EnterAsClient_Click"/>
         </DockPanel>
     </Border>
 </Page>

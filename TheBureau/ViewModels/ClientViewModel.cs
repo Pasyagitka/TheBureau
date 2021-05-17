@@ -19,20 +19,22 @@ namespace TheBureau.ViewModels
         private ObservableCollection<Request> _clientsRequests;
 
         private bool readOnly;
-        object selectedItem;
-        private string findClientsText;
+        object _selectedItem;
+        private string _findClientsText;
         private int selectedIndex;
 
-        private RelayCommand deleteCommand;
-        private RelayCommand updateCommand;
-        private RelayCommand saveChangesCommand;
+        private RelayCommand _deleteCommand;
+        private RelayCommand _updateCommand;
+        private RelayCommand _saveChangesCommand;
+        
+        private DelegateCommand openEditClientWindowCommand;
 
         public RelayCommand DeleteCommand
         {
             get
             {
-                return deleteCommand ??
-                       (deleteCommand = new RelayCommand(obj =>
+                return _deleteCommand ??
+                       (_deleteCommand = new RelayCommand(obj =>
                        {
                            int clientid = (SelectedItem as Client).id;
                            var clientRequests = _requestRepository.FindByClientId(clientid);
@@ -60,37 +62,32 @@ namespace TheBureau.ViewModels
                            _clientRepository.Save();
                            Clients = new ObservableCollection<Client>(_clientRepository.GetAll());
                            SelectedItem = Clients.First();
-                           OnPropertyChanged("DeleteCommand");
                        }));
-                
             }
         }
-        public RelayCommand UpdateCommand
+        public DelegateCommand OpenEditClientWindowCommand
         {
             get
             {
-                return updateCommand ??= new RelayCommand(obj =>
-                {
-                    var editClientView = new EditClientView(SelectedItem as Client);
-                    if (editClientView.ShowDialog() == true )
-                    {
-                        _clientRepository.SaveChanges();
-                        Clients = new ObservableCollection<Client>(_clientRepository.GetAll());
-                        SelectedItem = Clients.First();
-                        OnPropertyChanged("UpdateCommand");
-                    }
-                    // _clientRepository.Update((SelectedItem as Client).id, new Client());
-                    // Clients = new ObservableCollection<Client>(_clientRepository.GetAll());
-                    // OnPropertyChanged("UpdateCommand");
-                    
-                });
+                return openEditClientWindowCommand ??= new DelegateCommand(openEditClientWindow);
             }
         }
-        public ICommand SaveChangesCommand
+        private void openEditClientWindow()
+        {
+            var clientToEdit = SelectedItem as Client;
+            EditClientView window = new(clientToEdit);
+            if (window.ShowDialog() == true)
+            {
+                _clientRepository = new ClientRepository();
+                Clients = new ObservableCollection<Client>(_clientRepository.GetAll());
+                SelectedItem = _clientRepository.Get(clientToEdit.id);
+            }
+        }
+        public ICommand EditClientCommand
         {
             get
             {
-                return saveChangesCommand = new RelayCommand(obj =>
+                return _saveChangesCommand = new RelayCommand(obj =>
                 {
                     Clients = new ObservableCollection<Client>(_clientRepository.GetAll());
                     SelectedItem = Clients.First();
@@ -105,56 +102,63 @@ namespace TheBureau.ViewModels
         }
         public object SelectedItem
         {
-            get => selectedItem;
+            get => _selectedItem;
             set
             {
-                selectedItem = value;
+                _selectedItem = value;
                 SetClientsRequests();
                 OnPropertyChanged("SelectedItem");
             }
-        }
-
-        public void Update()
-        {
-            Clients = new ObservableCollection<Client>(_clientRepository.GetAll());
-            SelectedItem = Clients.First();
         }
         public ObservableCollection<Request> ClientRequests
         {
             get => _clientsRequests;
             set
             {
-                if (selectedItem is Client)
+                if (_selectedItem is Client)
                 {
                     _clientsRequests = value;
                     OnPropertyChanged("ClientRequests");
                 }
             }
         }
-
         public string FindClientText
         {
-            get => findClientsText;
+            get => _findClientsText;
             set
             {
-                findClientsText = value;
-                Search(findClientsText); 
+                _findClientsText = value;
+                Search(_findClientsText); 
                 OnPropertyChanged("FindClientText");
             }
         }
-        
+        // public ClientViewModel(bool readOnly, int selectedIndex, RelayCommand updateCommand)
+        // {
+        //     this.readOnly = readOnly;
+        //     this.selectedIndex = selectedIndex;
+        //     this._updateCommand = updateCommand;
+        //     Clients = new ObservableCollection<Client>(_clientRepository.GetAll());
+        //     SelectedItem = Clients.First();
+        // }
+
         public ClientViewModel()
         {
-            Clients = new ObservableCollection<Client>(_clientRepository.GetAll());
-            SelectedItem = Clients.First();
+            Update();
         }
+
         void SetClientsRequests()
         {
-            ClientRequests = new ObservableCollection<Request>(_requestRepository.GetAll().Where(x => x.clientId == (selectedItem as Client).id));
+            ClientRequests = new ObservableCollection<Request>(_requestRepository.GetAll().Where(x => x.clientId == (_selectedItem as Client)?.id));
         }
         private void Search(string criteria){
         
             Clients = new ObservableCollection<Client>(_clientRepository.FindClientsByCriteria(criteria));
+        }
+        public void Update()
+        {
+            _clientRepository = new ClientRepository();
+            Clients = new ObservableCollection<Client>(_clientRepository.GetAll());
+            SelectedItem = Clients.First();
         }
     }
 }
