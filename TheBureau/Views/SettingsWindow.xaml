@@ -5,7 +5,7 @@
         xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
         xmlns:viewModels="clr-namespace:TheBureau.ViewModels"
         mc:Ignorable="d" Background="Transparent"
-        Title="SettingsWindow" Height="250" Width="400" ResizeMode="NoResize" AllowsTransparency="True" WindowStyle="None" WindowStartupLocation="CenterScreen">
+        Title="Настройки" Height="250" Width="400" ResizeMode="NoResize" AllowsTransparency="True" WindowStyle="None" WindowStartupLocation="CenterScreen">
     <Window.DataContext>
         <viewModels:SettingsWindowViewModel/>
     </Window.DataContext>

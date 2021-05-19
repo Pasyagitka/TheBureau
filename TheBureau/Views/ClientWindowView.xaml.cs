@@ -21,22 +21,10 @@ namespace TheBureau.Views
         {
             InitializeComponent();
         }
-
         private void TopGrid_OnMouseDown(object sender, MouseButtonEventArgs e)
         {
             if (e.ChangedButton == MouseButton.Left)
                 this.DragMove();
         }
-
-        private void MainWindowClose_OnClick(object sender, RoutedEventArgs e)
-        {
-            Application.Current.Shutdown();
-        }
-        
-        private void MainWindowMinimize_Click(object sender, RoutedEventArgs e)
-        {
-            this.WindowState = WindowState.Minimized;
-        }
-
     }
 }

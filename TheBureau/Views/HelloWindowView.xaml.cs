@@ -19,22 +19,6 @@ namespace TheBureau.Views
         public HelloWindowView()
         {
             InitializeComponent();
-            AuthFrame.Content = new HelloPageView();
-        }
-
-        private void ClientButton_Click(object sender, RoutedEventArgs e)
-        {
-            AuthFrame.Content = new HelloPageView();
-        }
-
-        private void AuthButton_Click(object sender, RoutedEventArgs e)
-        {
-            AuthFrame.Content = new AuthenticationPageView();
-        }
-
-        private void ShutdownButton_OnClick(object sender, RoutedEventArgs e)
-        {
-            Application.Current.Shutdown();
         }
     }
 }

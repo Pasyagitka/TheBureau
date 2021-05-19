@@ -16,6 +16,10 @@ namespace TheBureau.ViewModels
         int countRed;
 
         private ICommand openSettingsCommand;
+        private ICommand logOutCommand;
+        private ICommand closeWindowCommand;
+        private ICommand minimizeWindowCommand;
+        private ICommand maximizeWindowCommand;
 
         public ICommand OpenSettingsCommand
         {
@@ -32,6 +36,72 @@ namespace TheBureau.ViewModels
                 });
             }
         }
+        public ICommand LogOutCommand
+        {
+            get
+            {
+                return logOutCommand = new RelayCommand(obj =>
+                {
+                    Application.Current.Properties["User"] = null;
+                    var helloWindow = new HelloWindowView();
+                    helloWindow.Show();
+                    Application.Current.Windows[0]?.Close();
+                    OnPropertyChanged("LogOutCommand");
+                });
+            }
+        }
+
+        #region Resize
+        private WindowState _windowState;
+
+        public WindowState  WindowState
+        {
+            get { return _windowState; }
+            set
+            {
+                _windowState = value;
+                OnPropertyChanged("WindowState");
+            }
+        }
+        public ICommand CloseWindowCommand
+        {
+            get
+            {
+                return closeWindowCommand = new RelayCommand(obj =>
+                {
+                    Application.Current.Shutdown();
+                });
+            }
+        }
+        public ICommand MinimizeWindowCommand
+        {
+            get
+            {
+                return minimizeWindowCommand = new RelayCommand(obj =>
+                {
+                    WindowState = WindowState.Minimized;
+                });
+            }
+        }
+        public ICommand MaximizeWindowCommand
+        {
+            get
+            {
+                return maximizeWindowCommand = new RelayCommand(obj =>
+                {
+                    if (WindowState != WindowState.Maximized)
+                    {
+                        WindowState = WindowState.Maximized;
+                    }
+                    else
+                    {
+                        WindowState = WindowState.Normal;
+                    }
+                });
+            }
+        }
+
+        #endregion
         public object Content
         {
             get { return content; }
@@ -74,7 +144,8 @@ namespace TheBureau.ViewModels
   
         public MainWindowViewModel()
         {            
-            Content = new StatisticsView(); 
+            Content = new StatisticsView();
+            WindowState = WindowState.Normal;
             //todo только 1 раз
             countRed = _requestRepository.GetRedRequestsCount();
             //UserName = CurrentUser.User.firstName + " " + CurrentUser.User.secondName;

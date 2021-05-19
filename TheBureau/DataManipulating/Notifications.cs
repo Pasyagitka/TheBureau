@@ -9,6 +9,7 @@ using System.Text;
 using System.Threading.Tasks;
 using System.Windows;
 using TheBureau.Repositories;
+using TheBureau.Views.Controls;
 
 namespace TheBureau.Models.DataManipulating
 {
@@ -18,7 +19,6 @@ namespace TheBureau.Models.DataManipulating
         private static readonly int PORT = 587;
         private static readonly string HOST = "smtp.gmail.com";
         //todo check exceptions
-        //todo password in hash
         
         private static readonly string RequestAcceptSubject = "Ваша заявка на монтаж принята!";
         private static readonly string RequestStatusChangedSubject = "Изменен статус вашей заявки!";
@@ -79,23 +79,38 @@ namespace TheBureau.Models.DataManipulating
         
         public static async Task SendEmail(string clientEmail, string subject, string body)
         {
-            CompanyRepository _companyRepository = new();
-            var credentials = _companyRepository.Get();
-            using (MailMessage letter = new MailMessage(CompanyName + "<" + credentials.email + ">", clientEmail))
+            String Result = "";
+            try
             {
-                letter.Subject = subject;
-                letter.Body = body;
-                letter.IsBodyHtml = true;
-                using (SmtpClient sc = new SmtpClient(HOST, PORT))
+                CompanyRepository _companyRepository = new();
+                var credentials = _companyRepository.Get();
+                using (MailMessage letter = new MailMessage(CompanyName + "<" + credentials.email + ">", clientEmail))
                 {
-                    sc.EnableSsl = true;
-                    sc.DeliveryMethod = SmtpDeliveryMethod.Network;
-                    sc.UseDefaultCredentials = false;
-                    sc.Credentials = new NetworkCredential(credentials.email, credentials.password);
-                    sc.SendCompleted += new SendCompletedEventHandler(SendCompletedCallback);
-                    await sc.SendMailAsync(letter);
+                    letter.Subject = subject;
+                    letter.Body = body;
+                    letter.IsBodyHtml = true;
+                    using (SmtpClient sc = new SmtpClient(HOST, PORT))
+                    {
+                        sc.EnableSsl = true;
+                        sc.DeliveryMethod = SmtpDeliveryMethod.Network;
+                        sc.UseDefaultCredentials = false;
+                        sc.Credentials = new NetworkCredential(credentials.email, credentials.password);
+                        //sc.SendCompleted += new SendCompletedEventHandler(SendCompletedCallback);
+                        await sc.SendMailAsync(letter);
+                        Result = "Письмо успешно отправлено клиенту.";
+                        InfoWindow infoWindow = new InfoWindow("Успех!", Result);
+                        infoWindow.ShowDialog();
+                    }
                 }
             }
+            catch (Exception e)
+            {
+                Result = String.Format("Ошибка отправки письма: {0}", e.Message);
+                InfoWindow infoWindow = new InfoWindow("Ошибка!", Result);
+                infoWindow.ShowDialog();
+            }
+            //MessageBox.Show(Result);
+            //await dlg.ShowAsync();
         }
         
         private static void SendCompletedCallback(object sender, AsyncCompletedEventArgs e)
@@ -106,16 +121,19 @@ namespace TheBureau.Models.DataManipulating
             if (e.Cancelled)
             {
                 // prompt user with "send cancelled" message 
-                MessageBox.Show("Отправка письма отменена");
+                InfoWindow infoWindow = new InfoWindow("Отмена", "Отправка письма отменена");
+                infoWindow.Show();
             }
             if (e.Error != null)
             {
                 // prompt user with error message 
-                MessageBox.Show("Ошибка! Письмо не отправлено." + e.Error);
+                InfoWindow infoWindow = new InfoWindow("Ошибка!",   "Письмо не отправлено" + e.Error);
+                infoWindow.Show();
             }
             else
             {
-                MessageBox.Show("Письмо отправлено.");
+                InfoWindow infoWindow = new InfoWindow("Успех!",   "Письмо отправлено клиенту.");
+                infoWindow.Show();
                 // prompt user with message sent!
                 // as we have the message object we can also display who the message
                 // was sent to etc 

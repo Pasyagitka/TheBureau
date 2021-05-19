@@ -99,7 +99,11 @@ namespace TheBureau.ViewModels
             EditRequestView window = new(SelectedItem);
             if (window.ShowDialog() == true)
             {
-                Update();
+                _requestRepository = new RequestRepository();
+                _brigadeRepository = new BrigadeRepository();
+                _requestEquipmentRepository = new RequestEquipmentRepository();
+                Requests = new ObservableCollection<Request>(_requestRepository.GetAll());
+                Brigades = new ObservableCollection<Brigade>(_brigadeRepository.GetAll());
             }
         }
 

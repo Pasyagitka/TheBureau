@@ -41,12 +41,18 @@
                     </ToggleButton>
                 </ToolBar>
             </ToolBarTray>
-            <StackPanel Visibility="{Binding ElementName=InfoToggle, Path=IsChecked, Converter={StaticResource BooleanToVisibilityConverter}}" Grid.Row="1" Grid.Column="0"  Margin="10"  Width="800" Background="{DynamicResource PrimaryLightGrayColor}" Height="100">
-                <DataGrid ItemsSource="{Binding RequestEquipments}" AutoGenerateColumns="True"/>
+            <StackPanel Visibility="{Binding ElementName=InfoToggle, Path=IsChecked, Converter={StaticResource BooleanToVisibilityConverter}}" Grid.Row="1" Grid.Column="0"  Margin="10"  Width="800" Background="{DynamicResource PrimaryLightGrayColor}">
+                <DataGrid ItemsSource="{Binding RequestEquipments}" AutoGenerateColumns="False" IsReadOnly="True" HorizontalAlignment="Center" CanUserReorderColumns="True" ColumnWidth="*">
+                    <DataGrid.Columns>
+                        <DataGridTextColumn Header="ID оборудования" Binding="{Binding Equipment.type}"/>
+                        <DataGridTextColumn Header="Тип монтажа" Binding="{Binding Equipment.mounting}"/>
+                        <DataGridTextColumn Header="Количество" Binding="{Binding quantity}"/>
+                    </DataGrid.Columns>
+                </DataGrid>
             </StackPanel>
 
-                <ScrollViewer Margin="10"  Grid.Row="2" Grid.Column="0">
-                    <StackPanel HorizontalAlignment="Center" Orientation="Horizontal" Background="{DynamicResource PrimaryLightGrayColor}">
+            <ScrollViewer Margin="10"  Grid.Row="2" Grid.Column="0">
+                <StackPanel HorizontalAlignment="Center" Orientation="Horizontal" Background="{DynamicResource PrimaryLightGrayColor}">
                     <ListView HorizontalAlignment="Stretch" HorizontalContentAlignment="Center" Background="White"
                               ItemsSource="{Binding Requests, Mode=TwoWay}" 
                               SelectedItem="{Binding SelectedItem}">
@@ -62,7 +68,7 @@
                         </ListView.ItemTemplate>
                     </ListView>
                 </StackPanel>
-                </ScrollViewer>
+            </ScrollViewer>
             <ScrollViewer Grid.Row="0" Grid.Column="1" Width="260" Grid.RowSpan="3">
                 <Border BorderThickness="1, 0,0,0" BorderBrush="Orange">
                     <ListView ItemsSource="{Binding Path=Brigades}" ScrollViewer.CanContentScroll="True"

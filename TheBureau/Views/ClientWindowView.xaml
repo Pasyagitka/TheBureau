@@ -8,7 +8,7 @@
         xmlns:controls="clr-namespace:TheBureau.Controls"
         xmlns:viewModels="clr-namespace:TheBureau.ViewModels"
         mc:Ignorable="d"
-        Title="Клиенты" 
+        Title="Клиенты"  WindowState="{Binding WindowState}"
         Height="715" Width="1000" FontSize="15" Background="Transparent" AllowsTransparency="True" WindowStartupLocation="CenterScreen"
         WindowStyle="None" ResizeMode="NoResize"
         >
@@ -56,13 +56,14 @@
                 </Border>
             </DockPanel>
             <Grid  Name="TopGrid" VerticalAlignment="Top" MouseDown="TopGrid_OnMouseDown">
-                <DockPanel LastChildFill="False" Name="MainWindowTop" Height="25"  Background="transparent" Margin="15,0,12,-0.2">
-                    <Button Name="MainWindowClose"  Width="30"  Height="auto" BorderBrush="Transparent" Background="Transparent" DockPanel.Dock="Right" Margin="0,0,0,-0.2" Padding="0" Cursor="Hand" Click="MainWindowClose_OnClick">
+                <DockPanel LastChildFill="False" Name="MainWindowTop" Height="25"  Background="transparent" Margin="15,0,12,0">
+                    <Button Name="MainWindowClose"  Width="30"  Height="auto" BorderBrush="Transparent" Background="Transparent" DockPanel.Dock="Left" Margin="0,0,0,-0.2" Padding="0" Cursor="Hand" Command="{Binding CloseWindowCommand}">
                         <materialDesign:PackIcon Kind="Close" Margin="0" Width="24" Foreground="{DynamicResource NiceGrayColor}" Height="17"/>
                     </Button>
-                    <Button Name="MainWindowMinimize"  Width="30" Height="auto"  BorderBrush="Transparent" Background="Transparent" DockPanel.Dock="Right" Padding="0" Cursor="Hand" Click="MainWindowMinimize_Click">
+                    <Button Name="MainWindowMinimize"  Width="30" Height="auto"  BorderBrush="Transparent" Background="Transparent" DockPanel.Dock="Left" Padding="0" Cursor="Hand" Command="{Binding MinimizeWindowCommand}">
                         <materialDesign:PackIcon Width="24" Kind="WindowMinimize"  Foreground="{DynamicResource NiceGrayColor}" Height="16" />
                     </Button>
+                    <Button Content="Выход" Width="70" Foreground="{DynamicResource NiceGrayColor}" Style="{StaticResource DefaultButtonGray}" Background="Transparent" Command="{Binding LogOutCommand}"/>
                 </DockPanel>
             </Grid>
             <StackPanel Name="MainWorkspace" DockPanel.Dock="Top">
@@ -78,7 +79,7 @@
                             <TextBox Padding="5" materialDesign:HintAssist.Hint="Найти свою заявку"
                                         materialDesign:TextFieldAssist.DecorationVisibility="Hidden"
                                         BorderThickness="0"
-                                        MinWidth="200"
+                                        Width="230"
                                         VerticalAlignment="Center" 
                                         Text="{Binding FindRequestText, UpdateSourceTrigger=PropertyChanged}"/>
                         </Border>

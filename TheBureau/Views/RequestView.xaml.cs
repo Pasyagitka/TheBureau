@@ -15,9 +15,6 @@ using System.Windows.Shapes;
 
 namespace TheBureau.Views
 {
-    /// <summary>
-    /// Логика взаимодействия для RequestMainView.xaml
-    /// </summary>
     public partial class RequestView : Page
     {
         public RequestView()

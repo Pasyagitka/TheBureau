@@ -16,7 +16,7 @@
             <TabControl BorderThickness="0" DockPanel.Dock="Top" TabStripPlacement="Top" HorizontalAlignment="Center" materialDesign:ColorZoneAssist.Mode="Standard" Width="{Binding ElementName=TablesDockPanel, Path=ActualWidth}">
                 <TabItem Width="250" Header="Инструменты" Style="{StaticResource MaterialDesignNavigationRailTabItem}">
                     <Border Background="Beige" CornerRadius="10">
-                        <ListView  ItemsSource="{Binding Tools}" BorderThickness="0" >
+                        <ListView ItemsSource="{Binding Tools}" BorderThickness="0" >
                             <ListView.View>
                                 <GridView>
                                     <GridViewColumn Header="ID" DisplayMemberBinding="{Binding Path=id}"/>

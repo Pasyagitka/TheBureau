@@ -2,7 +2,6 @@
 using System.Windows.Input;
 using TheBureau.Models.DataManipulating;
 using TheBureau.Repositories;
-using TheBureau.Views;
 using static System.Int32;
 
 namespace TheBureau.ViewModels
@@ -58,13 +57,8 @@ namespace TheBureau.ViewModels
             _requestRepository.Update(request);
             _requestRepository.Save();
 
-            if (isStatusChanged)
+            if (isStatusChanged && SendEmail)
             {
-                //todo уведомлять о request
-                // var toolRepository = new ToolRepository();
-                // var requestEquipmentRepository = new RequestEquipmentRepository();
-                // var tools = toolRepository.GetByStage(request.stage);
-                // var accessories = requestEquipmentRepository.GetAccessories(request.RequestEquipments);
                 Notifications.SendRequestStatusChanged(request);
             }
             OnPropertyChanged("Requests");

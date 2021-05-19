@@ -7,9 +7,11 @@
         xmlns:materialDesign="http://materialdesigninxaml.net/winfx/xaml/themes"
         xmlns:viewModels="clr-namespace:TheBureau.ViewModels"
         xmlns:converters="clr-namespace:TheBureau.Converters"
-        mc:Ignorable="d"
+        mc:Ignorable="d" 
         Title="Статистика" MinHeight="720" MinWidth="1280"
-        WindowStyle="None" Background="Transparent" 
+        WindowStyle="None" Background="Transparent" WindowState="{Binding WindowState}"
+        MaxHeight="{Binding Source={x:Static SystemParameters.MaximizedPrimaryScreenHeight}}"
+        MaxWidth="{Binding Source={x:Static SystemParameters.MaximizedPrimaryScreenWidth}}"
         ResizeMode="CanResize"
         WindowStartupLocation="CenterScreen">
     <Window.DataContext>
@@ -57,14 +59,19 @@
         <Grid  Grid.Column="0" Grid.Row="0" Name="TopGrid" Height="30" VerticalAlignment="Top" Background="{DynamicResource DarkMainGrayColor}" MouseDown="TopGrid_OnMouseDown">
             <StackPanel HorizontalAlignment="Right" Orientation="Horizontal"/>
             <StackPanel Orientation="Horizontal" HorizontalAlignment="Right">
-                <Button Content="Настройки" VerticalAlignment="Center" FontSize="16" Command="{Binding OpenSettingsCommand}"/>
-                <Button Name="MainWindowClose"  Width="50"  Height="auto" BorderBrush="Transparent" Background="Transparent" DockPanel.Dock="Right" Click="MainWindowClose_OnClick">
+                <Button Content="Выйти" Width="70" Style="{StaticResource DefaultButtonGray}" Background="Transparent" Command="{Binding LogOutCommand}"></Button>
+                <Button Content="Настройки" VerticalAlignment="Center" FontSize="16" Command="{Binding OpenSettingsCommand}" Style="{StaticResource DefaultButtonGray}" Background="Transparent"/>
+                <Button Command="{Binding CloseWindowCommand}"
+                    Name="MainWindowClose"  Width="50"  Height="auto" BorderBrush="Transparent" 
+                    Background="Transparent" DockPanel.Dock="Right">
                     <materialDesign:PackIcon Kind="Close" Foreground="White"/>
                 </Button>
-                <Button Name="MainWindowResize" Width="50"  Height="auto" BorderBrush="Transparent" Background="Transparent" DockPanel.Dock="Right">
-                    <materialDesign:PackIcon Name="MainWindowResizeIcon"  Kind="Resize" Foreground="White" MouseDoubleClick="MainWindowResize_Click"/>
+                <Button Name="MainWindowResize" Width="50"  Height="auto" BorderBrush="Transparent" Background="Transparent" DockPanel.Dock="Right" 
+                        Command="{Binding MaximizeWindowCommand}">
+                    <materialDesign:PackIcon Name="MainWindowResizeIcon"  Kind="Resize" Foreground="White"/>
                 </Button>
-                <Button   Width="50" Height="auto"  BorderBrush="Transparent" Background="Transparent" DockPanel.Dock="Right" Click="MainWindowMinimize_Click">
+                <Button Width="50" Height="auto"  BorderBrush="Transparent" Background="Transparent" DockPanel.Dock="Right" 
+                        Command="{Binding MinimizeWindowCommand}">
                     <materialDesign:PackIcon Kind="WindowMinimize"  Foreground="White" />
                 </Button>
             </StackPanel>
@@ -89,7 +96,7 @@
                     </Button>
                     <Image Height="80" VerticalAlignment="Bottom"/>
                 </Grid>
-                <ListView Name="SideMenuListView" SelectedIndex="{Binding SelectedIndex, Mode=TwoWay}"  Cursor="Hand" Foreground="White" ScrollViewer.HorizontalScrollBarVisibility="Disabled" SelectionChanged="SideMenuListView_OnSelectionChanged">
+                <ListView Name="SideMenuListView" SelectedIndex="{Binding SelectedIndex, Mode=TwoWay}"  Cursor="Hand" Foreground="White" ScrollViewer.HorizontalScrollBarVisibility="Disabled">
                     <ListViewItem Height="60" IsSelected="True" ToolTip="Статистика">
                         <StackPanel Orientation="Horizontal">
                             <Image Source="../Resources/Images/stat.png"/>

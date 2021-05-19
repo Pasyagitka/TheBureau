@@ -22,11 +22,9 @@ namespace TheBureau.ViewModels
         object _selectedItem;
         private string _findClientsText;
         private int selectedIndex;
-
         private RelayCommand _deleteCommand;
         private RelayCommand _updateCommand;
         private RelayCommand _saveChangesCommand;
-        
         private DelegateCommand openEditClientWindowCommand;
 
         public RelayCommand DeleteCommand

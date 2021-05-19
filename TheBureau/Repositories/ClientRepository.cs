@@ -56,5 +56,27 @@ namespace TheBureau.Repositories
         {
             _context.SaveChanges();
         }
+
+        public bool IsDuplicateClient(string surname, string firstname, string patronymic, string email, string contactNumber)
+        {
+            var count = _context.Clients.Count(x =>
+                x.surname.ToLower().Equals(surname.ToLower()) && 
+                x.firstname.ToLower().Equals(firstname.ToLower()) && 
+                x.patronymic.ToLower().Equals(patronymic.ToLower()) &&
+                x.email.ToLower().Equals(email.ToLower()) &&
+                x.contactNumber.ToString().Equals(contactNumber)
+                );
+            return count == 0;
+        }
+
+        public Client FindClient(string surname, string firstname, string patronymic, string email, string contactNumber)
+        {
+            return GetAll().FirstOrDefault(x => x.surname.ToLower().Equals(surname.ToLower()) &&
+                                                x.firstname.ToLower().Equals(firstname.ToLower()) &&
+                                                x.patronymic.ToLower().Equals(patronymic.ToLower()) &&
+                                                x.email.ToLower().Equals(email.ToLower()) &&
+                                                x.contactNumber.ToString().Equals(contactNumber)
+            );
+        }
     }
 }

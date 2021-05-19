@@ -14,8 +14,7 @@
                  Content="{Binding surname}" Name="FrontButton" />
         </materialDesign:Flipper.FrontContent>
         <materialDesign:Flipper.BackContent>
-            <ScrollViewer>
-                <Grid Background="White" Height="310" Width="{Binding ElementName=EmployeeFlipper, Path=ActualWidth}">
+                <Grid Background="White" Height="190" Width="{Binding ElementName=EmployeeFlipper, Path=ActualWidth}">
                     <Grid.RowDefinitions>
                         <RowDefinition Height="Auto" />
                         <RowDefinition Height="*" />
@@ -25,7 +24,7 @@
                             <Button  Style="{StaticResource MaterialDesignToolForegroundButton}" Command="{x:Static materialDesign:Flipper.FlipCommand}" HorizontalAlignment="Left">
                                 <materialDesign:PackIcon Kind="ArrowLeft" HorizontalAlignment="Right" />
                             </Button>
-                            <TextBlock Margin="8 0 0 0" VerticalAlignment="Center" Text="ИЗМЕНИТЬ" />
+                            <TextBlock Margin="8 0 0 0" VerticalAlignment="Center" Text="ИНФОРМАЦИЯ" />
                         </StackPanel>
                     </materialDesign:ColorZone>
                     <Grid  Grid.Row="1"  Margin="2 6 0 0" HorizontalAlignment="Center"  VerticalAlignment="Top"  Width="172">
@@ -36,23 +35,13 @@
                             <RowDefinition />
                             <RowDefinition />
                         </Grid.RowDefinitions>
-                        <TextBox Grid.Row="0" Text="{Binding firstname}" materialDesign:HintAssist.Hint="Имя" materialDesign:HintAssist.IsFloating="True" Margin="0 12 0 0" />
-                        <TextBox Grid.Row="1" Text="{Binding surname}" materialDesign:HintAssist.Hint="Фамилия" materialDesign:HintAssist.IsFloating="True" Margin="0 12 0 0" />
-                        <TextBox Grid.Row="2" Text="{Binding patronymic}" materialDesign:HintAssist.Hint="Отчество" materialDesign:HintAssist.IsFloating="True" Margin="0 12 0 0" />
-                        <TextBox Grid.Row="3" Text="{Binding email}" materialDesign:HintAssist.Hint="Почта" materialDesign:HintAssist.IsFloating="True" Margin="0 12 0 0" />
-                        <TextBox Grid.Row="4" Text="{Binding contactNumber}" materialDesign:HintAssist.Hint="Телефон" materialDesign:HintAssist.IsFloating="True" Margin="0 12 0 0" />
-                        
-                        <!-- <StackPanel Grid.Row="3" Orientation="Horizontal" Margin="0 12 0 0" HorizontalAlignment="Right"> -->
-                        <!--     <TextBlock VerticalAlignment="Center" Text="Email Contact" /> -->
-                        <!--     <ToggleButton Margin="8 0 0 0" /> -->
-                        <!-- </StackPanel> -->
-                        <!-- <StackPanel Grid.Row="4" Orientation="Horizontal" Margin="0 12 0 0" HorizontalAlignment="Right"> -->
-                        <!--     <TextBlock VerticalAlignment="Center"  Text="Telephone Contact" /> -->
-                        <!--     <ToggleButton Margin="8 0 0 0" /> -->
-                        <!-- </StackPanel> -->
+                        <TextBlock Grid.Row="1" Text="{Binding firstname}"  HorizontalAlignment="Center" FontSize="16"/>
+                        <TextBlock Grid.Row="0" Text="{Binding surname}"  HorizontalAlignment="Center" FontSize="16" FontWeight="DemiBold"/>
+                        <TextBlock Grid.Row="2" Text="{Binding patronymic}" HorizontalAlignment="Center" FontSize="16" />
+                        <TextBlock Grid.Row="3" Text="{Binding email}" HorizontalAlignment="Center" FontSize="16"/>
+                        <TextBlock Grid.Row="4" Text="{Binding contactNumber}" HorizontalAlignment="Center" FontSize="16"  />
                     </Grid>
                 </Grid>
-            </ScrollViewer>
         </materialDesign:Flipper.BackContent>
     </materialDesign:Flipper>
 </UserControl>

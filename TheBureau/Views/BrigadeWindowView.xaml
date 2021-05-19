@@ -18,6 +18,7 @@
             </DockPanel>
             <Grid Name="TopGrid" VerticalAlignment="Top" MouseDown="TopGrid_OnMouseDown">
                 <DockPanel LastChildFill="False" Name="MainWindowTop" Height="25"  Background="transparent" Margin="15,0,12,-0.2">
+                    <Button Content="Выход" Width="70" Foreground="{DynamicResource NiceGrayColor}" Style="{StaticResource DefaultButtonGray}" Background="Transparent" Command="{Binding LogOutCommand}"/>
                     <Button Name="MainWindowClose"  Width="30"  Height="auto" BorderBrush="Transparent" Background="Transparent" DockPanel.Dock="Right" Margin="0,0,0,-0.2" Padding="0" Cursor="Hand" Click="MainWindowClose_OnClick">
                         <materialDesign:PackIcon Kind="Close" Margin="0" Width="24" Foreground="{DynamicResource NiceGrayColor}" Height="17"/>
                     </Button>

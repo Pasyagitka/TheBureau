@@ -73,6 +73,14 @@ namespace TheBureau.Repositories
             return _context.Requests.Where(x =>x.clientId == clientId);
         }
 
+        public IEnumerable<Request> GetRequestsBySurnameOrEmail(string criteria)
+        {
+            return _context.Requests.Where(x => 
+                x.Client.surname.ToLower().Equals(criteria.ToLower()) || 
+                x.Client.email.ToLower().Equals(criteria.ToLower())
+                );
+        }
+
         public void DeleteRequestsOfClient(int clientId)
         {
             var clientRequests = FindByClientId(clientId);

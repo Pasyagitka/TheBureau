@@ -3,23 +3,21 @@ using TheBureau.ViewModels;
 
 namespace TheBureau.Views
 {
-    public partial class EditClientView : Window
+    public partial class EditEmployeeView : Window
     {
-        public EditClientView()
+        public EditEmployeeView()
         {
             InitializeComponent();
         }
-        public EditClientView(Client selected)
+        public EditEmployeeView(Employee selected)
         {
             InitializeComponent();
-            EditClientViewModel _editClientViewModel = new EditClientViewModel(selected);
+            EmployeeEditViewModel _editClientViewModel = new EmployeeEditViewModel(selected);
             DataContext = _editClientViewModel;
         }
-
         private void Save_OnClick(object sender, RoutedEventArgs e)
         {
-           this.DialogResult = true;
+            this.DialogResult = true;
         }
-        
     }
 }

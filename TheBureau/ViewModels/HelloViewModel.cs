@@ -1,4 +1,5 @@
 ﻿using System.Text.RegularExpressions;
+using System.Web.UI.WebControls;
 using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Input;
@@ -10,17 +11,78 @@ namespace TheBureau.ViewModels
 {
     public class HelloViewModel : ViewModelBase
     {
-      
         //todo переключение страниц в viewmodel
         private string login;
         private string password;
         private string info;
+
+        private WindowState _windowState;
+        private ICommand _closeWindowCommand;
+        private ICommand _clientPageSetCommand;
+        private ICommand _authPageSetCommand;
+        private object _frameContent;
+
 
         private UserRepository _userRepository = new UserRepository();
         private const string LoginAndPasswordRegex = "^[a-zA-Z0-9_.-]*$";
         private readonly string PasswordEmpty = "Введите пароль";
         private readonly string PasswordTooLong = "Пароль должен быть до 20 символов";
         private readonly string LoginAndPasswordStructure = "Пароль и имя пользователя могут состоять лишь из цифр и букв";
+
+        public HelloViewModel()
+        {
+            FrameContent = new HelloPageView();
+        }
+
+        public object FrameContent
+        {
+            get { return _frameContent; }
+            set
+            {
+                _frameContent = value;
+                OnPropertyChanged("FrameContent");
+            }
+        }
+        public WindowState  WindowState
+        {
+            get { return _windowState; }
+            set
+            {
+                _windowState = value;
+                OnPropertyChanged("WindowState");
+            }
+        }
+        public ICommand ClientViewSetCommand
+        {
+            get
+            {
+                return _clientPageSetCommand = new RelayCommand(obj =>
+                {
+                    FrameContent = new HelloPageView();
+                });
+            }
+        }
+        public ICommand AuthViewSetCommand
+        {
+            get
+            {
+                return _authPageSetCommand = new RelayCommand(obj =>
+                {
+                    FrameContent = new AuthenticationPageView();
+                });
+            }
+        }
+        public ICommand CloseWindowCommand
+        {
+            get
+            {
+                return _closeWindowCommand = new RelayCommand(obj =>
+                {
+                    Application.Current.Shutdown();
+                });
+            }
+        }
+     
 
         public string Info
         {
@@ -111,7 +173,6 @@ namespace TheBureau.ViewModels
                 return false;
             }
             Application.Current.Properties["User"] = _userRepository.Get(user.id);
-            Info = "Success";
             return true;
         }
         

@@ -141,7 +141,9 @@
     <Compile Include="ViewModels\EditEmployeeViewModel.cs" />
     <Compile Include="ViewModels\EditRequestViewModel.cs" />
     <Compile Include="ViewModels\EmployeeViewModel.cs" />
+    <Compile Include="ViewModels\HelloPageViewModel.cs" />
     <Compile Include="ViewModels\HelloViewModel.cs" />
+    <Compile Include="ViewModels\InfoWindowViewModel.cs" />
     <Compile Include="ViewModels\MainWindowViewModel.cs" />
     <Compile Include="ViewModels\RelayCommand.cs" />
     <Compile Include="ViewModels\SettingsWindowViewModel.cs" />
@@ -168,6 +170,9 @@
     </Compile>
     <Compile Include="Views\Controls\EmployeeCardSmall.xaml.cs">
       <DependentUpon>EmployeeCardSmall.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Views\Controls\InfoWindow.xaml.cs">
+      <DependentUpon>InfoWindow.xaml</DependentUpon>
     </Compile>
     <Compile Include="Views\Controls\SingleBrigadeChart.xaml.cs">
       <DependentUpon>SingleBrigadeChart.xaml</DependentUpon>
@@ -287,6 +292,7 @@
     <Page Include="Views\Controls\BrigadeStatChart.xaml" />
     <Page Include="Views\Controls\ConfirmWindow.xaml" />
     <Page Include="Views\Controls\EmployeeCardSmall.xaml" />
+    <Page Include="Views\Controls\InfoWindow.xaml" />
     <Page Include="Views\Controls\SingleBrigadeChart.xaml" />
     <Page Include="Views\Controls\StatChart.xaml" />
     <Page Include="Views\EditClientView.xaml" />

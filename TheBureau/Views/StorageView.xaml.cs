@@ -15,17 +15,11 @@ using System.Windows.Shapes;
 
 namespace TheBureau.Views
 {
-    /// <summary>
-    /// Логика взаимодействия для StorageMainView.xaml
-    /// </summary>
     public partial class StorageView : UserControl
     {
         public StorageView()
         {
             InitializeComponent();
-            // EquipmentDataGrid.ItemsSource = windowView.TheBureauModel.Equipments.ToList();
-            // ToolDataGrid.ItemsSource = windowView.TheBureauModel.Tools.ToList();
-            //AccessoryDataGrid.ItemsSource = windowView.TheBureauModel.Accessories.ToList();
         }
     }
 }

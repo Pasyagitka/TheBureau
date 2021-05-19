@@ -15,9 +15,6 @@ using System.Windows.Shapes;
 
 namespace TheBureau.Views
 {
-    /// <summary>
-    /// Логика взаимодействия для AdminMainView.xaml
-    /// </summary>
     public partial class StatisticsView : Page
     {
         public StatisticsView()

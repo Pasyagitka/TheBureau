@@ -1,7 +1,9 @@
 ﻿using System.Collections.ObjectModel;
 using System.Linq;
 using System.Windows;
+using System.Windows.Input;
 using TheBureau.Repositories;
+using TheBureau.Views;
 
 namespace TheBureau.ViewModels
 {
@@ -12,6 +14,8 @@ namespace TheBureau.ViewModels
 
         private ObservableCollection<Request> _brigadeRequests;
         private Brigade _currentBrigade;
+        
+        private ICommand logOutCommand;
 
         public Brigade CurrentBrigade
         {
@@ -40,6 +44,21 @@ namespace TheBureau.ViewModels
             if (user != null && CurrentBrigade != null)
                 BrigadeRequests =
                         new ObservableCollection<Request>(_requestRepository.GetRequestsByBrigadeId(CurrentBrigade.id));
+        }
+        
+        public ICommand LogOutCommand
+        {
+            get
+            {
+                return logOutCommand = new RelayCommand(obj =>
+                {
+                    Application.Current.Properties["User"] = null;
+                    var helloWindow = new HelloWindowView();
+                    helloWindow.Show();
+                    Application.Current.Windows[0]?.Close();
+                    OnPropertyChanged("LogOutCommand");
+                });
+            }
         }
     }
 }

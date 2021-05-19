@@ -1,10 +1,10 @@
 ﻿using System;
 using System.Collections.ObjectModel;
-using System.ComponentModel.DataAnnotations;
-using System.Linq;
-using System.Text.RegularExpressions;
-using TheBureau.Enums;
+using System.Windows;
+using System.Windows.Input;
+using TheBureau.Models.DataManipulating;
 using TheBureau.Repositories;
+using TheBureau.Views;
 
 namespace TheBureau.ViewModels
 {
@@ -13,10 +13,12 @@ namespace TheBureau.ViewModels
         private RequestRepository _requestRepository;
         private ClientRepository _clientRepository;
         private AddressRepository _addressRepository;
+        private ToolRepository _toolRepository = new ToolRepository();
         private RequestEquipmentRepository _requestEquipmentRepository;
         
         private ObservableCollection<Request> _requests;
         private RelayCommand sendRequestCommand;
+        private ICommand logOutCommand;
         
         private string _findRequestText;
         private string _firstname;
@@ -41,6 +43,41 @@ namespace TheBureau.ViewModels
         private bool _isClean;
         private string _comment;
         private DateTime _mountingDate;
+        
+        private ICommand closeWindowCommand;
+        private ICommand minimizeWindowCommand;
+        private WindowState _windowState;
+
+
+        public ICommand CloseWindowCommand
+        {
+            get
+            {
+                return closeWindowCommand = new RelayCommand(obj =>
+                {
+                    Application.Current.Shutdown();
+                });
+            }
+        }
+        public WindowState  WindowState
+        {
+            get { return _windowState; }
+            set
+            {
+                _windowState = value;
+                OnPropertyChanged("WindowState");
+            }
+        }
+        public ICommand MinimizeWindowCommand
+        {
+            get
+            {
+                return minimizeWindowCommand = new RelayCommand(obj =>
+                {
+                    WindowState = WindowState.Minimized;
+                });
+            }
+        }
         
 
         public DateTime MountingDate
@@ -123,27 +160,44 @@ namespace TheBureau.ViewModels
             {
                 return sendRequestCommand ??= new RelayCommand(obj =>
                 {
-                    //todo обновление сразу в поиске по фамилии/почте
-                    var address = new Address{city=City, street = Street, house = Int32.Parse(House), 
-                        corpus = Corpus, flat = Int32.Parse(Flat)};
-                    //todo проверить, существует ли такой адрес
-                    _addressRepository.Add(address);
-                    _addressRepository.Save();
-                    var client = new Client{firstname = Firstname, patronymic = Patronymic, surname = Surname, 
-                        email = Email, contactNumber = Decimal.Parse(ContactNumber)};
-                    //todo проверить, существует ли такой клиент
-                    _clientRepository.Add(client);
-                    _clientRepository.Save();
+                    Address address;
+                    Client client;
+                    
+                    //Если адрес есть в базе, он не дублируется (берется существующий)
+                    if(!_addressRepository.IsDuplicateAddress(City, Street, Int32.Parse(House), Corpus, Int32.Parse(Flat)))
+                    {
+                        address = _addressRepository.FindAddress(City, Street, Int32.Parse(House), Corpus, Int32.Parse(Flat));
+                    }
+                    else
+                    {
+                        address = new Address{country = "Беларусь",city=City, street = Street, house = Int32.Parse(House), 
+                            corpus = Corpus, flat = Int32.Parse(Flat)};
+                        _addressRepository.Add(address);
+                        _addressRepository.Save();
+                    }
+                    //Если клиент есть в базе, он не дублируется (берется существующий)
+                    if (!_clientRepository.IsDuplicateClient(Surname, Firstname, Patronymic, Email, ContactNumber))
+                    {
+                        client = _clientRepository.FindClient(Surname, Firstname, Patronymic, Email, ContactNumber);
+                    }
+                    else
+                    {
+                        client = new Client{firstname = Firstname, patronymic = Patronymic, surname = Surname, 
+                            email = Email, contactNumber = Decimal.Parse(ContactNumber)};
+                        _clientRepository.Add(client);
+                        _clientRepository.Save();
+                    }
+                    
                     var request = new Request
                     {
                         clientId = client.id, addressId = address.id, stage=Stage, status = 1, mountingDate=MountingDate,
                         comment = Comment
                     };
-                    
                     _requestRepository.Add(request);
                     _requestRepository.Save();
                     //todo quantity default 0
                     
+                    //Количество приборов каждого типа в оборудовании заявки
                     if (RpQuantity != 0) {
                         var requestEquipmentRP = new RequestEquipment  {  requestId = request.id, equipmentId = "RP", quantity = RpQuantity };
                         _requestEquipmentRepository.Add(requestEquipmentRP);
@@ -171,10 +225,15 @@ namespace TheBureau.ViewModels
                         var requestEquipmentVP = new RequestEquipment { requestId = request.id, equipmentId = "VP", quantity = VpQuantity  };
                         _requestEquipmentRepository.Add(requestEquipmentVP);
                     }
-                   
                     _requestEquipmentRepository.Save();
-
                     Update();
+
+                    //Получение сформированной записи из БД, отправка уведолмения на почту клиента
+                    var requestForNotification = _requestRepository.Get(request.id);
+                    var tools = _toolRepository.GetByStage(requestForNotification.stage);
+                    var accessories = _requestEquipmentRepository.GetAccessories(requestForNotification.RequestEquipments);
+                    Notifications.SendRequestAccept(requestForNotification, tools, accessories);
+
                     OnPropertyChanged("SendRequestCommand");
                 });
             }
@@ -308,18 +367,31 @@ namespace TheBureau.ViewModels
         }
         void SetClientsRequests()
         {
-            //todo перенести в репозиторий
-            Requests = new ObservableCollection<Request>(_requestRepository.GetAll().Where(x => 
-                x.Client.surname.ToLower() == (FindRequestText.ToLower()) || 
-                x.Client.email.ToLower() == (FindRequestText.ToLower())));
+            Requests = new ObservableCollection<Request>(_requestRepository.GetRequestsBySurnameOrEmail(FindRequestText));
         }
 
         public ClientWindowViewModel()
         { 
             Update();
             MountingDate = DateTime.Today;
+            WindowState = WindowState.Normal;
         }
 
+        public ICommand LogOutCommand
+        {
+            get
+            {
+                return logOutCommand = new RelayCommand(obj =>
+                {
+                    Application.Current.Properties["User"] = null;
+                    var helloWindow = new HelloWindowView();
+                    helloWindow.Show();
+                    Application.Current.Windows[0]?.Close();
+                    OnPropertyChanged("LogOutCommand");
+                });
+            }
+        }
+        
         public void Update()
         {
             _requestRepository = new RequestRepository();

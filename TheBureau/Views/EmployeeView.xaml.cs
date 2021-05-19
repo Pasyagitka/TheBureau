@@ -2,9 +2,9 @@
 
 namespace TheBureau.Views
 {
-    public partial class HelloPageView : Page
+    public partial class EmployeeView : Page
     {
-        public HelloPageView()
+        public EmployeeView()
         {
             InitializeComponent();
         }

@@ -1,13 +1,10 @@
-﻿using System.Windows.Forms.VisualStyles;
-using System.Windows.Input;
-using TheBureau.Models.DataManipulating;
+﻿using System.Windows.Input;
 using TheBureau.Repositories;
 
 namespace TheBureau.ViewModels
 {
     public class SettingsWindowViewModel : ViewModelBase
     {
-        //todo а если ввести данные почты неверно?
         private CompanyRepository _companyRepository = new();
         private string _email;
         private string _password;
