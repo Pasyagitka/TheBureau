@@ -11,22 +11,40 @@
     <Border Background="White" CornerRadius="0,15,15,0">
         <StackPanel Orientation="Vertical">
             <Border Background="#f4f4f4" CornerRadius="10"  Margin="10">
-                <StackPanel Orientation="Horizontal">
-                    <StackPanel Width="204">
-                        <StackPanel HorizontalAlignment="Left" Width="400">
-                            <TextBox Text="{Binding Surname}" Style="{StaticResource MaterialDesignFloatingHintTextBox}"  materialDesign:HintAssist.Hint="Фамилия" Width="180" HorizontalAlignment="Left" Margin="10,0,0,0"/>
-                            <TextBox Text="{Binding Firstname}" Style="{StaticResource MaterialDesignFloatingHintTextBox}"  materialDesign:HintAssist.Hint="Имя"   Width="180" HorizontalAlignment="Left" Margin="10,0,0,0"/>
-                            <TextBox Text="{Binding Patronymic}" Style="{StaticResource MaterialDesignFloatingHintTextBox}"  materialDesign:HintAssist.Hint="Отчество"  Width="180" HorizontalAlignment="Left" Margin="10,0,0,0" />
-                        </StackPanel>
-                    </StackPanel>
-                    <StackPanel>
-                        <StackPanel HorizontalAlignment="Left" Width="216">
-                            <TextBox Style="{StaticResource MaterialDesignFloatingHintTextBox}" Width="196"  HorizontalAlignment="Left" IsReadOnly="True"/>
-                            <TextBox Text="{Binding ContactNumber}" Style="{StaticResource MaterialDesignFloatingHintTextBox}"  materialDesign:HintAssist.Hint="Контактный телефон"  Width="196"  HorizontalAlignment="Left"/>
-                            <TextBox Text="{Binding Email}" Style="{StaticResource MaterialDesignFloatingHintTextBox}"  materialDesign:HintAssist.Hint="Электронная почта" Width="196"  HorizontalAlignment="Left"/>
-                        </StackPanel>
-                    </StackPanel>
-                </StackPanel>
+                <Grid Height="130">
+                    <Grid.ColumnDefinitions>
+                        <ColumnDefinition/>
+                        <ColumnDefinition/>
+                    </Grid.ColumnDefinitions>
+                    <Grid.RowDefinitions>
+                        <RowDefinition Height="20"/>
+                        <RowDefinition/>
+                        <RowDefinition/>
+                        <RowDefinition/>
+                    </Grid.RowDefinitions>
+                    <TextBlock Grid.ColumnSpan="3" Grid.Row="0" Text="Заказчик"  HorizontalAlignment="Center" Foreground="Gray"/>
+                    <TextBox Grid.Column="0" Grid.Row="1" Text="{Binding Surname}" Style="{StaticResource  TextBoxValidationTemplateDefault}" Width="180" HorizontalAlignment="Left" Margin="10,0,0,0"/>
+                    <TextBox Grid.Column="0" Grid.Row="2" Text="{Binding Firstname}" Style="{StaticResource TextBoxValidationTemplateDefault}"  materialDesign:HintAssist.Hint="Имя"   Width="180" HorizontalAlignment="Left" Margin="10,0,0,0"/>
+                    <TextBox Grid.Column="0" Grid.Row="3" Text="{Binding Patronymic}" Style="{StaticResource TextBoxValidationTemplateDefault}"  materialDesign:HintAssist.Hint="Отчество"  Width="180" HorizontalAlignment="Left" Margin="10,0,0,0" />
+                    <TextBox Grid.Column="1" Grid.Row="1" Text="{Binding ContactNumber}" Style="{StaticResource TextBoxValidationTemplateDefault}"  materialDesign:HintAssist.Hint="Контактный телефон"  Width="196"  HorizontalAlignment="Left" Margin="0,0,10,0"/>
+                    <TextBox Grid.Column="1" Grid.Row="2" Text="{Binding Email}" Style="{StaticResource TextBoxValidationTemplateDefault}"  materialDesign:HintAssist.Hint="Электронная почта" Width="196"  HorizontalAlignment="Left" Margin="0,0,10,0"/>
+
+                </Grid>
+                <!-- <StackPanel Orientation="Horizontal"> -->
+                <!--     <StackPanel Width="204"> -->
+                <!--         <StackPanel HorizontalAlignment="Left" Width="400"> -->
+                <!--             <TextBox Text="{Binding Surname}" Style="{StaticResource  TextBoxValidationTemplateDefault}" Width="180" HorizontalAlignment="Left" Margin="10,0,0,0"/> -->
+                <!--             <TextBox Text="{Binding Firstname}" Style="{StaticResource TextBoxValidationTemplateDefault}"  materialDesign:HintAssist.Hint="Имя"   Width="180" HorizontalAlignment="Left" Margin="10,0,0,0"/> -->
+                <!--             <TextBox Text="{Binding Patronymic}" Style="{StaticResource TextBoxValidationTemplateDefault}"  materialDesign:HintAssist.Hint="Отчество"  Width="180" HorizontalAlignment="Left" Margin="10,0,0,0" /> -->
+                <!--         </StackPanel> -->
+                <!--     </StackPanel> -->
+                <!--     <StackPanel> -->
+                <!--         <StackPanel HorizontalAlignment="Left" Width="216"> -->
+                <!--             <TextBox Text="{Binding ContactNumber}" Style="{StaticResource TextBoxValidationTemplateDefault}"  materialDesign:HintAssist.Hint="Контактный телефон"  Width="196"  HorizontalAlignment="Left"/> -->
+                <!--             <TextBox Text="{Binding Email}" Style="{StaticResource TextBoxValidationTemplateDefault}"  materialDesign:HintAssist.Hint="Электронная почта" Width="196"  HorizontalAlignment="Left"/> -->
+                <!--         </StackPanel> -->
+                <!--     </StackPanel> -->
+                <!-- </StackPanel> -->
             </Border>
             <Border Margin="10" CornerRadius="5" Background="#f4f4f4" Height="80" >
                 <Grid>
@@ -109,22 +127,18 @@
                 <CheckBox IsChecked="{Binding IsClean}" Grid.Column="1" Content="Чистовая отделка"  HorizontalAlignment="Center" Style="{StaticResource MaterialDesignFilterChipAccentCheckBox}" materialDesign:CheckBoxAssist.CheckBoxSize="25" Width="160"/>
             </Grid>
             <StackPanel>
-                <!-- <DatePicker IsDropDownOpen="True" SelectedDateFormat="Long"></DatePicker> -->
-            </StackPanel>
-
-            <StackPanel>
                 <TextBlock Text="Пояснение к заявке" Padding="5" Height="27" Margin="10,0" Foreground="Gray"></TextBlock>
                 <TextBox Text="{Binding Comment}" TextWrapping="Wrap" Margin="10,0,10,10"  Height="52"/>
             </StackPanel>
-            <!--дата-->
             <Grid Width="350">
                 <Grid.ColumnDefinitions>
                     <ColumnDefinition Width="220"/>
                     <ColumnDefinition/>
                 </Grid.ColumnDefinitions>
                 <TextBlock  Style="{StaticResource MaterialDesignBody1TextBlock}" Text="Выберите дату монтажа: "  Padding="5" Foreground="Gray" VerticalAlignment="Bottom"/>
-                <DatePicker SelectedDate="{Binding MountingDate}" Grid.Column="1" 
-                            DisplayDateStart="{Binding Mode=OneWay, Source={x:Static System:DateTime.Today}}" materialDesign:HintAssist.IsFloating="True" VerticalAlignment="Bottom" Height="35" Margin="0,0,0.5,0" Padding="0"/>
+                <DatePicker SelectedDate="{Binding MountingDate}" Grid.Column="1" Focusable="False"
+                            DisplayDateStart="{Binding Mode=OneWay, Source={x:Static System:DateTime.Today}}" materialDesign:HintAssist.IsFloating="True" VerticalAlignment="Bottom" Height="35" Margin="0,0,0.5,0" Padding="0">
+                </DatePicker>
             </Grid>
             <Grid Width="124">
                 <Button Command="{Binding SendRequestCommand}"

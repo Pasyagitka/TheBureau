@@ -1,4 +1,5 @@
 ﻿using System.Windows;
+using System.Windows.Input;
 using TheBureau.ViewModels;
 
 namespace TheBureau.Views
@@ -18,6 +19,14 @@ namespace TheBureau.Views
         private void Save_OnClick(object sender, RoutedEventArgs e)
         {
             this.DialogResult = true;
+        }
+
+        private void NumericTextBox_OnPreviewTextInput(object sender, TextCompositionEventArgs e)
+        {
+           if(!char.IsDigit(e.Text, 0))
+           {
+               e.Handled = true;
+           }
         }
     }
 }

@@ -103,6 +103,7 @@
     <Compile Include="Converters\StatusConverter.cs" />
     <Compile Include="DataManipulating\Notifications.cs" />
     <Compile Include="DataManipulating\PasswordHash.cs" />
+    <Compile Include="DataManipulating\ValidationConst.cs" />
     <Compile Include="Enums\Stage.cs" />
     <Compile Include="Enums\Status.cs" />
     <Compile Include="Models\Accessory.cs" />
@@ -141,6 +142,7 @@
     <Compile Include="ViewModels\EditEmployeeViewModel.cs" />
     <Compile Include="ViewModels\EditRequestViewModel.cs" />
     <Compile Include="ViewModels\EmployeeViewModel.cs" />
+    <Compile Include="ViewModels\ErrorsViewModel.cs" />
     <Compile Include="ViewModels\HelloPageViewModel.cs" />
     <Compile Include="ViewModels\HelloViewModel.cs" />
     <Compile Include="ViewModels\InfoWindowViewModel.cs" />

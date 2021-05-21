@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
+using System.ComponentModel;
 using System.Linq;
 using System.Windows;
 using System.Windows.Input;
@@ -11,7 +12,7 @@ namespace TheBureau.ViewModels
 {
     public class ClientViewModel : ViewModelBase
     {
-        private AddressRepository _addressRepository = new AddressRepository();
+       private AddressRepository _addressRepository = new AddressRepository();
         private RequestEquipmentRepository _requestEquipmentRepository = new RequestEquipmentRepository();
         private ClientRepository _clientRepository = new ClientRepository();
         private RequestRepository _requestRepository = new RequestRepository();
@@ -130,14 +131,6 @@ namespace TheBureau.ViewModels
                 OnPropertyChanged("FindClientText");
             }
         }
-        // public ClientViewModel(bool readOnly, int selectedIndex, RelayCommand updateCommand)
-        // {
-        //     this.readOnly = readOnly;
-        //     this.selectedIndex = selectedIndex;
-        //     this._updateCommand = updateCommand;
-        //     Clients = new ObservableCollection<Client>(_clientRepository.GetAll());
-        //     SelectedItem = Clients.First();
-        // }
 
         public ClientViewModel()
         {
@@ -148,7 +141,8 @@ namespace TheBureau.ViewModels
         {
             ClientRequests = new ObservableCollection<Request>(_requestRepository.GetAll().Where(x => x.clientId == (_selectedItem as Client)?.id));
         }
-        private void Search(string criteria){
+        private void Search(string criteria)
+        {
         
             Clients = new ObservableCollection<Client>(_clientRepository.FindClientsByCriteria(criteria));
         }

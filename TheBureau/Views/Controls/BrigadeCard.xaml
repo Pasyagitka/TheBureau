@@ -31,14 +31,15 @@
             </Border.Background>
 
             </Border>
-            <ListView Grid.ColumnSpan="5" Grid.Column="0" ItemsSource="{Binding Employees}" Height="220">
+            
+            <ListView Grid.ColumnSpan="5" Grid.Column="0" ItemsSource="{Binding Employees}" Height="220" IsHitTestVisible="False" >
                 <ListView.ItemContainerStyle>
                     <Style TargetType="{x:Type ListViewItem}">
-                        <Setter Property="Background" Value="Transparent" />
+                        <Setter Property="Background" Value="Transparent"/>
                         <Setter Property="Template">
                             <Setter.Value>
                                 <ControlTemplate TargetType="{x:Type ListViewItem}">
-                                    <ContentPresenter />
+                                    <ContentPresenter/>
                                 </ControlTemplate>
                             </Setter.Value>
                         </Setter>
@@ -55,14 +56,6 @@
                     </HierarchicalDataTemplate>
                 </ListView.ItemTemplate>
             </ListView>
-            <!-- <StackPanel DataContext="{Binding Employee}" Orientation="Horizontal"> -->
-           <!--     <StackPanel.Item></StackPanel.> -->
-           <!-- </StackPanel> -->
-            <!-- <local:EmployeeCard Margin="10" Grid.Column="0" Grid.Row="0" Width="192"/> -->
-            <!-- <local:EmployeeCard Margin="10" Grid.Column="1" Grid.Row="0" Width="192"/> -->
-            <!-- <local:EmployeeCard Margin="10" Grid.Column="2" Grid.Row="0" Width="192"/> -->
-            <!-- <local:EmployeeCard Margin="10" Grid.Column="3" Grid.Row="0" Width="192"/> -->
-            <!-- <local:EmployeeCard x:Name="EmployeeCard5" Margin="10" Grid.Column="4" Grid.Row="0" Width="192"/> -->
         </Grid>
     </Border>
 </UserControl>

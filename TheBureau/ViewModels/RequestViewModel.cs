@@ -1,4 +1,7 @@
-﻿using System.Collections.ObjectModel;
+﻿using System;
+using System.Collections;
+using System.Collections.ObjectModel;
+using System.ComponentModel;
 using System.Linq;
 using System.Windows.Input;
 using TheBureau.Repositories;
@@ -28,7 +31,7 @@ namespace TheBureau.ViewModels
             {
                 return _hideGreenRequests ??= new RelayCommand(o =>
                 {
-                    Requests = new ObservableCollection<Request>(_requestRepository.GetToDoRequests());
+                    Requests = new ObservableCollection<Request>(_requestRepository.GetToDoRequests().Reverse());
                     SelectedItem = Requests.First();
                 });
             }
@@ -39,7 +42,7 @@ namespace TheBureau.ViewModels
             {
                 return _showAllRequests ??= new RelayCommand(o =>
                 {
-                    Requests = new ObservableCollection<Request>(_requestRepository.GetAll());
+                    Requests = new ObservableCollection<Request>(_requestRepository.GetAll().Reverse());
                     SelectedItem = Requests.First();
                 });
             }
@@ -83,8 +86,8 @@ namespace TheBureau.ViewModels
             _requestRepository = new RequestRepository();
             _brigadeRepository = new BrigadeRepository();
             _requestEquipmentRepository = new RequestEquipmentRepository();
-            Requests = new ObservableCollection<Request>(_requestRepository.GetAll());
-            Brigades = new ObservableCollection<Brigade>(_brigadeRepository.GetAll());
+            Requests = new ObservableCollection<Request>(_requestRepository.GetAll().Reverse());
+            Brigades = new ObservableCollection<Brigade>(_brigadeRepository.GetAll().Reverse());
             SelectedItem = Requests.First();
         }
 
@@ -102,8 +105,8 @@ namespace TheBureau.ViewModels
                 _requestRepository = new RequestRepository();
                 _brigadeRepository = new BrigadeRepository();
                 _requestEquipmentRepository = new RequestEquipmentRepository();
-                Requests = new ObservableCollection<Request>(_requestRepository.GetAll());
-                Brigades = new ObservableCollection<Brigade>(_brigadeRepository.GetAll());
+                Requests = new ObservableCollection<Request>(_requestRepository.GetAll().Reverse());
+                Brigades = new ObservableCollection<Brigade>(_brigadeRepository.GetAll().Reverse());
             }
         }
 

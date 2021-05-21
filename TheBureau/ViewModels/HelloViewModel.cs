@@ -24,7 +24,7 @@ namespace TheBureau.ViewModels
 
 
         private UserRepository _userRepository = new UserRepository();
-        private const string LoginAndPasswordRegex = "^[a-zA-Z0-9_.-]*$";
+        private const string LoginAndPasswordRegex = "";
         private readonly string PasswordEmpty = "Введите пароль";
         private readonly string PasswordTooLong = "Пароль должен быть до 20 символов";
         private readonly string LoginAndPasswordStructure = "Пароль и имя пользователя могут состоять лишь из цифр и букв";

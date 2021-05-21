@@ -1,5 +1,7 @@
 ﻿using System;
+using System.Collections;
 using System.Collections.ObjectModel;
+using System.ComponentModel;
 using System.Windows;
 using System.Windows.Input;
 using TheBureau.Models.DataManipulating;
@@ -8,8 +10,9 @@ using TheBureau.Views;
 
 namespace TheBureau.ViewModels
 {
-    public class ClientWindowViewModel : ViewModelBase
+    public class ClientWindowViewModel : ViewModelBase, INotifyDataErrorInfo
     {
+        private ErrorsViewModel _errorsViewModel;
         private RequestRepository _requestRepository;
         private ClientRepository _clientRepository;
         private AddressRepository _addressRepository;
@@ -32,8 +35,6 @@ namespace TheBureau.ViewModels
         private int _corpus;
         private int _flat;
         private string _statusCost;
-        private string _emailPattern = @"^\w+([-+.']\w+)*@\w+([-.]\w+)*\.\w+([-.]\w+)*$";
-        private string _contactNumberPattern = @"^((\+7|7|8)+([0-9]){10})$";
         private int _rpQuantity;
         private int _rsQuantity;
         private int _kpQuantity;
@@ -93,49 +94,81 @@ namespace TheBureau.ViewModels
         public string Comment
         {
             get => _comment;
-            set { _comment = value; OnPropertyChanged("Comment"); }
+            set
+            {
+                _comment = value; 
+                OnPropertyChanged("Comment");
+            }
         }
 
         public int RpQuantity
         {
             get => _rpQuantity;
-            set { _rpQuantity = value; OnPropertyChanged("RpQuantity");}
+            set
+            {
+                _rpQuantity = value; 
+                OnPropertyChanged("RpQuantity");
+            }
         }
 
         public int RsQuantity
         {
             get => _rsQuantity;
-            set { _rsQuantity = value; OnPropertyChanged("RsQuantity");}
+            set
+            {
+                _rsQuantity = value; 
+                OnPropertyChanged("RsQuantity");
+            }
         }
 
         public int KpQuantity
         {
             get => _kpQuantity;
-            set { _kpQuantity = value; OnPropertyChanged("KpQuantity");}
+            set
+            {
+                _kpQuantity = value; 
+                OnPropertyChanged("KpQuantity");
+            }
         }
 
         public int KsQuantity
         {
             get => _ksQuantity;
-            set {  _ksQuantity = value; OnPropertyChanged("KsQuantity");}
+            set
+            {
+                _ksQuantity = value; 
+                OnPropertyChanged("KsQuantity");
+            }
         }
 
         public int VpQuantity
         {
             get => _vpQuantity;
-            set { _vpQuantity = value; OnPropertyChanged("VpQuantity");}
+            set
+            {
+                _vpQuantity = value; 
+                OnPropertyChanged("VpQuantity");
+            }
         }
 
         public bool IsRough
         {
             get => _isRough;
-            set { _isRough = value; OnPropertyChanged("IsRough");}
+            set
+            {
+                _isRough = value; 
+                OnPropertyChanged("IsRough");
+            }
         }
 
         public bool IsClean
         {
             get => _isClean;
-            set { _isClean = value; OnPropertyChanged("IsClean");}
+            set
+            {
+                _isClean = value; 
+                OnPropertyChanged("IsClean");
+            }
         }
 
         public int Stage
@@ -321,31 +354,35 @@ namespace TheBureau.ViewModels
         public string City
         {
             get => _city;
-            set => _city = value;
+            set
+            {
+                _city = value;
+                OnPropertyChanged("City"); 
+            }
         }
 
         public string Street
         {
             get => _street;
-            set => _street = value;
+            set { _street = value;  OnPropertyChanged("Street"); }
         }
 
         public string House
         {
             get => _house.ToString();
-            set => _house = int.Parse(value);
+            set { _house = int.Parse(value);   OnPropertyChanged("House"); }
         }
         
         public string Corpus
         {
             get => _corpus.ToString();
-            set => _corpus = int.Parse(value);
+            set{ _corpus = int.Parse(value);  OnPropertyChanged("Corpus"); }
         }
         
         public string Flat
         {
             get => _flat.ToString();
-            set => _flat = int.Parse(value);
+            set { _flat = int.Parse(value); OnPropertyChanged("Flat"); }
         }
         #endregion
 
@@ -371,7 +408,9 @@ namespace TheBureau.ViewModels
         }
 
         public ClientWindowViewModel()
-        { 
+        {
+            _errorsViewModel = new ErrorsViewModel();
+            _errorsViewModel.ErrorsChanged += ErrorsViewModel_ErrorsChanged;
             Update();
             MountingDate = DateTime.Today;
             WindowState = WindowState.Normal;
@@ -399,6 +438,22 @@ namespace TheBureau.ViewModels
             _addressRepository = new AddressRepository();
             _requestEquipmentRepository = new RequestEquipmentRepository();
         }
+        
+        #region Validation
+        public IEnumerable GetErrors(string propertyName)
+        {
+            return _errorsViewModel.GetErrors(propertyName);
+        }
+
+        public bool HasErrors => _errorsViewModel.HasErrors;
+        public event EventHandler<DataErrorsChangedEventArgs> ErrorsChanged;
+        
+        private void ErrorsViewModel_ErrorsChanged(object sender, DataErrorsChangedEventArgs e)
+        {
+            ErrorsChanged?.Invoke(this, e);
+            OnPropertyChanged("SendRequestCommand");
+        }
+        #endregion
 
     }
 }

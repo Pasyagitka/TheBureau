@@ -108,6 +108,7 @@ namespace TheBureau.ViewModels
             set
             {
                 content = value;
+                CountRed = _requestRepository.GetRedRequestsCount();
                 OnPropertyChanged("Content");
             }
         }
@@ -147,8 +148,7 @@ namespace TheBureau.ViewModels
             Content = new StatisticsView();
             WindowState = WindowState.Normal;
             //todo только 1 раз
-            countRed = _requestRepository.GetRedRequestsCount();
-            //UserName = CurrentUser.User.firstName + " " + CurrentUser.User.secondName;
+            CountRed = _requestRepository.GetRedRequestsCount();
             SelectedIndex = 1;
         }
        

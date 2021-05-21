@@ -56,6 +56,11 @@
                     <ListView HorizontalAlignment="Stretch" HorizontalContentAlignment="Center" Background="White"
                               ItemsSource="{Binding Requests, Mode=TwoWay}" 
                               SelectedItem="{Binding SelectedItem}">
+                        <ListView.Template>
+                            <ControlTemplate>
+                                <ItemsPresenter/>
+                            </ControlTemplate>
+                        </ListView.Template>
                         <ListView.ItemTemplate>
                             <HierarchicalDataTemplate>
                                 <Border CornerRadius="10" Background="White" Margin="10" Width="800">

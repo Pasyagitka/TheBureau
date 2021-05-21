@@ -12,17 +12,17 @@
             <StackPanel>
                 <TextBlock Height="40" FontSize="16" Text="{Binding Id}" HorizontalAlignment="Center"/>
                 <TextBlock Text="Фамилия" HorizontalAlignment="Center"/>
-                <TextBox Height="40" Text="{Binding Surname}" Style="{StaticResource TextBoxDefault}"/>
+                <TextBox Width="300" Height="40" Text="{Binding Surname, UpdateSourceTrigger=PropertyChanged}" Style="{StaticResource TextBoxValidationTemplateDefault}"/>
                 <TextBlock Text="Имя" HorizontalAlignment="Center"/>
-                <TextBox Height="40" Text="{Binding Firstname}" Style="{StaticResource TextBoxDefault}"/>
+                <TextBox Width="300" Height="40" Text="{Binding Firstname, UpdateSourceTrigger=PropertyChanged}" Style="{StaticResource TextBoxValidationTemplateDefault}"/>
                 <TextBlock Text="Отчество" HorizontalAlignment="Center"/>
-                <TextBox Height="40" Text="{Binding Patronymic}" Style="{StaticResource TextBoxDefault}"/>
+                <TextBox Width="300" Height="40" Text="{Binding Patronymic, UpdateSourceTrigger=PropertyChanged}" Style="{StaticResource TextBoxValidationTemplateDefault}"/>
                 <TextBlock Text="Электронная почта" HorizontalAlignment="Center"/>
-                <TextBox Height="40" Text="{Binding Email}" Style="{StaticResource TextBoxDefault}"/>
+                <TextBox Width="300" Height="40" Text="{Binding Email, UpdateSourceTrigger=PropertyChanged}" Style="{StaticResource TextBoxValidationTemplateDefault}"/>
                 <TextBlock Text="Контактный телефон" HorizontalAlignment="Center"/>
-                <TextBox Height="40" Text="{Binding ContactNumber}" Style="{StaticResource TextBoxDefault}"/>
+                <TextBox Width="300" Height="40" Text="{Binding ContactNumber, UpdateSourceTrigger=PropertyChanged}" Style="{StaticResource TextBoxValidationTemplateDefault}" PreviewTextInput="NumericTextBox_OnPreviewTextInput"/>
                 <TextBlock Text="ID бригады" HorizontalAlignment="Center"/>
-                <TextBox Height="40" Text="{Binding BrigadeId}" Style="{StaticResource TextBoxDefault}"/>
+                <TextBox Width="300" Height="40" Text="{Binding BrigadeId, UpdateSourceTrigger=PropertyChanged}" Style="{StaticResource TextBoxValidationTemplateDefault}" PreviewTextInput="NumericTextBox_OnPreviewTextInput"/>
                 <StackPanel Orientation="Horizontal">
                     <Button Height="40" Width="160" Content="Отменить" IsCancel="True" Style="{StaticResource DefaultButtonGray}" Margin="10"></Button>
                     <Button Name="Save" Content="Сохранить"  Width="160" Command="{Binding ChangeProductCommand}" Click="Save_OnClick" Style="{StaticResource DefaultButtonGray}" Margin="10"></Button>

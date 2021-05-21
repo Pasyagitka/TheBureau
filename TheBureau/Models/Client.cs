@@ -1,3 +1,5 @@
+using TheBureau.ViewModels;
+
 namespace TheBureau
 {
     using System;
@@ -9,6 +11,7 @@ namespace TheBureau
     [Table("Client")]
     public partial class Client
     {
+
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2214:DoNotCallOverridableMethodsInConstructors")]
         public Client()
         {
@@ -35,7 +38,6 @@ namespace TheBureau
 
         public decimal contactNumber { get; set; }
 
-        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
         public virtual ICollection<Request> Requests { get; set; }
     }
 }
