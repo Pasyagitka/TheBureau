@@ -52,7 +52,7 @@
         <Grid Margin="0,0,0,50">
             <DockPanel  Panel.ZIndex="3" Margin="0,0,0,-50">
                 <Border DockPanel.Dock="Right" Name="SidePanel" Style="{StaticResource expandAreaStyle}">
-                    <controls:RequestForm></controls:RequestForm>
+                    <controls:RequestForm/>
                 </Border>
             </DockPanel>
             <Grid  Name="TopGrid" VerticalAlignment="Top" MouseDown="TopGrid_OnMouseDown">

@@ -2,6 +2,7 @@
 using System.Collections;
 using System.Collections.ObjectModel;
 using System.ComponentModel;
+using System.Text.RegularExpressions;
 using System.Windows;
 using System.Windows.Input;
 using TheBureau.Models.DataManipulating;
@@ -44,11 +45,34 @@ namespace TheBureau.ViewModels
         private bool _isClean;
         private string _comment;
         private DateTime _mountingDate;
+
+        private bool _radiatorCheckBox;
+
+        public bool RadiatorCheckBox
+        {
+            get => _radiatorCheckBox;
+            set { _radiatorCheckBox = value; OnPropertyChanged("RadiatorCheckBox");}
+        }
+
+        public bool ConvectorCheckBox
+        {
+            get => _convectorCheckBox;
+            set { _convectorCheckBox = value;OnPropertyChanged("ConvectorCheckBox"); }
+        }
+
+        public bool VPConvectorCheckBox
+        {
+            get => _vPConvectorCheckBox;
+            set { _vPConvectorCheckBox = value; OnPropertyChanged("VpConvectorCheckBox");}
+        }
+
+        private bool _convectorCheckBox;
+        private bool _vPConvectorCheckBox;
         
         private ICommand closeWindowCommand;
         private ICommand minimizeWindowCommand;
         private WindowState _windowState;
-
+                                    //todo добавить флаги checkbox
 
         public ICommand CloseWindowCommand
         {
@@ -96,7 +120,12 @@ namespace TheBureau.ViewModels
             get => _comment;
             set
             {
-                _comment = value; 
+                _comment = value;
+                _errorsViewModel.ClearErrors("Comment");
+                if (_comment.Length > 200)
+                {
+                    _errorsViewModel.AddError("Comment", ValidationConst.CommentLengthExceeded);
+                }
                 OnPropertyChanged("Comment");
             }
         }
@@ -231,29 +260,29 @@ namespace TheBureau.ViewModels
                     //todo quantity default 0
                     
                     //Количество приборов каждого типа в оборудовании заявки
-                    if (RpQuantity != 0) {
+                    if (RpQuantity != 0 && RadiatorCheckBox) {
                         var requestEquipmentRP = new RequestEquipment  {  requestId = request.id, equipmentId = "RP", quantity = RpQuantity };
                         _requestEquipmentRepository.Add(requestEquipmentRP);
                     }
-                    if (RsQuantity != 0)
+                    if (RsQuantity != 0 && RadiatorCheckBox)
                     {
                         var requestEquipmentRS = new RequestEquipment { requestId = request.id, equipmentId = "RS", quantity = RsQuantity};
                         _requestEquipmentRepository.Add(requestEquipmentRS);
 
                     }
-                    if (KpQuantity != 0)
+                    if (KpQuantity != 0 && ConvectorCheckBox)
                     {
                         var requestEquipmentKP = new RequestEquipment { requestId = request.id, equipmentId = "HP", quantity = KpQuantity };
                         _requestEquipmentRepository.Add(requestEquipmentKP);
                     }
 
-                    if (KsQuantity != 0)
+                    if (KsQuantity != 0 && ConvectorCheckBox)
                     {
                         var requestEquipmentKS = new RequestEquipment  { requestId = request.id, equipmentId = "HS", quantity = KsQuantity };
                         _requestEquipmentRepository.Add(requestEquipmentKS);
                     }
 
-                    if (VpQuantity != 0)
+                    if (VpQuantity != 0 && VPConvectorCheckBox)
                     {
                         var requestEquipmentVP = new RequestEquipment { requestId = request.id, equipmentId = "VP", quantity = VpQuantity  };
                         _requestEquipmentRepository.Add(requestEquipmentVP);
@@ -272,19 +301,15 @@ namespace TheBureau.ViewModels
             }
         }
         
+        //todo send request command
+        
         #region  fields
         public string Firstname
         {
             get => _firstname;
             set
             {
-                if (value.Length is >= 2 and <= 20)
-                {
-                    _firstname = value;
-                    statusName = String.Empty;
-                }
-                else
-                    statusName = "Имя должно быть от 2 до 20 символов";
+                _firstname = value;
                 OnPropertyChanged("Firstname");
             }
         }
@@ -294,13 +319,7 @@ namespace TheBureau.ViewModels
             get => _surname;
             set
             {
-                if (value.Length is >= 2 and <= 20)
-                {
-                    _surname = value;
-                    statusName = String.Empty;
-                }
-                else
-                    statusName = "Фамилия должна быть от 2 до 20 символов";
+                _surname = value;
                 OnPropertyChanged("Surname");
             }
         }
@@ -310,13 +329,7 @@ namespace TheBureau.ViewModels
             get => _patronymic;
             set
             {
-                if (value.Length is >= 2 and <= 20)
-                {
-                    _patronymic = value;
-                    statusName = String.Empty;
-                }
-                else
-                    statusName = "Отчество должно быть от 2 до 20 символов";
+                _patronymic = value;
                 OnPropertyChanged("Patronymic");
             }
         }
@@ -327,16 +340,7 @@ namespace TheBureau.ViewModels
             get => _contactNumber.ToString();
             set
             {
-                if (Decimal.TryParse(value, out _contactNumber) && value.Length == 12
-                    && Decimal.Parse(value) >= 0)
-                {
-                   _contactNumber = Decimal.Parse(value);
-                   _statusCost = String.Empty;
-                }
-                else
-                {
-                    _statusCost = "Номер должен быть длиной 12 и содержать лишь цифры";
-                }
+                _contactNumber = Decimal.Parse(value);
                 OnPropertyChanged("ContactNumber"); 
             }
         }
@@ -349,7 +353,7 @@ namespace TheBureau.ViewModels
                 _email = value;
                 OnPropertyChanged("Email");
             }
-        }
+        }//todo вылетает если вообще не выбирать поле
 
         public string City
         {
@@ -357,6 +361,18 @@ namespace TheBureau.ViewModels
             set
             {
                 _city = value;
+                
+                _errorsViewModel.ClearErrors("City");
+
+                if (string.IsNullOrWhiteSpace(_city))
+                {
+                    _errorsViewModel.AddError("City", ValidationConst.FieldCannotBeEmpty);
+                }
+                var regex = new Regex(ValidationConst.LettersHyphenRegex);
+                if (!regex.IsMatch(_city))
+                {
+                    _errorsViewModel.AddError("City", ValidationConst.IncorrectCity);
+                }
                 OnPropertyChanged("City"); 
             }
         }
@@ -364,25 +380,80 @@ namespace TheBureau.ViewModels
         public string Street
         {
             get => _street;
-            set { _street = value;  OnPropertyChanged("Street"); }
-        }
+            set 
+            {
+                _street = value;  
+                
+                _errorsViewModel.ClearErrors("Street");
 
+                if (string.IsNullOrWhiteSpace(_street))
+                {
+                    _errorsViewModel.AddError("Street", ValidationConst.FieldCannotBeEmpty);
+                }
+                var regex = new Regex(ValidationConst.LettersHyphenRegex);
+                if (!regex.IsMatch(_street))
+                {
+                    _errorsViewModel.AddError("Street", ValidationConst.IncorrectStreet);
+                }
+                OnPropertyChanged("Street"); 
+            }
+        }
+                                    //todo numeric text box обязательный
         public string House
         {
             get => _house.ToString();
-            set { _house = int.Parse(value);   OnPropertyChanged("House"); }
+            set { 
+                _house = int.Parse(value);
+                _errorsViewModel.ClearErrors("House");
+                if (string.IsNullOrWhiteSpace(_house.ToString()))
+                {
+                    _errorsViewModel.AddError("House", ValidationConst.FieldCannotBeEmpty);
+                }
+                if (_house > 300)
+                {
+                    _errorsViewModel.AddError("House", ValidationConst.IncorrectHouse);
+                }
+                OnPropertyChanged("House"); 
+            }
         }
         
         public string Corpus
         {
             get => _corpus.ToString();
-            set{ _corpus = int.Parse(value);  OnPropertyChanged("Corpus"); }
+            set
+            {
+                _corpus = int.Parse(value);  
+                _errorsViewModel.ClearErrors("Corpus");
+                if (string.IsNullOrWhiteSpace(_house.ToString()))
+                {
+                    _errorsViewModel.AddError("Corpus", ValidationConst.FieldCannotBeEmpty);
+                }
+                if (_house.ToString().Length > 2)
+                {
+                    _errorsViewModel.AddError("Corpus", ValidationConst.IncorrectCorpus);
+                }
+                OnPropertyChanged("Corpus");
+            }
         }
         
         public string Flat
         {
             get => _flat.ToString();
-            set { _flat = int.Parse(value); OnPropertyChanged("Flat"); }
+            set
+            {
+                _flat = int.Parse(value); 
+                _errorsViewModel.ClearErrors("Flat");
+                
+                if (string.IsNullOrWhiteSpace(_house.ToString()))
+                {
+                    _errorsViewModel.AddError("Flat", ValidationConst.FieldCannotBeEmpty);
+                }
+                if (_flat > 1011)
+                {
+                    _errorsViewModel.AddError("Flat", ValidationConst.IncorrectFlat);
+                }
+                OnPropertyChanged("Flat");
+            }
         }
         #endregion
 

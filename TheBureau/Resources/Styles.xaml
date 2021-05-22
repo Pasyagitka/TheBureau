@@ -183,7 +183,7 @@
                             <Ellipse Width="3" Height="8" VerticalAlignment="Top" HorizontalAlignment="Center" Margin="0 2 0 0" Fill="White"/>
                             <Ellipse Width="2" Height="2" VerticalAlignment="Bottom" HorizontalAlignment="Center" Margin="0 0 0 2" Fill="White"/>
                         </Grid>
-                        <Border BorderBrush="{DynamicResource LightOrangeColor}" BorderThickness="3,3,3,1.5" CornerRadius="2">
+                        <Border BorderBrush="{DynamicResource LightOrangeColor}" BorderThickness="2,2,2,0.5" CornerRadius="2">
                             <AdornedElementPlaceholder/>
                         </Border>
                     </DockPanel>

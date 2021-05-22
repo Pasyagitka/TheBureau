@@ -14,8 +14,12 @@ namespace TheBureau.ViewModels
 
         private ObservableCollection<Request> _brigadeRequests;
         private Brigade _currentBrigade;
+        private Request _selectedItem;
         
         private ICommand logOutCommand;
+        private RelayCommand _updateRequest;
+        public ICommand UpdateRequestCommand => _updateRequest ??= new RelayCommand(OpenEditRequest);
+
 
         public Brigade CurrentBrigade
         {
@@ -36,14 +40,31 @@ namespace TheBureau.ViewModels
                 OnPropertyChanged("BrigadeRequests");
             }
         }
+        public Request SelectedItem
+        {
+            get => _selectedItem;
+            set
+            {
+                _selectedItem = value;
+                OnPropertyChanged("SelectedItem");
+            }
+        }
+        private void OpenEditRequest(object o)
+        {
+            EditRequestFromBrigadeView window = new(SelectedItem);
+            if (window.ShowDialog() == true)
+            {
+                _requestRepository = new RequestRepository();
+                BrigadeRequests = new ObservableCollection<Request>(_requestRepository.GetRequestsByBrigadeId(CurrentBrigade.id));
+            }
+        }
         public BrigadeWindowViewModel() //todo int currentId
         {
             var user = Application.Current.Properties["User"] as User;
             CurrentBrigade = _brigadeRepository.GetAll().FirstOrDefault(x => x.userId == user.id); 
             //todo all to repo
             if (user != null && CurrentBrigade != null)
-                BrigadeRequests =
-                        new ObservableCollection<Request>(_requestRepository.GetRequestsByBrigadeId(CurrentBrigade.id));
+                BrigadeRequests = new ObservableCollection<Request>(_requestRepository.GetRequestsByBrigadeId(CurrentBrigade.id));
         }
         
         public ICommand LogOutCommand

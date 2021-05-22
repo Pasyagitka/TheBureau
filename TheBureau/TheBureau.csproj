@@ -140,6 +140,7 @@
     <Compile Include="ViewModels\EditBrigadeViewModel.cs" />
     <Compile Include="ViewModels\EditClientViewModel.cs" />
     <Compile Include="ViewModels\EditEmployeeViewModel.cs" />
+    <Compile Include="ViewModels\EditRequestFromBrigadeViewModel.cs" />
     <Compile Include="ViewModels\EditRequestViewModel.cs" />
     <Compile Include="ViewModels\EmployeeViewModel.cs" />
     <Compile Include="ViewModels\ErrorsViewModel.cs" />
@@ -155,8 +156,8 @@
     <Compile Include="ViewModels\RequestViewModel.cs" />
     <Compile Include="ViewModels\StorageViewModel.cs" />
     <Compile Include="ViewModels\ViewModelBase.cs" />
-    <Compile Include="Views\AddEmployeeWindow.xaml.cs">
-      <DependentUpon>AddEmployeeWindow.xaml</DependentUpon>
+    <Compile Include="Views\AddEmployeeView.xaml.cs">
+      <DependentUpon>AddEmployeeView.xaml</DependentUpon>
     </Compile>
     <Compile Include="Views\Controls\AdminRequestCard.xaml.cs">
       <DependentUpon>AdminRequestCard.xaml</DependentUpon>
@@ -187,6 +188,9 @@
     </Compile>
     <Compile Include="Views\EditEmployeeView.xaml.cs">
       <DependentUpon>EditEmployeeView.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Views\EditRequestFromBrigadeView.xaml.cs">
+      <DependentUpon>EditRequestFromBrigadeView.xaml</DependentUpon>
     </Compile>
     <Compile Include="Views\EditRequestView.xaml.cs">
       <DependentUpon>EditRequestView.xaml</DependentUpon>
@@ -288,7 +292,7 @@
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
-    <Page Include="Views\AddEmployeeWindow.xaml" />
+    <Page Include="Views\AddEmployeeView.xaml" />
     <Page Include="Views\Controls\AdminRequestCard.xaml" />
     <Page Include="Views\Controls\AdminRequestPanel.xaml" />
     <Page Include="Views\Controls\BrigadeStatChart.xaml" />
@@ -299,6 +303,7 @@
     <Page Include="Views\Controls\StatChart.xaml" />
     <Page Include="Views\EditClientView.xaml" />
     <Page Include="Views\EditEmployeeView.xaml" />
+    <Page Include="Views\EditRequestFromBrigadeView.xaml" />
     <Page Include="Views\EditRequestView.xaml" />
     <Page Include="Views\EmployeeView.xaml" />
     <Page Include="Views\SettingsWindow.xaml" />

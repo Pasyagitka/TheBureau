@@ -13,30 +13,29 @@ namespace TheBureau.ViewModels
         private EmployeeRepository _employeeRepository = new EmployeeRepository();
         private UserRepository _userRepository = new UserRepository();
 
-        private string _brigadeLogin = "brigade";
-        ObservableCollection<Brigade> brigades;
-        ObservableCollection<Employee> employees;
-        private RelayCommand addBrigade;
-        private RelayCommand deleteBrigade;
-        //todo не обновляет бригады в employee изменениях
-        object selectedItem;
+        private string _brigadeLoginBase = "brigade";
+        ObservableCollection<Brigade> _brigades;
+        ObservableCollection<Employee> _employees;
+        private RelayCommand _addBrigade;
+        private RelayCommand _deleteBrigade;
+        object _selectedItem;
 
         
         public ObservableCollection<Employee> Employees
         {
-            get => employees;
+            get => _employees;
             set
             {
-                employees = value;
+                _employees = value;
                 OnPropertyChanged("Employees");
             } 
         }
         public object SelectedItem
         {
-            get => selectedItem;
+            get => _selectedItem;
             set
             {
-                selectedItem = value;
+                _selectedItem = value;
                 OnPropertyChanged("SelectedItem");
             }
         }
@@ -44,7 +43,7 @@ namespace TheBureau.ViewModels
         {
             get
             {
-                return addBrigade ??= new RelayCommand(obj =>
+                return _addBrigade ??= new RelayCommand(obj =>
                 {
                     Brigade newBrigade = new();
                     newBrigade.userId = null;
@@ -52,7 +51,7 @@ namespace TheBureau.ViewModels
                     _brigadeRepository.Save();
                     
                     User newUser = new();
-                    newUser.login = _brigadeLogin + newBrigade.id;
+                    newUser.login = _brigadeLoginBase + newBrigade.id;
                     newUser.password = PasswordHash.CreateHash(newUser.login);
                     newUser.role = 2; //todo enums for roles and so on
                     _userRepository.Add(newUser);
@@ -70,7 +69,7 @@ namespace TheBureau.ViewModels
         {
             get
             {
-                return deleteBrigade ??= new RelayCommand(obj =>
+                return _deleteBrigade ??= new RelayCommand(obj =>
                 {
                     //todo selected item криво выделяет обычно
                     int id = (SelectedItem as Brigade).id;
@@ -108,10 +107,10 @@ namespace TheBureau.ViewModels
 
         public ObservableCollection<Brigade> Brigades 
         { 
-            get => brigades; 
+            get => _brigades; 
             set 
             { 
-                brigades = value; 
+                _brigades = value; 
                 OnPropertyChanged("Brigades"); 
             } 
         }

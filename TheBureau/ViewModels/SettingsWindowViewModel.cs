@@ -2,6 +2,7 @@
 using System.Collections;
 using System.ComponentModel;
 using System.Windows.Input;
+using TheBureau.Models.DataManipulating;
 using TheBureau.Repositories;
 
 namespace TheBureau.ViewModels
@@ -28,10 +29,13 @@ namespace TheBureau.ViewModels
                 _password = value;
                 
                 _errorsViewModel.ClearErrors("Password");
-                
+                if (string.IsNullOrWhiteSpace(_password))
+                {
+                    _errorsViewModel.AddError("Password",ValidationConst.FieldCannotBeEmpty);
+                }
                 if (_password.Length  < 8 || _password.Length > 40)
                 {
-                    _errorsViewModel.AddError("Password", "Password length < 8 > 40");
+                    _errorsViewModel.AddError("Password",ValidationConst.IncorrectPassword);
                 }
                 OnPropertyChanged("Password");
             }

@@ -59,14 +59,24 @@
                         </DataTemplate>
                     </ContentControl.ContentTemplate>
                 </ContentControl>
-                <ScrollViewer>
-                    <Border Margin="50,30,50,50"  Background="White" CornerRadius="15" Height="403">
+                <Border Background="White" CornerRadius="15" Margin="50,30,50,50" Height="403">
+                    <ScrollViewer>
                         <ListView ScrollViewer.CanContentScroll="True"
-                                  ItemTemplate="{StaticResource RequestListForBrigadeTemplate}"
+                                  SelectedItem="{Binding SelectedItem, Mode=TwoWay}"
                                   ItemsSource="{Binding BrigadeRequests }">
+                            <ListView.ItemTemplate>
+                                <HierarchicalDataTemplate>
+                                    <Border CornerRadius="10" Background="White" Margin="10" Width="800">
+                                        <StackPanel Orientation="Vertical" Margin="5">
+                                            <controls:RequestCard/>
+                                            <Separator Width="500" Background="{StaticResource LightOrangeColor}"/>
+                                        </StackPanel>
+                                    </Border>
+                                </HierarchicalDataTemplate>
+                            </ListView.ItemTemplate>
                         </ListView>
-                    </Border>
-                </ScrollViewer>
+                    </ScrollViewer>
+                </Border>
             </StackPanel>
         </Grid>
     </Border>

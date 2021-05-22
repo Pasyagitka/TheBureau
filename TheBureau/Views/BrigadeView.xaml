@@ -30,15 +30,15 @@
     </ToolBarTray>
             <Grid>
                 <Grid.RowDefinitions>
-                    <RowDefinition Height="25"/>
-                    <RowDefinition Height="Auto"/>
+                    <RowDefinition Height="30"/>
+                    <RowDefinition/>
                 </Grid.RowDefinitions>
                 <TextBlock Grid.Row="0"  Padding="0" Text="{Binding Brigades.Count, Converter={StaticResource CountConverter}}" HorizontalAlignment="Center" FontSize="20" FontWeight="DemiBold"/>
                 
                 
-                <ScrollViewer Grid.Row="1" HorizontalAlignment="Center" Height="580">
+                <ScrollViewer Grid.Row="1" HorizontalAlignment="Center" VerticalAlignment="Center" Width="1100" Height="570">
                     <Border>
-                        <ListView  HorizontalAlignment="Center"
+                        <ListView  HorizontalAlignment="Center" Width="1100" HorizontalContentAlignment="Center"
                                    ItemsSource="{Binding Brigades, Mode=TwoWay}"
                                    SelectedItem="{Binding SelectedItem, Mode=TwoWay}">
                             <ListView.Template>
@@ -48,7 +48,7 @@
                             </ListView.Template>
                             <ListView.ItemTemplate>
                                 <HierarchicalDataTemplate>
-                                        <controls:BrigadeCard Margin="5"/>
+                                        <controls:BrigadeCard Margin="15" Width="900" HorizontalAlignment="Center"/>
                                 </HierarchicalDataTemplate>
                             </ListView.ItemTemplate>
                             <!-- <ListView.ItemContainerStyle> -->

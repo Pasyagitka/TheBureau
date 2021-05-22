@@ -14,7 +14,7 @@
                  Content="{Binding surname}" Name="FrontButton" />
         </materialDesign:Flipper.FrontContent>
         <materialDesign:Flipper.BackContent>
-                <Grid Background="White" Height="190" Width="{Binding ElementName=EmployeeFlipper, Path=ActualWidth}">
+                <Grid Background="White" Height="175" Width="{Binding ElementName=EmployeeFlipper, Path=ActualWidth}">
                     <Grid.RowDefinitions>
                         <RowDefinition Height="Auto" />
                         <RowDefinition Height="*" />

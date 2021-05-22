@@ -83,8 +83,8 @@ namespace TheBureau.ViewModels
         
         private void openAddEmployeeWindow()
         {
-            AddEmployeeWindow window = new();
-            if (window.ShowDialog() == true)
+            AddEmployeeView view = new();
+            if (view.ShowDialog() == true)
             {
                 Update();
             }

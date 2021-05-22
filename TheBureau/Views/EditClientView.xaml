@@ -19,7 +19,7 @@
                 <TextBlock Text="Электронная почта" HorizontalAlignment="Center"/>
                 <TextBox Width="300" Height="40" Text="{Binding Email, UpdateSourceTrigger=PropertyChanged}" Style="{StaticResource TextBoxValidationTemplateDefault}"/>
                 <TextBlock Text="Контактный телефон" HorizontalAlignment="Center"/>
-                <TextBox Width="300" Height="40" Text="{Binding ContactNumber, UpdateSourceTrigger=PropertyChanged}" Style="{StaticResource TextBoxValidationTemplateDefault}"/>
+                <TextBox Width="300" Height="40" Text="{Binding ContactNumber, UpdateSourceTrigger=PropertyChanged}" Style="{StaticResource TextBoxValidationTemplateDefault}" PreviewTextInput="NumericTextBox_OnPreviewTextInput"/>
                 <StackPanel Orientation="Horizontal">
                     <Button Height="40" Width="160" Content="Отменить" IsCancel="True" Style="{StaticResource DefaultButtonGray}" Margin="10"></Button>
                     <Button Height="40" Width="160" Content="Сохранить" Command="{Binding EditClientCommand}" Click="Save_OnClick" Style="{StaticResource DefaultButtonGray}" Margin="10"></Button>

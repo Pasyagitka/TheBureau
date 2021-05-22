@@ -24,5 +24,13 @@ namespace TheBureau.Controls
         {
             InitializeComponent();
         }
+        
+        private void NumericTextBox_OnPreviewTextInput(object sender, TextCompositionEventArgs e)
+        {
+            if(!char.IsDigit(e.Text, 0))
+            {
+                e.Handled = true;
+            }
+        }
     }
 }

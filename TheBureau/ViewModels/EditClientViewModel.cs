@@ -44,10 +44,19 @@ namespace TheBureau.ViewModels
                 _surname = value; 
                 
                 _errorsViewModel.ClearErrors("Surname");
-                var regex = new Regex(ValidationConst.NameRegex);
+                if (string.IsNullOrWhiteSpace(_surname))
+                {
+                    _errorsViewModel.AddError("Surname", ValidationConst.FieldCannotBeEmpty);
+                }
+
+                if (_surname.Length is > 20 or < 2)
+                {
+                    _errorsViewModel.AddError("Surname", ValidationConst.NameLengthExceeded);
+                }
+                var regex = new Regex(ValidationConst.LettersHyphenRegex);
                 if (!regex.IsMatch(_surname))
                 {
-                    _errorsViewModel.AddError("Surname", "Некорректная фамилия");
+                    _errorsViewModel.AddError("Surname", ValidationConst.IncorrectSurname);
                 }
                 OnPropertyChanged("Surname");
             }
@@ -61,10 +70,18 @@ namespace TheBureau.ViewModels
             {
                 _firstname = value; 
                 _errorsViewModel.ClearErrors("Firstname");
-                var regex = new Regex(ValidationConst.NameRegex);
+                if (string.IsNullOrWhiteSpace(_firstname))
+                {
+                    _errorsViewModel.AddError("Firstname", ValidationConst.FieldCannotBeEmpty);
+                }
+                if (_firstname.Length is > 20 or < 2)
+                {
+                    _errorsViewModel.AddError("Firstname", ValidationConst.NameLengthExceeded);
+                }
+                var regex = new Regex(ValidationConst.LettersHyphenRegex);
                 if (!regex.IsMatch(_firstname))
                 {
-                    _errorsViewModel.AddError("Firstname", "Некорректное имя");
+                    _errorsViewModel.AddError("Firstname",  ValidationConst.IncorrectFirstname);
                 }
                 OnPropertyChanged("Firstname");
             }
@@ -77,10 +94,18 @@ namespace TheBureau.ViewModels
             {
                 _patronymic = value; 
                 _errorsViewModel.ClearErrors("Patronymic");
-                var regex = new Regex(ValidationConst.NameRegex);
+                if (string.IsNullOrWhiteSpace(_patronymic))
+                {
+                    _errorsViewModel.AddError("Patronymic", ValidationConst.FieldCannotBeEmpty);
+                }
+                if (_patronymic.Length is > 20 or < 2)
+                {
+                    _errorsViewModel.AddError("Patronymic", ValidationConst.NameLengthExceeded);
+                }
+                var regex = new Regex(ValidationConst.LettersHyphenRegex);
                 if (!regex.IsMatch(_patronymic))
                 {
-                    _errorsViewModel.AddError("Patronymic", "Некорректное отчество");
+                    _errorsViewModel.AddError("Patronymic", ValidationConst.IncorrectPatronymic);
                 }
                 OnPropertyChanged("Patronymic");
             }
@@ -93,26 +118,41 @@ namespace TheBureau.ViewModels
             {
                 _email = value; 
                 _errorsViewModel.ClearErrors("Email");
+                if (string.IsNullOrWhiteSpace(_email))
+                {
+                    _errorsViewModel.AddError("Email", ValidationConst.FieldCannotBeEmpty);
+                }
+                if (_email.Length > 255)
+                {
+                    _errorsViewModel.AddError("Email", ValidationConst.EmailLengthExceeded);
+                }
                 var regex = new Regex(ValidationConst.EmailRegex);
                 if (!regex.IsMatch(_email))
                 {
-                    _errorsViewModel.AddError("Email", "Некорректный адрес электронной почты");
+                    _errorsViewModel.AddError("Email", ValidationConst.IncorrectEmailStructure);
                 }
                 OnPropertyChanged("Email");
             }
         }
 
-        public decimal ContactNumber
+        public string ContactNumber
         {
-            get => _contactNumber;
+            get => _contactNumber.ToString();
             set
             {
-                _contactNumber = value; 
                 _errorsViewModel.ClearErrors("ContactNumber");
+
+                if (string.IsNullOrWhiteSpace(value))
+                {
+                    _errorsViewModel.AddError("ContactNumber", ValidationConst.FieldCannotBeEmpty);
+                }
+                _contactNumber = decimal.Parse(value); 
+                
+
                 var regex = new Regex(ValidationConst.ContactNumberRegex);
                 if (!regex.IsMatch(_contactNumber.ToString()))
                 {
-                    _errorsViewModel.AddError("ContactNumber", "Некорректный номер телефона");
+                    _errorsViewModel.AddError("ContactNumber", ValidationConst.IncorrectNumberStructure);
                 }
                 OnPropertyChanged("ContactNumber");
             }
@@ -130,7 +170,7 @@ namespace TheBureau.ViewModels
                 Surname = Client.surname;
                 Patronymic = Client.patronymic;
                 Email = Client.email;
-                ContactNumber = Client.contactNumber;
+                ContactNumber = Client.contactNumber.ToString();
                 OnPropertyChanged("Client");
             }
         }
@@ -147,7 +187,7 @@ namespace TheBureau.ViewModels
             clientUpdate.surname = Surname;
             clientUpdate.patronymic = Patronymic;
             clientUpdate.email = Email;
-            clientUpdate.contactNumber = ContactNumber;
+            clientUpdate.contactNumber = decimal.Parse(ContactNumber);
             _clientRepository.Update(clientUpdate);
             _clientRepository.SaveChanges();
         }

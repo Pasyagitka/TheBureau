@@ -108,6 +108,7 @@ namespace TheBureau.ViewModels
                 Requests = new ObservableCollection<Request>(_requestRepository.GetAll().Reverse());
                 Brigades = new ObservableCollection<Brigade>(_brigadeRepository.GetAll().Reverse());
             }
+            SelectedItem = Requests.First();
         }
 
         public void SetEquipment()

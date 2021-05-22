@@ -6,6 +6,7 @@ namespace TheBureau
     {
         private void App_OnStartup(object sender, StartupEventArgs e)
         {//todo попробовать запоминать юзера
+            
             Application.Current.Properties["User"] = null;
         }
     }

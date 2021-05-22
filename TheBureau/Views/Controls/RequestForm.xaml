@@ -10,24 +10,30 @@
              d:DesignHeight="700" d:DesignWidth="420">
     <Border Background="White" CornerRadius="0,15,15,0">
         <StackPanel Orientation="Vertical">
-            <Border Background="#f4f4f4" CornerRadius="10"  Margin="10">
-                <Grid Height="130">
+            <Border Background="#f4f4f4" CornerRadius="10"  Margin="7">
+                <Grid Height="135">
                     <Grid.ColumnDefinitions>
-                        <ColumnDefinition/>
-                        <ColumnDefinition/>
+                        <ColumnDefinition Width="200"/>
+                        <ColumnDefinition Width="200"/>
                     </Grid.ColumnDefinitions>
                     <Grid.RowDefinitions>
                         <RowDefinition Height="20"/>
-                        <RowDefinition/>
-                        <RowDefinition/>
-                        <RowDefinition/>
+                        <RowDefinition Height="40"/>
+                        <RowDefinition Height="40"/>
+                        <RowDefinition Height="40"/>
                     </Grid.RowDefinitions>
                     <TextBlock Grid.ColumnSpan="3" Grid.Row="0" Text="Заказчик"  HorizontalAlignment="Center" Foreground="Gray"/>
-                    <TextBox Grid.Column="0" Grid.Row="1" Text="{Binding Surname}" Style="{StaticResource  TextBoxValidationTemplateDefault}" Width="180" HorizontalAlignment="Left" Margin="10,0,0,0"/>
-                    <TextBox Grid.Column="0" Grid.Row="2" Text="{Binding Firstname}" Style="{StaticResource TextBoxValidationTemplateDefault}"  materialDesign:HintAssist.Hint="Имя"   Width="180" HorizontalAlignment="Left" Margin="10,0,0,0"/>
-                    <TextBox Grid.Column="0" Grid.Row="3" Text="{Binding Patronymic}" Style="{StaticResource TextBoxValidationTemplateDefault}"  materialDesign:HintAssist.Hint="Отчество"  Width="180" HorizontalAlignment="Left" Margin="10,0,0,0" />
-                    <TextBox Grid.Column="1" Grid.Row="1" Text="{Binding ContactNumber}" Style="{StaticResource TextBoxValidationTemplateDefault}"  materialDesign:HintAssist.Hint="Контактный телефон"  Width="196"  HorizontalAlignment="Left" Margin="0,0,10,0"/>
-                    <TextBox Grid.Column="1" Grid.Row="2" Text="{Binding Email}" Style="{StaticResource TextBoxValidationTemplateDefault}"  materialDesign:HintAssist.Hint="Электронная почта" Width="196"  HorizontalAlignment="Left" Margin="0,0,10,0"/>
+                    <TextBlock Grid.Column="0" Grid.Row="1" Text="Фамилия" FontSize="10" HorizontalAlignment="Right" Margin="0,0,10,0" Foreground="Gray"/>
+                    <TextBlock Grid.Column="0" Grid.Row="2" Text="Имя" FontSize="10" HorizontalAlignment="Right" Margin="0,0,10,0" Foreground="Gray"/>
+                    <TextBlock  Grid.Column="0" Grid.Row="3" Text="Отчество" FontSize="10" HorizontalAlignment="Right" Margin="0,0,10,0" Foreground="Gray"/>
+                    <TextBlock  Grid.Column="1" Grid.Row="1" Text="Телефон" FontSize="10" HorizontalAlignment="Right" Margin="0,0,10,0" Foreground="Gray"/>
+                    <TextBlock  Grid.Column="1" Grid.Row="2" Text="Почта" FontSize="10" HorizontalAlignment="Right" Margin="0,0,10,0" Foreground="Gray"/>
+
+                    <TextBox ToolTip="Фамилия" Grid.Column="0" Grid.Row="1" Text="{Binding Surname, UpdateSourceTrigger=PropertyChanged}" Style="{StaticResource  TextBoxValidationTemplateDefault}" Width="180" HorizontalAlignment="Left" Margin="10,0,0,0"/>
+                    <TextBox ToolTip="Имя" Grid.Column="0" Grid.Row="2" Text="{Binding Firstname, UpdateSourceTrigger=PropertyChanged}" Style="{StaticResource TextBoxValidationTemplateDefault}"  materialDesign:HintAssist.Hint="Имя"   Width="180" HorizontalAlignment="Left" Margin="10,0,0,0"/>
+                    <TextBox ToolTip="Отчество" Grid.Column="0" Grid.Row="3" Text="{Binding Patronymic, UpdateSourceTrigger=PropertyChanged}" Style="{StaticResource TextBoxValidationTemplateDefault}"  materialDesign:HintAssist.Hint="Отчество"  Width="180" HorizontalAlignment="Left" Margin="10,0,0,0" />
+                    <TextBox ToolTip="Контактный телефон" Grid.Column="1" Grid.Row="1" Text="{Binding ContactNumber, UpdateSourceTrigger=PropertyChanged}" Style="{StaticResource TextBoxValidationTemplateDefault}"  materialDesign:HintAssist.Hint="Контактный телефон"  Width="196"  HorizontalAlignment="Left" Margin="0,0,10,0"/>
+                    <TextBox ToolTip="Адрес электронной почты" Grid.Column="1" Grid.Row="2" Text="{Binding Email, UpdateSourceTrigger=PropertyChanged}" Style="{StaticResource TextBoxValidationTemplateDefault}"  materialDesign:HintAssist.Hint="Электронная почта" Width="196"  HorizontalAlignment="Left" Margin="0,0,10,0"/>
 
                 </Grid>
                 <!-- <StackPanel Orientation="Horizontal"> -->
@@ -46,7 +52,7 @@
                 <!--     </StackPanel> -->
                 <!-- </StackPanel> -->
             </Border>
-            <Border Margin="10" CornerRadius="5" Background="#f4f4f4" Height="80" >
+            <Border Margin="7" CornerRadius="5" Background="#f4f4f4" Height="100" >
                 <Grid>
                     <Grid.ColumnDefinitions>
                         <ColumnDefinition/>
@@ -55,19 +61,29 @@
                     </Grid.ColumnDefinitions>
                     <Grid.RowDefinitions>
                         <RowDefinition Height="20"/>
-                        <RowDefinition/>
-                        <RowDefinition/>
+                        <RowDefinition Height="40"/>
+                        <RowDefinition Height="40"/>
                     </Grid.RowDefinitions>
                     <TextBlock Grid.ColumnSpan="3" Grid.Row="0" Text="Адрес монтажа"  HorizontalAlignment="Center" Foreground="Gray"/>
-                    <TextBox Grid.Column="0" Grid.Row="1" materialDesign:HintAssist.Hint="Страна" Text="Беларусь"   HorizontalAlignment="Left" Width="129" IsReadOnly="True"/>
-                    <TextBox Text="{Binding City}" Grid.Column="1" Grid.Row="1" materialDesign:HintAssist.Hint="Город"  HorizontalAlignment="Left"  Width="129"/>
-                    <TextBox Text="{Binding Street}" Grid.Column="2" Grid.Row="1" materialDesign:HintAssist.Hint="Улица" HorizontalAlignment="Left"  Width="129"/>
-                    <TextBox Text="{Binding House}" Grid.Column="0" Grid.Row="2" materialDesign:HintAssist.Hint="Дом"  HorizontalAlignment="Left" Width="129"/>
-                    <TextBox Text="{Binding Corpus}" Grid.Column="1" Grid.Row="2" materialDesign:HintAssist.Hint="Корпус"  HorizontalAlignment="Left"  Width="129"/>
-                    <TextBox Text="{Binding Flat}" Grid.Column="2" Grid.Row="2" materialDesign:HintAssist.Hint="Квартира"  HorizontalAlignment="Left"  Width="129"/>
+
+                    
+                    <TextBox ToolTip="Страна" FontSize="14" Grid.Column="0" Grid.Row="1" materialDesign:HintAssist.Hint="Страна" Text="Беларусь" Width="117"   HorizontalAlignment="Left" IsReadOnly="True" Style="{StaticResource TextBoxValidationTemplateDefault}" Margin="2,0,0,12"/>
+                    <TextBox ToolTip="Улица" FontSize="14" Text="{Binding Street, UpdateSourceTrigger=PropertyChanged}" Grid.Column="1" Width="117" Grid.Row="1" HorizontalAlignment="Left"  Style="{StaticResource TextBoxValidationTemplateDefault}" Margin="0,0,0,12"/>
+                    <TextBox ToolTip="Корпус" FontSize="14" Text="{Binding Corpus, UpdateSourceTrigger=PropertyChanged}" Grid.Column="2"  Width="117" Grid.Row="1" HorizontalAlignment="Left" Style="{StaticResource TextBoxValidationTemplateDefault}" Margin="0,0,0,12"/>
+                    <TextBox ToolTip="Город" FontSize="14" Text="{Binding City, UpdateSourceTrigger=PropertyChanged}" Grid.Column="0" Width="117"  Grid.Row="2" HorizontalAlignment="Left" Style="{StaticResource TextBoxValidationTemplateDefault}" Margin="2,0,0,12"/>
+                    <TextBox ToolTip="Дом" FontSize="14" Text="{Binding House, UpdateSourceTrigger=PropertyChanged}" Grid.Column="1" Width="117" Grid.Row="2" HorizontalAlignment="Left"  Style="{StaticResource TextBoxValidationTemplateDefault}"  PreviewTextInput="NumericTextBox_OnPreviewTextInput" Margin="0,0,0,12"/>
+                    <TextBox ToolTip="Номер квартиры" FontSize="14" Text="{Binding Flat, UpdateSourceTrigger=PropertyChanged}" Grid.Column="2" Width="117" Grid.Row="2"  HorizontalAlignment="Left" Style="{StaticResource TextBoxValidationTemplateDefault}" PreviewTextInput="NumericTextBox_OnPreviewTextInput" Margin="0,0,0,12"/>
+                    
+                    <TextBlock VerticalAlignment="Bottom" Grid.Column="0" Grid.Row="1" Text="Страна" FontSize="10" HorizontalAlignment="Center" Foreground="Gray"/>
+                    <TextBlock VerticalAlignment="Bottom" Grid.Column="0" Grid.Row="2" Text="Город" FontSize="10" HorizontalAlignment="Center" Foreground="Gray"/>
+                    <TextBlock VerticalAlignment="Bottom" Grid.Column="2" Grid.Row="2" Text="Квартира" FontSize="10" HorizontalAlignment="Center" Foreground="Gray"/>
+                    <TextBlock VerticalAlignment="Bottom" Grid.Column="1" Grid.Row="1" Text="Улица" FontSize="10" HorizontalAlignment="Center" Foreground="Gray"/>
+                    <TextBlock VerticalAlignment="Bottom" Grid.Column="1" Grid.Row="2" Text="Дом" FontSize="10" HorizontalAlignment="Center" Foreground="Gray"/>
+                    <TextBlock VerticalAlignment="Bottom" Grid.Column="2" Grid.Row="1" Text="Корпус" FontSize="10" HorizontalAlignment="Center" Foreground="Gray"/>
+
                 </Grid>
             </Border>
-            <Border Margin="10" CornerRadius="5" Background="#f4f4f4" Height="200" >
+            <Border Margin="7" CornerRadius="5" Background="#f4f4f4" Height="200" >
                 <StackPanel Orientation="Vertical">
                     <StackPanel>
                         <Grid HorizontalAlignment="Left" Margin="0,0,0,-0.2" Width="400" >
@@ -80,10 +96,10 @@
                                 <RowDefinition Height="85"/>
                                 <RowDefinition Height="85"/>
                             </Grid.RowDefinitions>
-                            <TextBlock Grid.Row="0" Grid.ColumnSpan="2" HorizontalAlignment="Left" Foreground="Gray"  Text="Выберите количество приборов по типам подключения" Style="{StaticResource MaterialDesignCaptionTextBlock}"></TextBlock>
+                            <TextBlock Grid.Row="0" Grid.ColumnSpan="2" HorizontalAlignment="Center" Foreground="Gray"  Text="Выберите количество приборов по типам подключения" Style="{StaticResource MaterialDesignCaptionTextBlock}"></TextBlock>
 
                             <StackPanel Grid.Column="0" Grid.Row="1">
-                                <CheckBox Content="Радиаторы" x:Name="RadiatorCheckBox"/>
+                                <CheckBox Content="Радиаторы"  x:Name="RadiatorCheckBox" IsChecked="{Binding RadiatorCheckBox}"/>
                                 <Grid Height="30" materialDesign:HintAssist.Hint="Подключение">
                                     <Grid.ColumnDefinitions>
                                         <ColumnDefinition Width="77*"/>
@@ -98,7 +114,7 @@
                                 </Grid>
                             </StackPanel>
                             <StackPanel Grid.Column="1" Grid.Row="1">
-                                <CheckBox Content="Конвекторы" Name="ConvectorCheckBox" />
+                                <CheckBox Content="Конвекторы" x:Name="ConvectorCheckBox" IsChecked="{Binding ConvectorCheckBox}" />
                                 <Grid Height="30" materialDesign:HintAssist.Hint="Подключение">
                                     <TextBox Text="{Binding KsQuantity}" Style="{StaticResource MaterialDesignFloatingHintTextBox}" VerticalAlignment="Top" Padding="0"
                                              IsEnabled="{Binding IsChecked, ElementName=ConvectorCheckBox}"
@@ -109,7 +125,7 @@
                                 </Grid>
                             </StackPanel>
                             <StackPanel Grid.Column="0"  Grid.Row="2" Grid.ColumnSpan="2">
-                                <CheckBox Content="Внутрипольные конвекторы" Height="24" Margin="0,0,-0.4,0" Name="VPConvectorCheckBox"/>
+                                <CheckBox Content="Внутрипольные конвекторы" x:Name="VPConvectorCheckBox" Height="24" Margin="0,0,-0.4,0" IsChecked="{Binding VpConvectorCheckBox}"/>
                                 <TextBox Text="{Binding VpQuantity}" Style="{StaticResource MaterialDesignFloatingHintTextBox}" VerticalAlignment="Top" Padding="0" 
                                          IsEnabled="{Binding IsChecked, ElementName=VPConvectorCheckBox}"
                                          materialDesign:HintAssist.Hint="Пол" Height="43" Margin="10,0,310,-13" />
@@ -127,8 +143,8 @@
                 <CheckBox IsChecked="{Binding IsClean}" Grid.Column="1" Content="Чистовая отделка"  HorizontalAlignment="Center" Style="{StaticResource MaterialDesignFilterChipAccentCheckBox}" materialDesign:CheckBoxAssist.CheckBoxSize="25" Width="160"/>
             </Grid>
             <StackPanel>
-                <TextBlock Text="Пояснение к заявке" Padding="5" Height="27" Margin="10,0" Foreground="Gray"></TextBlock>
-                <TextBox Text="{Binding Comment}" TextWrapping="Wrap" Margin="10,0,10,10"  Height="52"/>
+                <TextBlock Text="Комментарий к заявке (до 200 символов)" Padding="5" Height="27" Margin="10,0" FontSize="12" Foreground="Gray"></TextBlock>
+                <TextBox Text="{Binding Comment, UpdateSourceTrigger=PropertyChanged}" TextWrapping="Wrap" Margin="5,0,10,5" Width="410" Height="52" Style="{StaticResource TextBoxValidationTemplateDefault}"/>
             </StackPanel>
             <Grid Width="350">
                 <Grid.ColumnDefinitions>

@@ -1,18 +1,16 @@
-﻿using System.Collections.ObjectModel;
+﻿using System;
+using System.Collections.ObjectModel;
 using System.Windows.Input;
 using TheBureau.Models.DataManipulating;
 using TheBureau.Repositories;
-using static System.Int32;
 
 namespace TheBureau.ViewModels
 {
-    public class EditRequestViewModel : ViewModelBase
+    public class EditRequestFromBrigadeViewModel : ViewModelBase
     {
         private RequestRepository _requestRepository = new RequestRepository();
         private BrigadeRepository _brigadeRepository = new();
-        int _selectedBrigadeId;
         private int _requestStatus;
-        ObservableCollection<Brigade> _brigades;
         private RelayCommand _updateRequest;
         private Request _requestForEdit;
         public bool sendEmail;
@@ -22,11 +20,8 @@ namespace TheBureau.ViewModels
             get => sendEmail;
             set { sendEmail = value; OnPropertyChanged("SendEmail"); }
         }
-
-        public EditRequestViewModel(Request request)
+        public EditRequestFromBrigadeViewModel(Request request)
         {
-            Brigades = new ObservableCollection<Brigade>(_brigadeRepository.GetAll());
-            Brigades.Add(new Brigade{id=0});
             RequestForEdit = request;
         }
         public Request RequestForEdit
@@ -46,16 +41,10 @@ namespace TheBureau.ViewModels
         {
             bool isStatusChanged = false;
             var request = _requestRepository.Get(RequestForEdit.id);
-            if (Parse(RequestStatus) == 1 || Parse(RequestStatus) == 2 ||Parse(RequestStatus)== 3)
+            if (Int32.Parse(RequestStatus) == 1 || Int32.Parse(RequestStatus) == 2 ||Int32.Parse(RequestStatus)== 3)
             {
-                if (Parse(RequestStatus) != request.status) isStatusChanged = true;
-                request.status = Parse(RequestStatus);
-            }
-            if (SelectedBrigadeId != null)
-            {
-                if (SelectedBrigadeId == 0) request.brigadeId = null;
-                else 
-                    request.brigadeId = SelectedBrigadeId;
+                if (Int32.Parse(RequestStatus) != request.status) isStatusChanged = true;
+                request.status = Int32.Parse(RequestStatus);
             }
             _requestRepository.Update(request);
             _requestRepository.Save();
@@ -67,26 +56,6 @@ namespace TheBureau.ViewModels
             OnPropertyChanged("Requests");
         }
 
-        public int SelectedBrigadeId
-        {
-            get => _selectedBrigadeId;
-            set
-            {
-                _selectedBrigadeId = value;
-                OnPropertyChanged("SelectedBrigadeId");
-            }
-        }
-        
-        public ObservableCollection<Brigade> Brigades 
-        { 
-            get => _brigades; 
-            set 
-            { 
-                _brigades = value; 
-                OnPropertyChanged("Brigades"); 
-            } 
-        }
-        
         public string RequestStatus
         {
             get => _requestStatus.ToString();
@@ -100,6 +69,5 @@ namespace TheBureau.ViewModels
                 OnPropertyChanged("RequestStatus");
             }
         }
-        
     }
 }
