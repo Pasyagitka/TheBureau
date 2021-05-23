@@ -3,23 +3,15 @@ using System.Windows;
 
 namespace TheBureau
 {
-    // public partial class App : Application
-    // {
-    //     private void App_OnStartup(object sender, StartupEventArgs e)
-    //     {//todo попробовать запоминать юзера
-    //         
-    //         Application.Current.Properties["User"] = null;
-    //     }
-    // }
-    
     public partial class App : Application
     {
-        const string AppId = "MY APP ID FOR THE MUTEX"; //todo настроить*????????
+        const string AppId = "TheBuerauByPasyagitka";
         static Mutex mutex = new Mutex(false, AppId);
         static bool mutexAccessed = false;
 
         private void App_OnStartup(object sender, StartupEventArgs e)
         {
+            //todo попробовать запоминать юзера
             Application.Current.Properties["User"] = null;
         }
         protected override void OnStartup(StartupEventArgs e)
@@ -40,7 +32,7 @@ namespace TheBureau
                 base.OnStartup(e);
             else
             {
-                MessageBox.Show("Невозможно открыть более 1 экземпляра приложения");
+                MessageBox.Show("Приложение уже запущено", "Отмена", MessageBoxButton.OK, MessageBoxImage.Error);
                 Shutdown();
             }
         }

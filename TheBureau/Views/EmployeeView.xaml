@@ -59,7 +59,7 @@
                                 <Button ToolTip="Добавить" Command="{Binding OpenAddEmployeeWindowCommand}">
                                     <Image Source="../../Resources/Images/add.png" Width="30"/>
                                 </Button>
-                                <Button ToolTip="Редактировать" Command="{Binding OpenChangeProductWindowCommand}">
+                                <Button ToolTip="Редактировать" Command="{Binding OpenEditEmployeeWindowCommand}">
                                     <Image Source="../../Resources/Images/edit.png" Width="30"/>
                                 </Button>
                                 <Button ToolTip="Удалить" Command="{Binding DeleteCommand}">

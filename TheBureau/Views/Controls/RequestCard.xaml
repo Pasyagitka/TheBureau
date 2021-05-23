@@ -39,7 +39,7 @@
             <ContentControl Grid.Column="0" Grid.Row="1" Content="{Binding Client}">
                 <ContentControl.ContentTemplate>
                     <DataTemplate>
-                        <TextBlock VerticalAlignment="Center" Margin="5" FontSize="10" FontWeight="DemiBold">
+                        <TextBlock VerticalAlignment="Center" Margin="5,0,5,0" FontSize="10" FontWeight="DemiBold" TextWrapping="Wrap">
                             <TextBlock.Text>
                                 <MultiBinding Converter="{StaticResource NameConverter}">
                                     <Binding Path="surname" />

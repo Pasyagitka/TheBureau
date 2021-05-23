@@ -5,6 +5,7 @@ using System.Text.RegularExpressions;
 using System.Windows.Input;
 using TheBureau.Models.DataManipulating;
 using TheBureau.Repositories;
+// ReSharper disable All
 
 namespace TheBureau.ViewModels
 {
@@ -19,7 +20,6 @@ namespace TheBureau.ViewModels
         private string _patronymic;
         private string _email;
         private decimal _contactNumber;
-        
         Client _client;
         
         private RelayCommand _editClientCommand;
@@ -29,11 +29,7 @@ namespace TheBureau.ViewModels
         public int Id
         {
             get => _id;
-            set
-            {
-                _id = value;
-                OnPropertyChanged("Id");
-            }
+            set { _id = value; OnPropertyChanged("Id"); }
         }
         
         public string Surname
@@ -49,7 +45,7 @@ namespace TheBureau.ViewModels
                     _errorsViewModel.AddError("Surname", ValidationConst.FieldCannotBeEmpty);
                 }
 
-                if (_surname.Length is > 20 or < 2)
+                if (_surname?.Length is > 20 or < 2)
                 {
                     _errorsViewModel.AddError("Surname", ValidationConst.NameLengthExceeded);
                 }
@@ -74,12 +70,12 @@ namespace TheBureau.ViewModels
                 {
                     _errorsViewModel.AddError("Firstname", ValidationConst.FieldCannotBeEmpty);
                 }
-                if (_firstname.Length is > 20 or < 2)
+                if (_firstname?.Length is > 20 or < 2)
                 {
                     _errorsViewModel.AddError("Firstname", ValidationConst.NameLengthExceeded);
                 }
                 var regex = new Regex(ValidationConst.LettersHyphenRegex);
-                if (!regex.IsMatch(_firstname))
+                if (!regex.IsMatch(_firstname!))
                 {
                     _errorsViewModel.AddError("Firstname",  ValidationConst.IncorrectFirstname);
                 }
@@ -98,12 +94,12 @@ namespace TheBureau.ViewModels
                 {
                     _errorsViewModel.AddError("Patronymic", ValidationConst.FieldCannotBeEmpty);
                 }
-                if (_patronymic.Length is > 20 or < 2)
+                if (_patronymic?.Length is > 20 or < 2)
                 {
                     _errorsViewModel.AddError("Patronymic", ValidationConst.NameLengthExceeded);
                 }
                 var regex = new Regex(ValidationConst.LettersHyphenRegex);
-                if (!regex.IsMatch(_patronymic))
+                if (!regex.IsMatch(_patronymic!))
                 {
                     _errorsViewModel.AddError("Patronymic", ValidationConst.IncorrectPatronymic);
                 }
@@ -122,12 +118,12 @@ namespace TheBureau.ViewModels
                 {
                     _errorsViewModel.AddError("Email", ValidationConst.FieldCannotBeEmpty);
                 }
-                if (_email.Length > 255)
+                if (_email?.Length > 255)
                 {
                     _errorsViewModel.AddError("Email", ValidationConst.EmailLengthExceeded);
                 }
                 var regex = new Regex(ValidationConst.EmailRegex);
-                if (!regex.IsMatch(_email))
+                if (!regex.IsMatch(_email!))
                 {
                     _errorsViewModel.AddError("Email", ValidationConst.IncorrectEmailStructure);
                 }
@@ -146,7 +142,7 @@ namespace TheBureau.ViewModels
                 {
                     _errorsViewModel.AddError("ContactNumber", ValidationConst.FieldCannotBeEmpty);
                 }
-                _contactNumber = decimal.Parse(value); 
+                _contactNumber = decimal.Parse(value!); 
                 
 
                 var regex = new Regex(ValidationConst.ContactNumberRegex);
@@ -175,10 +171,7 @@ namespace TheBureau.ViewModels
             }
         }
 
-        public ICommand EditClientCommand
-        {
-            get { return _editClientCommand ??= new RelayCommand(EditClient, CanEditClient); }
-        }
+        public ICommand EditClientCommand { get => _editClientCommand ??= new RelayCommand(EditClient, CanEditClient); }
 
         private void EditClient(object sender)
         {
@@ -201,12 +194,9 @@ namespace TheBureau.ViewModels
             _errorsViewModel.ErrorsChanged += ErrorsViewModel_ErrorsChanged;
             Client = selectedClient;
         }
-
+        
         #region Validation
-        public IEnumerable GetErrors(string propertyName)
-        {
-            return _errorsViewModel.GetErrors(propertyName);
-        }
+        public IEnumerable GetErrors(string propertyName) => _errorsViewModel.GetErrors(propertyName);
         public bool HasErrors => _errorsViewModel.HasErrors;
         public event EventHandler<DataErrorsChangedEventArgs> ErrorsChanged;
         

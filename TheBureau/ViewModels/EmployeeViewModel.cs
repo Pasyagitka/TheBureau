@@ -15,14 +15,17 @@ namespace TheBureau.ViewModels
         private ObservableCollection<Employee> _employees;
         private ObservableCollection<Brigade> _employeeBrigades;
         
-        private bool readOnly;
-        object selectedItem;
-        private string findEmployeesText;
-        private int selectedIndex;
+        private bool _readOnly;
+        private object _selectedItem;
+        private string _findEmployeesText;
+        private int _selectedIndex;
         
-        private RelayCommand deleteCommand;
-        private RelayCommand updateCommand;
-        private RelayCommand saveChangesCommand;
+        private ICommand _deleteCommand;
+        private ICommand _updateCommand;
+        private ICommand _saveChangesCommand;
+        private ICommand _openEditEmployeeWindowCommand;
+        private ICommand _openAddEmployeeWindowCommand;
+
         
         public ObservableCollection<Employee> Employees
         {
@@ -34,96 +37,73 @@ namespace TheBureau.ViewModels
             _employeeRepository = new EmployeeRepository();
             _brigadeRepository = new BrigadeRepository();
             Employees = new ObservableCollection<Employee>(_employeeRepository.GetAll());
-            
             SelectedItem = Employees.First();
         }
 
-        public RelayCommand DeleteCommand
+        public ICommand DeleteCommand
         {
             get
             {
-                return deleteCommand ??
-                       (deleteCommand = new RelayCommand(obj =>
+                return _deleteCommand ??
+                       (_deleteCommand = new RelayCommand(obj =>
                        {
-                           int clientid = (SelectedItem as Employee).id;
-                           _employeeRepository.Delete(clientid);
-                           _employeeRepository.SaveChanges();
-                           Employees = new ObservableCollection<Employee>(_employeeRepository.GetAll());
-                           SelectedItem = Employees.First();
-                           //OnPropertyChanged("DeleteCommand");
+                           if (SelectedItem is Employee)
+                           {
+                               int clientid = ((Employee) SelectedItem).id;
+                               _employeeRepository.Delete(clientid);
+                               _employeeRepository.SaveChanges();
+                               Employees.Remove(SelectedItem as Employee);
+                               SelectedItem = Employees.First();
+                               OnPropertyChanged("Employees");
+                           }
                        }));
                 
             }
         }
-        private DelegateCommand openChangeProductWindowCommand;
-        private DelegateCommand openAddEmployeeWindowCommand;
         
-        public DelegateCommand OpenChangeProductWindowCommand
-        {
-            get
-            {
-                if (openChangeProductWindowCommand == null)
-                {
-                    openChangeProductWindowCommand = new DelegateCommand(openEditEmployeeWindow);
-                }
-                return openChangeProductWindowCommand;
-            }
-        }
-        public DelegateCommand OpenAddEmployeeWindowCommand
-        {
-            get
-            {
-                if (openAddEmployeeWindowCommand == null)
-                {
-                    openAddEmployeeWindowCommand = new DelegateCommand(openAddEmployeeWindow);
-                }
-                return openAddEmployeeWindowCommand;
-            }
-        }
-        
-        private void openAddEmployeeWindow()
+        public ICommand OpenEditEmployeeWindowCommand =>
+            _openEditEmployeeWindowCommand ??= new RelayCommand(OpenEditEmployeeWindow);
+
+        public ICommand OpenAddEmployeeWindowCommand =>
+            _openAddEmployeeWindowCommand ??= new RelayCommand(OpenAddEmployeeWindow);
+
+        private void OpenAddEmployeeWindow(object sender)
         {
             AddEmployeeView view = new();
             if (view.ShowDialog() == true)
             {
                 Update();
             }
-        
         }
-        private void openEditEmployeeWindow()
+        
+        private void OpenEditEmployeeWindow(object sender)
         {
             EditEmployeeView window = new(SelectedItem as Employee);
             if (window.ShowDialog() == true)
             {
                 Update();
             }
-        
         }
         
-        public ICommand SaveChangesCommand
-        {
-            get
+        public ICommand SaveChangesCommand =>
+            _saveChangesCommand = new RelayCommand(obj =>
             {
-                return saveChangesCommand = new RelayCommand(obj =>
-                {
-                    Employees = new ObservableCollection<Employee>(_employeeRepository.GetAll());
-                    SelectedItem = Employees.First();
-                    OnPropertyChanged("SaveChangesCommand");
-                });
-            }
-        }
+                Employees = new ObservableCollection<Employee>(_employeeRepository.GetAll());
+                SelectedItem = Employees.First();
+                OnPropertyChanged("SaveChangesCommand");
+            });
 
         public object SelectedItem
         {
-            get => selectedItem;
+            get => _selectedItem;
             set
             {
-                selectedItem = value;
+                _selectedItem = value;
                 SetClientsRequests();
                 OnPropertyChanged("SelectedItem");
             }
         }
-
+        
         public void Update()
         {
             _employeeRepository = new EmployeeRepository();
@@ -137,7 +117,7 @@ namespace TheBureau.ViewModels
             get => _employeeBrigades;
             set
             {
-                if (selectedItem is Employee)
+                if (_selectedItem is Employee)
                 {
                     _employeeBrigades = value;
                     OnPropertyChanged("EmployeeBrigade");
@@ -147,11 +127,11 @@ namespace TheBureau.ViewModels
         
         public string FindEmployeeText
         {
-            get => findEmployeesText;
+            get => _findEmployeesText;
             set
             {
-                findEmployeesText = value;
-                Search(findEmployeesText); 
+                _findEmployeesText = value;
+                Search(_findEmployeesText); 
                 OnPropertyChanged("FindEmployeeText");
             }
         }
@@ -159,7 +139,7 @@ namespace TheBureau.ViewModels
         void SetClientsRequests()
         {
             //todo null??
-            EmployeeBrigade = new ObservableCollection<Brigade>(_brigadeRepository.GetAll().Where(x => x.id == (selectedItem as Employee)?.brigadeId));
+            EmployeeBrigade = new ObservableCollection<Brigade>(_brigadeRepository.GetAll().Where(x => x.id == (_selectedItem as Employee)?.brigadeId));
         }
         private void Search(string criteria){
         

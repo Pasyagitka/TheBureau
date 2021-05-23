@@ -7,7 +7,6 @@ namespace TheBureau.Repositories
     public class CompanyRepository
     {
         private Model _context = new Model();
-        //todo single
         public Company Get()
         {
             return _context.Companies.FirstOrDefault();

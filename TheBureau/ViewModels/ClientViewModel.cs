@@ -23,12 +23,12 @@ namespace TheBureau.ViewModels
         object _selectedItem;
         private string _findClientsText;
         private int selectedIndex;
-        private RelayCommand _deleteCommand;
-        private RelayCommand _updateCommand;
-        private RelayCommand _saveChangesCommand;
-        private DelegateCommand openEditClientWindowCommand;
+        private ICommand _deleteCommand;
+        private ICommand _updateCommand;
+        private ICommand _saveChangesCommand;
+        private ICommand openEditClientWindowCommand;
 
-        public RelayCommand DeleteCommand
+        public ICommand DeleteCommand
         {
             get
             {
@@ -64,14 +64,9 @@ namespace TheBureau.ViewModels
                        }));
             }
         }
-        public DelegateCommand OpenEditClientWindowCommand
-        {
-            get
-            {
-                return openEditClientWindowCommand ??= new DelegateCommand(openEditClientWindow);
-            }
-        }
-        private void openEditClientWindow()
+        public ICommand OpenEditClientWindowCommand => openEditClientWindowCommand ??= new RelayCommand(openEditClientWindow);
+
+        private void openEditClientWindow(object sender)
         {
             var clientToEdit = SelectedItem as Client;
             EditClientView window = new(clientToEdit);

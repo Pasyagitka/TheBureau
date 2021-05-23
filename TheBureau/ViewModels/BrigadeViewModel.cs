@@ -98,6 +98,7 @@ namespace TheBureau.ViewModels
                     _brigadeRepository.Save();
                     _userRepository.Save();
                     
+                    SelectedItem = Brigades.First();
                     Brigades = new ObservableCollection<Brigade>(_brigadeRepository.GetAll());
                 });
             }

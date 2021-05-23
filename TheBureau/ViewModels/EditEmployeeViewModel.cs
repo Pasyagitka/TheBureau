@@ -11,9 +11,10 @@ namespace TheBureau.ViewModels
 {
     public class EmployeeEditViewModel : ViewModelBase, INotifyDataErrorInfo
     {
-        private ErrorsViewModel _errorsViewModel;
-        private BrigadeRepository _brigadeRepository = new BrigadeRepository();
-        private EmployeeRepository _employeeRepository = new EmployeeRepository();
+        private readonly ErrorsViewModel _errorsViewModel = new();
+        private readonly BrigadeRepository _brigadeRepository = new();
+        private readonly EmployeeRepository _employeeRepository = new();
+       
         private int _id;
         private string _surname;
         private string _firstname;
@@ -21,14 +22,28 @@ namespace TheBureau.ViewModels
         private string _email;
         private decimal? _contactNumber;
         private int? _brigadeid;
+        Employee _employee;
 
-        private ICommand _editEmployeeCommand;
         private ObservableCollection<Brigade> _brigades;
         private int _selectedBrigadeId;
-
         
-        #region propetries
+        private ICommand _editEmployeeCommand;
 
+        public ObservableCollection<Brigade> Brigades 
+        { 
+            get => _brigades; 
+            set { _brigades = value; OnPropertyChanged("Brigades"); } 
+        }
+        
+        public int SelectedBrigadeId
+        {
+            get => _selectedBrigadeId;
+            set { _selectedBrigadeId = value; OnPropertyChanged("SelectedBrigadeId"); }
+        }
+        
+
+        #region EmployeeProperties
+        
         public int Id
         {
             get => _id;
@@ -47,12 +62,12 @@ namespace TheBureau.ViewModels
                 {
                     _errorsViewModel.AddError("Surname", ValidationConst.FieldCannotBeEmpty);
                 }
-                if (_surname.Length is > 20 or < 2)
+                if (_surname?.Length is > 20 or < 2)
                 {
                     _errorsViewModel.AddError("Surname", ValidationConst.NameLengthExceeded);
                 }
                 var regex = new Regex(ValidationConst.LettersHyphenRegex);
-                if (!regex.IsMatch(_surname))
+                if (!regex.IsMatch(_surname!))
                 {
                     _errorsViewModel.AddError("Surname", ValidationConst.IncorrectSurname);
                 }
@@ -60,7 +75,7 @@ namespace TheBureau.ViewModels
             }
 
         }
-
+        
         public string Firstname
         {
             get => _firstname;
@@ -73,19 +88,19 @@ namespace TheBureau.ViewModels
                 {
                     _errorsViewModel.AddError("Firstname", ValidationConst.FieldCannotBeEmpty);
                 }
-                if (_firstname.Length is > 20 or < 2)
+                if (_firstname?.Length is > 20 or < 2)
                 {
                     _errorsViewModel.AddError("Firstname", ValidationConst.NameLengthExceeded);
                 }
                 var regex = new Regex(ValidationConst.LettersHyphenRegex);
-                if (!regex.IsMatch(_firstname))
+                if (!regex.IsMatch(_firstname!))
                 {
                     _errorsViewModel.AddError("Firstname",  ValidationConst.IncorrectFirstname);
                 }
                 OnPropertyChanged("Firstname");
             }
         }
-
+        
         public string Patronymic
         {
             get => _patronymic;
@@ -98,19 +113,19 @@ namespace TheBureau.ViewModels
                 {
                     _errorsViewModel.AddError("Patronymic", ValidationConst.FieldCannotBeEmpty);
                 }
-                if (_patronymic.Length is > 20 or < 2)
+                if (_patronymic?.Length is > 20 or < 2)
                 {
                     _errorsViewModel.AddError("Patronymic", ValidationConst.NameLengthExceeded);
                 }
                 var regex = new Regex(ValidationConst.LettersHyphenRegex);
-                if (!regex.IsMatch(_patronymic))
+                if (!regex.IsMatch(_patronymic!))
                 {
                     _errorsViewModel.AddError("Patronymic", ValidationConst.IncorrectPatronymic);
                 }
                 OnPropertyChanged("Patronymic");
             }
         }
-
+        
         public string Email
         {
             get => _email;
@@ -122,19 +137,19 @@ namespace TheBureau.ViewModels
                 {
                     _errorsViewModel.AddError("Email", ValidationConst.FieldCannotBeEmpty);
                 }
-                if (_email.Length > 255)
+                if (_email?.Length > 255)
                 {
                     _errorsViewModel.AddError("Email", ValidationConst.EmailLengthExceeded);
                 }
                 var regex = new Regex(ValidationConst.EmailRegex);
-                if (!regex.IsMatch(_email))
+                if (!regex.IsMatch(_email!))
                 {
                     _errorsViewModel.AddError("Email", ValidationConst.IncorrectEmailStructure);
                 }
                 OnPropertyChanged("Email");
             }
         }
-
+        
         public string ContactNumber
         {
             get => _contactNumber.ToString();
@@ -146,7 +161,7 @@ namespace TheBureau.ViewModels
                 {
                     _errorsViewModel.AddError("ContactNumber", ValidationConst.FieldCannotBeEmpty);
                 }
-                _contactNumber = decimal.Parse(value); 
+                _contactNumber = decimal.Parse(value!); 
                 
 
                 var regex = new Regex(ValidationConst.ContactNumberRegex);
@@ -157,47 +172,18 @@ namespace TheBureau.ViewModels
                 OnPropertyChanged("ContactNumber");
             }
         }
+        
         public string BrigadeId
         {
             get => _brigadeid.ToString();
             set
             {
-                if (String.IsNullOrWhiteSpace(value))
-                {
-                    _brigadeid = null;
-                }
-                else
-                {
-                    _brigadeid = Int32.Parse(value);
-                }
-
+                _brigadeid = String.IsNullOrWhiteSpace(value) ? null : Int32.Parse(value);
                 OnPropertyChanged("BrigadeId");
             }
         }
+        #endregion
         
-        public ObservableCollection<Brigade> Brigades 
-        { 
-            get => _brigades; 
-            set 
-            { 
-                _brigades = value; 
-                OnPropertyChanged("Brigades"); 
-            } 
-        }
-        
-        public int SelectedBrigadeId
-        {
-            get => _selectedBrigadeId;
-            set
-            {
-                _selectedBrigadeId = value;
-                OnPropertyChanged("SelectedBrigadeId");
-            }
-        }
-        #endregion propetries
-        
-        Employee _employee;
-
         public Employee Employee
         {
             get => _employee;
@@ -214,15 +200,8 @@ namespace TheBureau.ViewModels
                 OnPropertyChanged("Employee");
             }
         }
-
-        
-        public ICommand EditEmployeeCommand
-        {
-            get { return _editEmployeeCommand ??= new RelayCommand(EditEmployee, CanEditEmployee); }
-        }
-
+        public ICommand EditEmployeeCommand => _editEmployeeCommand ??= new RelayCommand(EditEmployee, CanEditEmployee);
         private bool CanEditEmployee(object sender) => !HasErrors;
-
         private void EditEmployee(object sender)
         {
             try
@@ -235,36 +214,29 @@ namespace TheBureau.ViewModels
                 clientUpdate.contactNumber = decimal.Parse(ContactNumber);
    
                 if (SelectedBrigadeId == 0) clientUpdate.brigadeId = null;
-                else 
-                    clientUpdate.brigadeId = SelectedBrigadeId;
+                else clientUpdate.brigadeId = SelectedBrigadeId;
                 
                 _employeeRepository.Update(clientUpdate);
                 _employeeRepository.SaveChanges();
             }
             catch (Exception e)
             {
-                Console.WriteLine(e);
-                throw;
+                Console.WriteLine(e.Message);
             }
         }
 
         public EmployeeEditViewModel(Employee selectedEmployee)
         {
-            _errorsViewModel = new ErrorsViewModel();
             _errorsViewModel.ErrorsChanged += ErrorsViewModel_ErrorsChanged;
             Employee = selectedEmployee;
-            Brigades = new ObservableCollection<Brigade>(_brigadeRepository.GetAll());
-            Brigades.Add(new Brigade{id=0});
+            Brigades = new ObservableCollection<Brigade>(_brigadeRepository.GetAll()) {new Brigade {id = 0}};
+            SelectedBrigadeId = (int) (Employee.brigadeId ?? 0);
         }
 
         #region Validation
-        public IEnumerable GetErrors(string propertyName)
-        {
-            return _errorsViewModel.GetErrors(propertyName);
-        }
+        public IEnumerable GetErrors(string propertyName) => _errorsViewModel.GetErrors(propertyName);
         public bool HasErrors => _errorsViewModel.HasErrors;
         public event EventHandler<DataErrorsChangedEventArgs> ErrorsChanged;
-        
         private void ErrorsViewModel_ErrorsChanged(object sender, DataErrorsChangedEventArgs e)
         {
             ErrorsChanged?.Invoke(this, e);

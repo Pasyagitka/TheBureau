@@ -18,11 +18,12 @@
         <Grid Background="Transparent">
             <Grid.RowDefinitions>
                 <RowDefinition Height="40"/>
+                <RowDefinition Height="220"/>
                 <RowDefinition/>
             </Grid.RowDefinitions>
             <Grid.ColumnDefinitions>
                 <ColumnDefinition/>
-                <ColumnDefinition/>
+                <ColumnDefinition Width="500"/>
             </Grid.ColumnDefinitions>
             <Grid Grid.Row="0" Grid.ColumnSpan="2">
                 <Button Style="{StaticResource MaterialDesignFlatDarkBgButton}" Background="{DynamicResource LightGreenColor}" BorderThickness="0" materialDesign:ButtonAssist.CornerRadius="0 0 25 25" Height="Auto" Margin="379,0,379.6,0">
@@ -48,40 +49,43 @@
                         </materialDesign:Card>
                     </StackPanel>
                 </Border>
-                <Grid Height="300" Margin="10, 40, 10, 40">
-                  <controls1:StatChart/>
-                </Grid>
+              
             </StackPanel>
-
-            <Grid  Grid.Row="1" Grid.Column="1"  Margin="20, 32, 20, 10">
-                <Border Background="#f7f7f7" CornerRadius="10">
-                    <StackPanel Orientation="Vertical">
-                        <ScrollViewer materialDesign:ScrollViewerAssist.IsAutoHideEnabled="True" Background="Transparent">
-                            <StackPanel>
-                                <ListView ItemsSource="{Binding Brigades, Mode=TwoWay}"> 
-                                    <ListView.ItemsPanel>
-                                        <ItemsPanelTemplate>
-                                            <StackPanel Background="{DynamicResource PrimaryLightGrayColor}"/>
-                                        </ItemsPanelTemplate>
-                                    </ListView.ItemsPanel>
-                                    <ListView.ItemTemplate> 
-                                        <DataTemplate> 
-                                            <StackPanel Orientation="Horizontal">
-                                                <controls:BrigadeCardSmall Width="215"/>
-                                                <Separator/>
-                                                <!-- <controls1:SingleBrigadeChart Width="415"/> -->
-                                            </StackPanel>
-                                        </DataTemplate> 
-                                    </ListView.ItemTemplate> 
-                                </ListView> 
-                            </StackPanel>
-                        </ScrollViewer>
-                        <TextBlock Text="Статистика заявок по бригадам" HorizontalAlignment="Center"/>
-                        <!-- <controls1:BrigadeStatChart Height="300"/> -->
-                    </StackPanel>
-                </Border>
-                    
+            <Grid Grid.Row="1" Grid.Column="1" Height="220">
+                <controls1:StatChart/>
             </Grid>
+            <ScrollViewer Grid.Row="2" Grid.ColumnSpan="2" Grid.Column="0"  Height="380" Margin="30, 10,30,10" VerticalScrollBarVisibility="Disabled" HorizontalScrollBarVisibility="Auto">
+                <controls1:HeatSeries Margin="15" Height="350"/>
+            </ScrollViewer>
+            <!-- <Grid  Grid.Row="1" Grid.Column="1"  Margin="20, 32, 20, 10"> -->
+            <!--     <Border Background="{DynamicResource PrimaryLightGrayColor}" CornerRadius="10"> -->
+            <!--         <StackPanel Orientation="Vertical" Name="BrigadesStackPanel"> -->
+            <!--             <ScrollViewer materialDesign:ScrollViewerAssist.IsAutoHideEnabled="True" Background="Transparent" Height="{Binding ElementName=BrigadesStackPanel, Path=ActualHeight}"> -->
+            <!--                 <StackPanel> -->
+            <!--                     <ListView ItemsSource="{Binding Brigades, Mode=TwoWay}">  -->
+            <!--                         <ListView.ItemsPanel> -->
+            <!--                             <ItemsPanelTemplate> -->
+            <!--                                 <StackPanel Background="{DynamicResource PrimaryLightGrayColor}"/> -->
+            <!--                             </ItemsPanelTemplate> -->
+            <!--                         </ListView.ItemsPanel> -->
+            <!--                         <ListView.ItemTemplate>  -->
+            <!--                             <DataTemplate>  -->
+            <!--                                 <StackPanel Orientation="Horizontal"> -->
+            <!--                                     <controls:BrigadeCardSmall Width="215"/> -->
+            <!--                                     <Separator/> -->
+            <!--                                     ~1~ <controls1:SingleBrigadeChart MinWidth="310" HorizontalAlignment="Stretch"/> @1@ -->
+            <!--                                 </StackPanel> -->
+            <!--                             </DataTemplate>  -->
+            <!--                         </ListView.ItemTemplate>  -->
+            <!--                     </ListView>  -->
+            <!--                 </StackPanel> -->
+            <!--             </ScrollViewer> -->
+            <!--             ~1~ <TextBlock Text="Статистика заявок по бригадам" HorizontalAlignment="Center"/> @1@ -->
+            <!--             ~1~ <controls1:BrigadeStatChart Height="300"/> @1@ -->
+            <!--         </StackPanel> -->
+            <!--     </Border> -->
+            <!--          -->
+            <!-- </Grid> -->
         </Grid>
     </Border>
 </Page>

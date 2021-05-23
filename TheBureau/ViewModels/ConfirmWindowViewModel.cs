@@ -5,55 +5,36 @@ using System.Windows.Input;
 namespace TheBureau.ViewModels
 {
     public class ConfirmWindowViewModel : ViewModelBase
-
     {
-    private ICommand _okCommand;
-    private ICommand _cancelCommand;
+        private ICommand _okCommand;
+        private ICommand _cancelCommand;
 
-    public ICommand OkCommand
-    {
-        get
+        public ICommand OkCommand => _okCommand ??= new RelayCommand(DoOk, CanDo);
+        public ICommand CancelCommand => _cancelCommand ??= new RelayCommand(DoCancel, CanDo);
+
+        void DoOk(object win)
         {
-            if (_okCommand == null)
+            var win1 = win as Window;
+            if (win1 != null)
             {
-                _okCommand = new DelegateCommand<Window>(DoOk, CanDo);
+                win1.DialogResult = true;
+                win1.Close();
             }
-            OnPropertyChanged("OkCommand");
-            return _okCommand;
         }
-    }
 
-
-    public ICommand CancelCommand
-    {
-        get
+        void DoCancel(object win)
         {
-            if (_cancelCommand == null)
+            var win1 = win as Window;
+            if (win1 != null)
             {
-                _cancelCommand = new DelegateCommand<Window>(DoCancel, CanDo);
+                win1.DialogResult = false;
+                win1.Close();
             }
-            OnPropertyChanged("CancelCommand");
-            return _cancelCommand;
         }
-    }
-
-    void DoOk(Window win)
-    {
-        win.DialogResult = true;
-        win.Close();
-    }
-
-    void DoCancel(Window win)
-    {
-        win.DialogResult = false;
-        win.Close();
-    }
-
-
-    bool CanDo(Window win)
-    {
-        return true;
-    }
+        bool CanDo(object win)
+        {
+            return true;
+        }
     }
 
 }

@@ -19,6 +19,5 @@ namespace TheBureau.Views
         {
             this.DialogResult = true;
         }
-        //todo edit dialog command
     }
 }

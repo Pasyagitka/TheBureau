@@ -11,7 +11,7 @@
     <Border Background="White" CornerRadius="0,15,15,0">
         <StackPanel Orientation="Vertical">
             <Border Background="#f4f4f4" CornerRadius="10"  Margin="7">
-                <Grid Height="135">
+                <Grid Height="144">
                     <Grid.ColumnDefinitions>
                         <ColumnDefinition Width="200"/>
                         <ColumnDefinition Width="200"/>
@@ -32,7 +32,11 @@
                     <TextBox ToolTip="Фамилия" Grid.Column="0" Grid.Row="1" Text="{Binding Surname, UpdateSourceTrigger=PropertyChanged}" Style="{StaticResource  TextBoxValidationTemplateDefault}" Width="180" HorizontalAlignment="Left" Margin="10,0,0,0"/>
                     <TextBox ToolTip="Имя" Grid.Column="0" Grid.Row="2" Text="{Binding Firstname, UpdateSourceTrigger=PropertyChanged}" Style="{StaticResource TextBoxValidationTemplateDefault}"  materialDesign:HintAssist.Hint="Имя"   Width="180" HorizontalAlignment="Left" Margin="10,0,0,0"/>
                     <TextBox ToolTip="Отчество" Grid.Column="0" Grid.Row="3" Text="{Binding Patronymic, UpdateSourceTrigger=PropertyChanged}" Style="{StaticResource TextBoxValidationTemplateDefault}"  materialDesign:HintAssist.Hint="Отчество"  Width="180" HorizontalAlignment="Left" Margin="10,0,0,0" />
-                    <TextBox ToolTip="Контактный телефон" Grid.Column="1" Grid.Row="1" Text="{Binding ContactNumber, UpdateSourceTrigger=PropertyChanged}" Style="{StaticResource TextBoxValidationTemplateDefault}"  materialDesign:HintAssist.Hint="Контактный телефон"  Width="196"  HorizontalAlignment="Left" Margin="0,0,10,0"/>
+                    <TextBox ToolTip="Контактный телефон" Grid.Column="1" Grid.Row="1" Text="{Binding ContactNumber, UpdateSourceTrigger=PropertyChanged}" 
+                             Style="{StaticResource TextBoxValidationTemplateDefault}"  
+                             materialDesign:HintAssist.Hint="Контактный телефон"  Width="196"  
+                             HorizontalAlignment="Left" Margin="0,0,10,0"
+                             PreviewTextInput="NumericTextBox_OnPreviewTextInput"/>
                     <TextBox ToolTip="Адрес электронной почты" Grid.Column="1" Grid.Row="2" Text="{Binding Email, UpdateSourceTrigger=PropertyChanged}" Style="{StaticResource TextBoxValidationTemplateDefault}"  materialDesign:HintAssist.Hint="Электронная почта" Width="196"  HorizontalAlignment="Left" Margin="0,0,10,0"/>
 
                 </Grid>
@@ -52,7 +56,7 @@
                 <!--     </StackPanel> -->
                 <!-- </StackPanel> -->
             </Border>
-            <Border Margin="7" CornerRadius="5" Background="#f4f4f4" Height="100" >
+            <Border Margin="7" CornerRadius="5" Background="#f4f4f4" Height="110" >
                 <Grid>
                     <Grid.ColumnDefinitions>
                         <ColumnDefinition/>
@@ -105,30 +109,35 @@
                                         <ColumnDefinition Width="77*"/>
                                         <ColumnDefinition Width="123*"/>
                                     </Grid.ColumnDefinitions>
-                                    <TextBox Text="{Binding RsQuantity}" Style="{StaticResource MaterialDesignFloatingHintTextBox}" VerticalAlignment="Top" Padding="0"
+                                    <TextBox Text="{Binding RsQuantity, UpdateSourceTrigger=PropertyChanged}" Style="{StaticResource MaterialDesignFloatingHintTextBox}" VerticalAlignment="Top" Padding="0"
                                              IsEnabled="{Binding IsChecked, ElementName=RadiatorCheckBox}"
-                                             materialDesign:HintAssist.Hint="Стена" Height="43" Margin="28.667,5,14,-18" Grid.Column="1" />
-                                    <TextBox Text="{Binding RpQuantity}" Grid.Column="0" Style="{StaticResource MaterialDesignFloatingHintTextBox}" VerticalAlignment="Top" Padding="0"
+                                             materialDesign:HintAssist.Hint="Стена" Height="43" Margin="28.667,5,14,-18" Grid.Column="1" 
+                                             PreviewTextInput="NumericTextBox_OnPreviewTextInput"/>
+                                    <TextBox Text="{Binding RpQuantity, UpdateSourceTrigger=PropertyChanged}" Grid.Column="0" Style="{StaticResource MaterialDesignFloatingHintTextBox}" VerticalAlignment="Top" Padding="0"
                                              IsEnabled="{Binding IsChecked, ElementName=RadiatorCheckBox}"
-                                             materialDesign:HintAssist.Hint="Пол" Height="43" Margin="3,5,117,-18" Grid.ColumnSpan="2" />
+                                             materialDesign:HintAssist.Hint="Пол" Height="43" Margin="3,5,117,-18" Grid.ColumnSpan="2" 
+                                             PreviewTextInput="NumericTextBox_OnPreviewTextInput"/>
                                 </Grid>
                             </StackPanel>
                             <StackPanel Grid.Column="1" Grid.Row="1">
                                 <CheckBox Content="Конвекторы" x:Name="ConvectorCheckBox" IsChecked="{Binding ConvectorCheckBox}" />
                                 <Grid Height="30" materialDesign:HintAssist.Hint="Подключение">
-                                    <TextBox Text="{Binding KsQuantity}" Style="{StaticResource MaterialDesignFloatingHintTextBox}" VerticalAlignment="Top" Padding="0"
+                                    <TextBox Text="{Binding KsQuantity, UpdateSourceTrigger=PropertyChanged}" Style="{StaticResource MaterialDesignFloatingHintTextBox}" VerticalAlignment="Top" Padding="0"
                                              IsEnabled="{Binding IsChecked, ElementName=ConvectorCheckBox}"
-                                             materialDesign:HintAssist.Hint="Стена" Height="43" Margin="106,5,14,-18" />
-                                    <TextBox  Text="{Binding KpQuantity}" Style="{StaticResource MaterialDesignFloatingHintTextBox}" VerticalAlignment="Top" Padding="0"
+                                             materialDesign:HintAssist.Hint="Стена" Height="43" Margin="106,5,14,-18" 
+                                             PreviewTextInput="NumericTextBox_OnPreviewTextInput"/>
+                                    <TextBox  Text="{Binding KpQuantity, UpdateSourceTrigger=PropertyChanged}" Style="{StaticResource MaterialDesignFloatingHintTextBox}" VerticalAlignment="Top" Padding="0"
                                               IsEnabled="{Binding IsChecked, ElementName=ConvectorCheckBox}"
-                                              materialDesign:HintAssist.Hint="Пол" Height="43" Margin="4,5,116,-18" />
+                                              materialDesign:HintAssist.Hint="Пол" Height="43" Margin="4,5,116,-18"
+                                              PreviewTextInput="NumericTextBox_OnPreviewTextInput"/>
                                 </Grid>
                             </StackPanel>
                             <StackPanel Grid.Column="0"  Grid.Row="2" Grid.ColumnSpan="2">
-                                <CheckBox Content="Внутрипольные конвекторы" x:Name="VPConvectorCheckBox" Height="24" Margin="0,0,-0.4,0" IsChecked="{Binding VpConvectorCheckBox}"/>
-                                <TextBox Text="{Binding VpQuantity}" Style="{StaticResource MaterialDesignFloatingHintTextBox}" VerticalAlignment="Top" Padding="0" 
+                                <CheckBox Content="Внутрипольные конвекторы" x:Name="VPConvectorCheckBox" Height="24" Margin="0,0,-0.4,0" IsChecked="{Binding ConvectorVPCheckBox}"/>
+                                <TextBox Text="{Binding VpQuantity, UpdateSourceTrigger=PropertyChanged}" Style="{StaticResource MaterialDesignFloatingHintTextBox}" VerticalAlignment="Top" Padding="0" 
                                          IsEnabled="{Binding IsChecked, ElementName=VPConvectorCheckBox}"
-                                         materialDesign:HintAssist.Hint="Пол" Height="43" Margin="10,0,310,-13" />
+                                         materialDesign:HintAssist.Hint="Пол" Height="43" Margin="10,0,310,-13" 
+                                         PreviewTextInput="NumericTextBox_OnPreviewTextInput"/>
                             </StackPanel>
                         </Grid>
                     </StackPanel>

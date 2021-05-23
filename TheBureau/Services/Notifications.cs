@@ -37,7 +37,7 @@ namespace TheBureau.Models.DataManipulating
 
         #endregion
         
-        public static void SendRequestAccept(Request request, IEnumerable<Tool> tools, IEnumerable<Accessory> accessories)
+        public static async void SendRequestAccept(Request request, IEnumerable<Tool> tools, IEnumerable<Accessory> accessories)
         {
             AccessoryRepository accessoryRepository = new AccessoryRepository();
             var equipment = request.RequestEquipments;
@@ -61,7 +61,7 @@ namespace TheBureau.Models.DataManipulating
                                         stagesString
                                         + Equipment + equipmentTable + Tools + toolTable
                                         + Accessory + accessoryTable + accessoryPrice);
-            SendEmail(request.Client.email, RequestAcceptSubject, body);
+            await SendEmail(request.Client.email, RequestAcceptSubject, body);
         }
         
         public static void SendRequestStatusChanged(Request request)
@@ -112,38 +112,7 @@ namespace TheBureau.Models.DataManipulating
             //MessageBox.Show(Result);
             //await dlg.ShowAsync();
         }
-        
-        private static void SendCompletedCallback(object sender, AsyncCompletedEventArgs e)
-        {
-            // Get the message we sent
-            MailMessage msg = (MailMessage)e.UserState;
-            //todo send result
-            if (e.Cancelled)
-            {
-                // prompt user with "send cancelled" message 
-                InfoWindow infoWindow = new InfoWindow("Отмена", "Отправка письма отменена");
-                infoWindow.Show();
-            }
-            if (e.Error != null)
-            {
-                // prompt user with error message 
-                InfoWindow infoWindow = new InfoWindow("Ошибка!",   "Письмо не отправлено" + e.Error);
-                infoWindow.Show();
-            }
-            else
-            {
-                InfoWindow infoWindow = new InfoWindow("Успех!",   "Письмо отправлено клиенту.");
-                infoWindow.Show();
-                // prompt user with message sent!
-                // as we have the message object we can also display who the message
-                // was sent to etc 
-            }
 
-            // finally dispose of the message
-            if (msg != null)
-                msg.Dispose();
-        }
-        
         public static string GetTable<T>(IEnumerable<T> list, params Func<T, object>[] columns)
         {
             var sb = new StringBuilder();

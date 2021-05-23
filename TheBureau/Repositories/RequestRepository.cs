@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Data.Entity;
+using System.Globalization;
 using System.Linq;
 using System.Threading.Tasks;
 using System.Windows;
@@ -111,6 +112,28 @@ namespace TheBureau.Repositories
                 }
             }
             
+        }
+
+        public int RequestForBrigadeForCertainDay(int currentBridageId, DayOfWeek currentDayOfWeek)
+        {
+            var calendar = new GregorianCalendar();
+            //текущий порядковый номер недели в году
+            var currentWeek = new GregorianCalendar().GetWeekOfYear(DateTime.Today, CalendarWeekRule.FirstFullWeek, DayOfWeek.Monday);
+            int count = 0;
+            //для этой бригады
+            foreach (var request in _context.Requests.Where(x=>x.brigadeId == currentBridageId))
+            {
+                if (//в заданный день недели
+                    request.mountingDate.DayOfWeek == currentDayOfWeek &&
+                    //если это этой текущей неделе
+                    calendar.GetWeekOfYear(request.mountingDate, CalendarWeekRule.FirstFullWeek, DayOfWeek.Monday) == currentWeek &&
+                    //и если заявка еще не выполнена
+                    (request.status is 1 or 2))
+                {
+                    count++;
+                }
+            }
+            return count;
         }
         
         #region  async
