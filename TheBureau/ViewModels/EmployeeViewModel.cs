@@ -47,12 +47,13 @@ namespace TheBureau.ViewModels
                 return _deleteCommand ??
                        (_deleteCommand = new RelayCommand(obj =>
                        {
-                           if (SelectedItem is Employee)
+                           var empl = SelectedItem as Employee;
+                           if (empl != null)
                            {
-                               int clientid = ((Employee) SelectedItem).id;
+                               int clientid = empl.id;
                                _employeeRepository.Delete(clientid);
                                _employeeRepository.SaveChanges();
-                               Employees.Remove(SelectedItem as Employee);
+                               Employees.Remove(SelectedItem as Employee); //todo REMOVE?? or new
                                SelectedItem = Employees.First();
                                OnPropertyChanged("Employees");
                            }
@@ -117,11 +118,9 @@ namespace TheBureau.ViewModels
             get => _employeeBrigades;
             set
             {
-                if (_selectedItem is Employee)
-                {
-                    _employeeBrigades = value;
-                    OnPropertyChanged("EmployeeBrigade");
-                }
+                if (SelectedItem is not Employee) return;
+                _employeeBrigades = value;
+                OnPropertyChanged("EmployeeBrigade");
             }
         }
         

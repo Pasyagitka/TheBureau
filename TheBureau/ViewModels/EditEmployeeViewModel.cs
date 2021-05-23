@@ -230,7 +230,7 @@ namespace TheBureau.ViewModels
             _errorsViewModel.ErrorsChanged += ErrorsViewModel_ErrorsChanged;
             Employee = selectedEmployee;
             Brigades = new ObservableCollection<Brigade>(_brigadeRepository.GetAll()) {new Brigade {id = 0}};
-            SelectedBrigadeId = (int) (Employee.brigadeId ?? 0);
+            SelectedBrigadeId = (Employee.brigadeId ?? 0);
         }
 
         #region Validation
