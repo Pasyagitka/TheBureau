@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using LiveCharts;
+using TheBureau.Models;
 using TheBureau.Repositories;
 
 namespace TheBureau.ViewModels

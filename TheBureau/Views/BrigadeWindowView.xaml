@@ -5,24 +5,21 @@
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:local="clr-namespace:TheBureau.Views" xmlns:controls="clr-namespace:TheBureau.Controls" xmlns:materialDesign="http://materialdesigninxaml.net/winfx/xaml/themes"
         xmlns:viewModels="clr-namespace:TheBureau.ViewModels"
-        mc:Ignorable="d"
+        mc:Ignorable="d" WindowState="{Binding WindowState}"
         Title="Бригада" Height="715" Width="1000" FontSize="15" Background="Transparent" AllowsTransparency="True" WindowStartupLocation="CenterScreen"
         WindowStyle="None" ResizeMode="NoResize">
     <Window.DataContext>
         <viewModels:BrigadeWindowViewModel/>
     </Window.DataContext>
     <Border Background="{DynamicResource NiceDarkWhiteColor}" CornerRadius="15">
-        <Grid Margin="0,0,0,50">
-            <DockPanel Margin="0,0,0,-50">
-              
-            </DockPanel>
+        <Grid>
             <Grid Name="TopGrid" VerticalAlignment="Top" MouseDown="TopGrid_OnMouseDown">
                 <DockPanel LastChildFill="False" Name="MainWindowTop" Height="25"  Background="transparent" Margin="15,0,12,-0.2">
                     <Button Content="Выход" Width="70" Foreground="{DynamicResource NiceGrayColor}" Style="{StaticResource DefaultButtonGray}" Background="Transparent" Command="{Binding LogOutCommand}"/>
-                    <Button Name="MainWindowClose"  Width="30"  Height="auto" BorderBrush="Transparent" Background="Transparent" DockPanel.Dock="Right" Margin="0,0,0,-0.2" Padding="0" Cursor="Hand" Click="MainWindowClose_OnClick">
+                    <Button Name="MainWindowClose"  Width="30"  Height="auto" BorderBrush="Transparent" Background="Transparent" DockPanel.Dock="Right" Margin="0,0,0,-0.2" Padding="0" Cursor="Hand" Command="{Binding CloseWindowCommand}">
                         <materialDesign:PackIcon Kind="Close" Margin="0" Width="24" Foreground="{DynamicResource NiceGrayColor}" Height="17"/>
                     </Button>
-                    <Button Name="MainWindowMinimize"  Width="30" Height="auto"  BorderBrush="Transparent" Background="Transparent" DockPanel.Dock="Right" Padding="0" Cursor="Hand" Click="MainWindowMinimize_Click">
+                    <Button Name="MainWindowMinimize"  Width="30" Height="auto"  BorderBrush="Transparent" Background="Transparent" DockPanel.Dock="Right" Padding="0" Cursor="Hand" Command="{Binding MinimizeWindowCommand}">
                         <materialDesign:PackIcon Width="24" Kind="WindowMinimize"  Foreground="{DynamicResource NiceGrayColor}" Height="16" />
                     </Button>
                 </DockPanel>
@@ -41,7 +38,9 @@
                                         materialDesign:TextFieldAssist.DecorationVisibility="Hidden"
                                         BorderThickness="0"
                                         MinWidth="200"
-                                        VerticalAlignment="Center" />
+                                        VerticalAlignment="Center"
+                                        Text="{Binding FindRequestText, UpdateSourceTrigger=PropertyChanged}"
+                                        />
                         </Border>
                         <materialDesign:PackIcon Kind="Search" Width="30" Height="Auto" Margin="0,11,0,10.6" Foreground="White"/>
                         <Border DockPanel.Dock="Right" CornerRadius="2">
@@ -59,16 +58,20 @@
                         </DataTemplate>
                     </ContentControl.ContentTemplate>
                 </ContentControl>
-                <Border Background="White" CornerRadius="15" Margin="50,30,50,50" Height="403">
-                    <ScrollViewer>
-                        <ListView ScrollViewer.CanContentScroll="True"
+                <Button ToolTip="Изменить статус заявки" Padding="0" Margin="5" HorizontalAlignment="Center" Height="50" Width="50" 
+                        Command="{Binding UpdateRequestCommand}" Style="{StaticResource MaterialDesignIconButton}">
+                    <Image Source= "../../Resources/Images/edit.png" Margin="5"/>
+                </Button>
+                <Border Background="White" CornerRadius="15" Margin="50,10,50,0" Height="400">
+                    <ScrollViewer materialDesign:ScrollViewerAssist.IsAutoHideEnabled="True">
+                        <ListView ScrollViewer.CanContentScroll="True" HorizontalContentAlignment="Center"
                                   SelectedItem="{Binding SelectedItem, Mode=TwoWay}"
                                   ItemsSource="{Binding BrigadeRequests }">
                             <ListView.ItemTemplate>
                                 <HierarchicalDataTemplate>
-                                    <Border CornerRadius="10" Background="White" Margin="10" Width="800">
-                                        <StackPanel Orientation="Vertical" Margin="5">
-                                            <controls:RequestCard/>
+                                    <Border CornerRadius="10" Background="White" Margin="10" Width="800" HorizontalAlignment="Center">
+                                        <StackPanel Orientation="Vertical" Margin="5" HorizontalAlignment="Center">
+                                            <controls:RequestCard HorizontalAlignment="Center"/>
                                             <Separator Width="500" Background="{StaticResource LightOrangeColor}"/>
                                         </StackPanel>
                                     </Border>

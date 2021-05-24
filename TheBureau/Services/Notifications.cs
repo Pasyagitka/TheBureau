@@ -1,17 +1,14 @@
 ﻿using System;
-using System.Collections;
 using System.Collections.Generic;
-using System.ComponentModel;
-using System.Linq;
 using System.Net;
 using System.Net.Mail;
 using System.Text;
 using System.Threading.Tasks;
-using System.Windows;
+using TheBureau.Models;
 using TheBureau.Repositories;
 using TheBureau.Views.Controls;
 
-namespace TheBureau.Models.DataManipulating
+namespace TheBureau.Services
 {
     public static class Notifications
     {
@@ -64,7 +61,7 @@ namespace TheBureau.Models.DataManipulating
             await SendEmail(request.Client.email, RequestAcceptSubject, body);
         }
         
-        public static void SendRequestStatusChanged(Request request)
+        public static async void SendRequestStatusChanged(Request request)
         {
             string requestStatus = "";
             if (request.status == 1) requestStatus = "В обработке";  
@@ -74,7 +71,7 @@ namespace TheBureau.Models.DataManipulating
             string statusString = String.Format(StatusChangedMessage, requestStatus);
             string clientString = String.Format(Client, request.Client.surname, request.Client.firstname, request.Client.patronymic, request.Client.email, request.Client.contactNumber.ToString());
 
-            SendEmail(request.Client.email, RequestStatusChangedSubject, statusString + clientString);
+            await SendEmail(request.Client.email, RequestStatusChangedSubject, statusString + clientString);
         }
         
         public static async Task SendEmail(string clientEmail, string subject, string body)

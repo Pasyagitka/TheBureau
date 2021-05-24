@@ -2,8 +2,8 @@
 using System.Collections;
 using System.ComponentModel;
 using System.Windows.Input;
-using TheBureau.Models.DataManipulating;
 using TheBureau.Repositories;
+using TheBureau.Services;
 
 namespace TheBureau.ViewModels
 {

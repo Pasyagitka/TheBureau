@@ -6,6 +6,7 @@ using System.Linq;
 using System.Threading.Tasks;
 using System.Windows;
 using System.Windows.Documents;
+using TheBureau.Models;
 
 namespace TheBureau.Repositories
 {
@@ -80,6 +81,15 @@ namespace TheBureau.Repositories
                 x.Client.surname.ToLower().Equals(criteria.ToLower()) || 
                 x.Client.email.ToLower().Equals(criteria.ToLower())
                 );
+        }
+        public IEnumerable<Request> FindRequestsForBrigadeByCriteria(string criteria, int brigadeId)
+        {
+            return GetAll().Where(x => x.Address.street.ToLower().Contains(criteria.ToLower())
+                                       || x.Client.surname.ToLower().Contains(criteria.ToLower())
+                                       || x.brigadeId.ToString().Contains(criteria)
+                                       || x.id.ToString().Contains(criteria)
+            );
+            //return GetRequestsBySurnameOrEmail(criteria).Where(x => x.brigadeId == brigadeId);
         }
 
         public void DeleteRequestsOfClient(int clientId)

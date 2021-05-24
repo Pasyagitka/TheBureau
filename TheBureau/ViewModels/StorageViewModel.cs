@@ -2,6 +2,7 @@
 using System.ComponentModel;
 using System.Runtime.CompilerServices;
 using TheBureau.Annotations;
+using TheBureau.Models;
 using TheBureau.Repositories;
 
 namespace TheBureau.ViewModels

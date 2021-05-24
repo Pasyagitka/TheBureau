@@ -1,9 +1,6 @@
-using System;
-using System.ComponentModel.DataAnnotations.Schema;
 using System.Data.Entity;
-using System.Linq;
 
-namespace TheBureau
+namespace TheBureau.Models
 {
     public partial class Model : DbContext
     {

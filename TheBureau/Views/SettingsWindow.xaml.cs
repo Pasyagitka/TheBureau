@@ -11,7 +11,6 @@ namespace TheBureau.Views
 
         private void Save_OnClick(object sender, RoutedEventArgs e)
         {
-            //todo event!!
             this.DialogResult = true;
         }
     }

@@ -4,6 +4,7 @@ using System.Collections.ObjectModel;
 using System.Linq;
 using LiveCharts;
 using LiveCharts.Defaults;
+using TheBureau.Models;
 using TheBureau.Repositories;
 
 namespace TheBureau.ViewModels

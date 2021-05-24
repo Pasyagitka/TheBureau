@@ -4,8 +4,9 @@ using System.Collections.ObjectModel;
 using System.ComponentModel;
 using System.Text.RegularExpressions;
 using System.Windows.Input;
-using TheBureau.Models.DataManipulating;
+using TheBureau.Models;
 using TheBureau.Repositories;
+using TheBureau.Services;
 
 namespace TheBureau.ViewModels
 {

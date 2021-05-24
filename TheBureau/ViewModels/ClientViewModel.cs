@@ -1,10 +1,7 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Collections.ObjectModel;
-using System.ComponentModel;
+﻿using System.Collections.ObjectModel;
 using System.Linq;
-using System.Windows;
 using System.Windows.Input;
+using TheBureau.Models;
 using TheBureau.Repositories;
 using TheBureau.Views;
 
@@ -64,9 +61,9 @@ namespace TheBureau.ViewModels
                        }));
             }
         }
-        public ICommand OpenEditClientWindowCommand => openEditClientWindowCommand ??= new RelayCommand(openEditClientWindow);
+        public ICommand OpenEditClientWindowCommand => openEditClientWindowCommand ??= new RelayCommand(OpenEditClientWindow);
 
-        private void openEditClientWindow(object sender)
+        private void OpenEditClientWindow(object sender)
         {
             var clientToEdit = SelectedItem as Client;
             EditClientView window = new(clientToEdit);
@@ -126,20 +123,18 @@ namespace TheBureau.ViewModels
                 OnPropertyChanged("FindClientText");
             }
         }
-
         public ClientViewModel()
         {
             Update();
         }
-
         void SetClientsRequests()
         {
             ClientRequests = new ObservableCollection<Request>(_requestRepository.GetAll().Where(x => x.clientId == (_selectedItem as Client)?.id));
         }
         private void Search(string criteria)
         {
-        
             Clients = new ObservableCollection<Client>(_clientRepository.FindClientsByCriteria(criteria));
+            SelectedItem = Clients.First();
         }
         public void Update()
         {

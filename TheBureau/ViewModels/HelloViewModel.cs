@@ -3,32 +3,27 @@ using System.Web.UI.WebControls;
 using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Input;
-using TheBureau.Models.DataManipulating;
+using TheBureau.Models;
 using TheBureau.Repositories;
+using TheBureau.Services;
 using TheBureau.Views;
 
 namespace TheBureau.ViewModels
 {
     public class HelloViewModel : ViewModelBase
     {
-        //todo переключение страниц в viewmodel
-        private string login;
-        private string password;
-        private string info;
+        private UserRepository _userRepository = new();
+        private ErrorsViewModel _errorsViewModel = new();
 
-        private WindowState _windowState;
+        private string _login;
+        private string _password;
+        private string _info;
+
         private ICommand _closeWindowCommand;
         private ICommand _clientPageSetCommand;
         private ICommand _authPageSetCommand;
         private object _frameContent;
-
-
-        private UserRepository _userRepository = new UserRepository();
-        private const string LoginAndPasswordRegex = "";
-        private readonly string PasswordEmpty = "Введите пароль";
-        private readonly string PasswordTooLong = "Пароль должен быть до 20 символов";
-        private readonly string LoginAndPasswordStructure = "Пароль и имя пользователя могут состоять лишь из цифр и букв";
-
+        
         public HelloViewModel()
         {
             FrameContent = new HelloPageView();
@@ -36,82 +31,67 @@ namespace TheBureau.ViewModels
 
         public object FrameContent
         {
-            get { return _frameContent; }
+            get => _frameContent;
             set
             {
                 _frameContent = value;
                 OnPropertyChanged("FrameContent");
             }
         }
-        public WindowState  WindowState
-        {
-            get { return _windowState; }
-            set
-            {
-                _windowState = value;
-                OnPropertyChanged("WindowState");
-            }
-        }
-        public ICommand ClientViewSetCommand
-        {
-            get
-            {
-                return _clientPageSetCommand = new RelayCommand(obj =>
-                {
-                    FrameContent = new HelloPageView();
-                });
-            }
-        }
-        public ICommand AuthViewSetCommand
-        {
-            get
-            {
-                return _authPageSetCommand = new RelayCommand(obj =>
-                {
-                    FrameContent = new AuthenticationPageView();
-                });
-            }
-        }
-        public ICommand CloseWindowCommand
-        {
-            get
-            {
-                return _closeWindowCommand = new RelayCommand(obj =>
-                {
-                    Application.Current.Shutdown();
-                });
-            }
-        }
-     
-
+        public ICommand ClientViewSetCommand => _clientPageSetCommand ??= 
+            new RelayCommand(obj => { FrameContent = new HelloPageView(); });
+        public ICommand AuthViewSetCommand => _authPageSetCommand ??= 
+            new RelayCommand(obj => { FrameContent = new AuthenticationPageView(); });
+        public ICommand CloseWindowCommand => _closeWindowCommand ??= 
+            new RelayCommand(obj => { Application.Current.Shutdown(); });
+        
         public string Info
         {
-            get => info;
-            set { info = value; OnPropertyChanged("Info");}
+            get => _info;
+            set { _info = value; OnPropertyChanged("Info");}
         }
 
         public string Login
         {
-            get => login;
-            set { login = value; OnPropertyChanged("Login");}
+            get => _login;
+            set
+            {
+                _login = value; 
+                _errorsViewModel.ClearErrors("Login");
+                
+                if (string.IsNullOrWhiteSpace(_login))
+                {
+                    _errorsViewModel.AddError("Login", ValidationConst.LoginEmpty);
+                }
+                if (_login?.Length > 20)
+                {
+                    _errorsViewModel.AddError("Login", ValidationConst.LoginLengthExceeded);
+                }
+                var regex = new Regex(ValidationConst.LoginRegex);
+                if (!regex.IsMatch(_login!))
+                {
+                    _errorsViewModel.AddError("Login", ValidationConst.IncorrectLoginStructure);
+                }
+                OnPropertyChanged("Login");
+            }
         }
 
         public string Password
         {
-            get => password;
+            get => _password;
             set
             {
-                password = value;
+                _password = value;
                 OnPropertyChanged("Password");
             }
         }
 
-        private RelayCommand signinCommand;
-        public RelayCommand SigninCommand
+        private ICommand _signinCommand;
+        public ICommand SigninCommand
         {
             get
             {
-                return signinCommand ??= new RelayCommand(obj =>
+                return _signinCommand ??= new RelayCommand(obj =>
                 {
                     var passwordBox = obj as PasswordBox;
                     if (passwordBox == null)
@@ -135,7 +115,7 @@ namespace TheBureau.ViewModels
                         }
                         else
                         {
-                           Info = "Что-то пошло не так.";
+                           Info = ValidationConst.SomethingWentWrong;
                         }
                     }
                 });
@@ -145,31 +125,31 @@ namespace TheBureau.ViewModels
         
         private bool TryLogin()
         {
-            var regex = new Regex(LoginAndPasswordRegex);
+            var regex = new Regex(ValidationConst.LoginRegex);
             if (!IsLoginValid())
             {
                 return false;
             }
             if (string.IsNullOrEmpty(Password))
             {
-                Info = PasswordEmpty;
+                Info = ValidationConst.PasswordEmpty;
                 return false;
             }
-            if (!regex.IsMatch(Login) || !regex.IsMatch((Password)))
+            if (!regex.IsMatch(Login))
             {
-                Info = LoginAndPasswordStructure;
+                Info = ValidationConst.LoginAndPasswordStructure;
                 return false;
             }
-            if (Password.Length > 20)
+            if (Password.Length > 70)
             {
-                Info = PasswordTooLong;
+                Info = ValidationConst.PasswordTooLong;
                 return false;
             }
             
             var user = _userRepository.Login(Login, Password);
             if (user == null)
             {
-                Info = "ErrorMessages.WrongLoginOrPassword";
+                Info = ValidationConst.WrongLoginOrPassword;
                 return false;
             }
             Application.Current.Properties["User"] = _userRepository.Get(user.id);
@@ -180,11 +160,11 @@ namespace TheBureau.ViewModels
         {
             if (string.IsNullOrEmpty(Login))
             {
-                Info = "LoginIsEmpty";
+                Info = ValidationConst.LoginEmpty;
                 return false;
             }
-            if (login.Length <= 20) return true;
-            Info = "LoginTooLong";
+            if (_login.Length <= 20) return true;
+            Info = ValidationConst.LoginLengthExceeded;
             return false;
         }
     }

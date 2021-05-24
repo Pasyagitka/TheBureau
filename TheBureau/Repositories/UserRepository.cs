@@ -1,7 +1,8 @@
 ﻿using System.Collections.Generic;
 using System.Data.Entity;
 using System.Linq;
-using TheBureau.Models.DataManipulating;
+using TheBureau.Models;
+using TheBureau.Services;
 
 namespace TheBureau.Repositories
 {

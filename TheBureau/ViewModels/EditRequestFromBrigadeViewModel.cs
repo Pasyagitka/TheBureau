@@ -1,8 +1,9 @@
 ﻿using System;
 using System.Collections.ObjectModel;
 using System.Windows.Input;
-using TheBureau.Models.DataManipulating;
+using TheBureau.Models;
 using TheBureau.Repositories;
+using TheBureau.Services;
 
 namespace TheBureau.ViewModels
 {
@@ -13,12 +14,12 @@ namespace TheBureau.ViewModels
         private int _requestStatus;
         private RelayCommand _updateRequest;
         private Request _requestForEdit;
-        public bool sendEmail;
+        private bool _sendEmail;
 
         public bool SendEmail
         {
-            get => sendEmail;
-            set { sendEmail = value; OnPropertyChanged("SendEmail"); }
+            get => _sendEmail;
+            set { _sendEmail = value; OnPropertyChanged("SendEmail"); }
         }
         public EditRequestFromBrigadeViewModel(Request request)
         {
@@ -33,7 +34,6 @@ namespace TheBureau.ViewModels
                 OnPropertyChanged("RequestForEdit");
             }
         }
-        //todo command parameter
 
         public ICommand UpdateRequestCommand => _updateRequest ??= new RelayCommand(UpdateRequest);
 

@@ -1,6 +1,7 @@
 ﻿using System.Collections.Generic;
 using System.Linq;
 using TheBureau.Enums;
+using TheBureau.Models;
 
 namespace TheBureau.Repositories
 {

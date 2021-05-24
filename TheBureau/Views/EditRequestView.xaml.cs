@@ -1,4 +1,5 @@
 ﻿using System.Windows;
+using TheBureau.Models;
 using TheBureau.ViewModels;
 
 namespace TheBureau.Views
@@ -18,6 +19,10 @@ namespace TheBureau.Views
         private void Save_OnClick(object sender, RoutedEventArgs e)
         {
             this.DialogResult = true;
+        }
+        private void Exit_OnClick(object sender, RoutedEventArgs e)
+        {
+            this.DialogResult = false;
         }
     }
 }

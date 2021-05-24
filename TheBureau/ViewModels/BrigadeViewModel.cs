@@ -1,8 +1,9 @@
 ﻿using System.Collections.ObjectModel;
 using System.Linq;
 using MaterialDesignThemes.Wpf;
-using TheBureau.Models.DataManipulating;
+using TheBureau.Models;
 using TheBureau.Repositories;
+using TheBureau.Services;
 
 namespace TheBureau.ViewModels
 {

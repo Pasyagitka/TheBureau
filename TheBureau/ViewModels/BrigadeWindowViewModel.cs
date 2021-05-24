@@ -1,7 +1,9 @@
 ﻿using System.Collections.ObjectModel;
 using System.Linq;
+using System.Web.UI.WebControls.Expressions;
 using System.Windows;
 using System.Windows.Input;
+using TheBureau.Models;
 using TheBureau.Repositories;
 using TheBureau.Views;
 
@@ -15,12 +17,35 @@ namespace TheBureau.ViewModels
         private ObservableCollection<Request> _brigadeRequests;
         private Brigade _currentBrigade;
         private Request _selectedItem;
+        private string _findRequestText;
+
         
-        private ICommand logOutCommand;
-        private RelayCommand _updateRequest;
+        private WindowState _windowState;
+        
+        private ICommand _logOutCommand;
+        private ICommand _updateRequest;
+        private ICommand _closeWindowCommand;
+        private ICommand _minimizeWindowCommand;
         public ICommand UpdateRequestCommand => _updateRequest ??= new RelayCommand(OpenEditRequest);
+        public ICommand CloseWindowCommand => _closeWindowCommand ??= new RelayCommand(obj => { Application.Current.Shutdown(); });
+        public ICommand MinimizeWindowCommand => _minimizeWindowCommand ??= new RelayCommand(obj => { WindowState = WindowState.Minimized; });
 
-
+        public WindowState  WindowState
+        {
+            get => _windowState;
+            set { _windowState = value; OnPropertyChanged("WindowState"); }
+        }
+        public string FindRequestText
+        {
+            get => _findRequestText;
+            set
+            {
+                _findRequestText = value;
+                Search(_findRequestText);
+                OnPropertyChanged("FindRequestText");
+            }
+        }
+        
         public Brigade CurrentBrigade
         {
             get => _currentBrigade;
@@ -51,27 +76,36 @@ namespace TheBureau.ViewModels
         }
         private void OpenEditRequest(object o)
         {
-            EditRequestFromBrigadeView window = new(SelectedItem);
+            var requestToEdit = SelectedItem;
+            EditRequestFromBrigadeView window = new(requestToEdit);
             if (window.ShowDialog() == true)
             {
                 _requestRepository = new RequestRepository();
                 BrigadeRequests = new ObservableCollection<Request>(_requestRepository.GetRequestsByBrigadeId(CurrentBrigade.id));
+                SelectedItem = _requestRepository.Get(requestToEdit.id);
             }
         }
-        public BrigadeWindowViewModel() //todo int currentId
+        public BrigadeWindowViewModel()
         {
+            WindowState = WindowState.Normal;
             var user = Application.Current.Properties["User"] as User;
-            CurrentBrigade = _brigadeRepository.GetAll().FirstOrDefault(x => x.userId == user.id); 
-            //todo all to repo
-            if (user != null && CurrentBrigade != null)
-                BrigadeRequests = new ObservableCollection<Request>(_requestRepository.GetRequestsByBrigadeId(CurrentBrigade.id));
+            if (user!= null)
+            {
+                CurrentBrigade = _brigadeRepository.GetAll().FirstOrDefault(x => x.userId == user.id);
+                if (CurrentBrigade != null)
+                {
+                    BrigadeRequests = 
+                        new ObservableCollection<Request>(_requestRepository.GetRequestsByBrigadeId(CurrentBrigade.id));
+                    SelectedItem = BrigadeRequests.First();
+                }
+            }
         }
         
         public ICommand LogOutCommand
         {
             get
             {
-                return logOutCommand = new RelayCommand(obj =>
+                return _logOutCommand ??= new RelayCommand(obj =>
                 {
                     Application.Current.Properties["User"] = null;
                     var helloWindow = new HelloWindowView();
@@ -81,5 +115,12 @@ namespace TheBureau.ViewModels
                 });
             }
         }
+
+        private void Search(string criteria)
+        {
+            BrigadeRequests = new ObservableCollection<Request>(_requestRepository.FindRequestsForBrigadeByCriteria(FindRequestText, _currentBrigade.id));
+            SelectedItem = BrigadeRequests.First();
+        }
+
     }
 }

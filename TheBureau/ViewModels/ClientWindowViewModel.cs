@@ -5,8 +5,9 @@ using System.ComponentModel;
 using System.Text.RegularExpressions;
 using System.Windows;
 using System.Windows.Input;
-using TheBureau.Models.DataManipulating;
+using TheBureau.Models;
 using TheBureau.Repositories;
+using TheBureau.Services;
 using TheBureau.Views;
 
 namespace TheBureau.ViewModels
@@ -52,10 +53,12 @@ namespace TheBureau.ViewModels
         
         private string _comment;
         private DateTime _mountingDate;
-        
+        private ICommand _closeWindowCommand;
+        private ICommand _minimizeWindowCommand;
 
-        public ICommand CloseWindowCommand => new RelayCommand(obj => { Application.Current.Shutdown(); });
-        public ICommand MinimizeWindowCommand => new RelayCommand(obj => { WindowState = WindowState.Minimized; });
+
+        public ICommand CloseWindowCommand => _closeWindowCommand ??= new RelayCommand(obj => { Application.Current.Shutdown(); });
+        public ICommand MinimizeWindowCommand => _minimizeWindowCommand ??= new RelayCommand(obj => { WindowState = WindowState.Minimized; });
 
         public WindowState  WindowState
         {
@@ -334,7 +337,6 @@ namespace TheBureau.ViewModels
             var tools = _toolRepository.GetByStage(requestForNotification.stage);
             var accessories = _requestEquipmentRepository.GetAccessories(requestForNotification.RequestEquipments);
             Notifications.SendRequestAccept(requestForNotification, tools, accessories);
-                //todo переделать до асинхронности изменение статуса заявки
             ResetFields();
 
             OnPropertyChanged("SendRequestCommand");
@@ -403,12 +405,12 @@ namespace TheBureau.ViewModels
                 {
                     _errorsViewModel.AddError("Patronymic", ValidationConst.FieldCannotBeEmpty);
                 }
-                if (_patronymic.Length is > 20 or < 2)
+                if (_patronymic?.Length is > 20 or < 2)
                 {
                     _errorsViewModel.AddError("Patronymic", ValidationConst.NameLengthExceeded);
                 }
                 var regex = new Regex(ValidationConst.LettersHyphenRegex);
-                if (!regex.IsMatch(_patronymic))
+                if (!regex.IsMatch(_patronymic!))
                 {
                     _errorsViewModel.AddError("Patronymic", ValidationConst.IncorrectPatronymic);
                 }

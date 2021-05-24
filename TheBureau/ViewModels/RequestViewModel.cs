@@ -4,6 +4,7 @@ using System.Collections.ObjectModel;
 using System.ComponentModel;
 using System.Linq;
 using System.Windows.Input;
+using TheBureau.Models;
 using TheBureau.Repositories;
 using TheBureau.Views;
 
@@ -99,7 +100,8 @@ namespace TheBureau.ViewModels
 
         private void OpenEditRequest(object o)
         {
-            EditRequestView window = new(SelectedItem);
+            var requestToEdit = SelectedItem;
+            EditRequestView window = new(requestToEdit);
             if (window.ShowDialog() == true)
             {
                 _requestRepository = new RequestRepository();
@@ -107,8 +109,8 @@ namespace TheBureau.ViewModels
                 _requestEquipmentRepository = new RequestEquipmentRepository();
                 Requests = new ObservableCollection<Request>(_requestRepository.GetAll().Reverse());
                 Brigades = new ObservableCollection<Brigade>(_brigadeRepository.GetAll().Reverse());
+                SelectedItem = _requestRepository.Get(requestToEdit.id);
             }
-            SelectedItem = Requests.First();
         }
 
         public void SetEquipment()

@@ -1,4 +1,5 @@
-﻿using System.Windows.Input;
+﻿using System.Windows;
+using System.Windows.Input;
 using TheBureau.Views;
 
 namespace TheBureau.ViewModels
@@ -10,10 +11,10 @@ namespace TheBureau.ViewModels
         {
             get
             {
-                return _enterAsClientCommand = new RelayCommand(obj =>
+                return _enterAsClientCommand ??= new RelayCommand(obj =>
                 {
                     var clientMainWindow = new ClientWindowView();
-                    App.Current.Windows[0].Close();
+                    Application.Current.Windows[0]?.Close();
                     clientMainWindow.Show();
                 });
             }

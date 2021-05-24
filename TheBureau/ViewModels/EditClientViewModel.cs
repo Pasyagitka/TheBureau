@@ -3,8 +3,10 @@ using System.Collections;
 using System.ComponentModel;
 using System.Text.RegularExpressions;
 using System.Windows.Input;
-using TheBureau.Models.DataManipulating;
+using TheBureau.Models;
 using TheBureau.Repositories;
+using TheBureau.Services;
+
 // ReSharper disable All
 
 namespace TheBureau.ViewModels

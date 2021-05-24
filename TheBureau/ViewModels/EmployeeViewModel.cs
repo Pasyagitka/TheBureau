@@ -1,6 +1,7 @@
 ﻿using System.Collections.ObjectModel;
 using System.Linq;
 using System.Windows.Input;
+using TheBureau.Models;
 using TheBureau.Repositories;
 using TheBureau.Views;
 
@@ -16,7 +17,7 @@ namespace TheBureau.ViewModels
         private ObservableCollection<Brigade> _employeeBrigades;
         
         private bool _readOnly;
-        private object _selectedItem;
+        private Employee _selectedItem;
         private string _findEmployeesText;
         private int _selectedIndex;
         
@@ -58,7 +59,6 @@ namespace TheBureau.ViewModels
                                OnPropertyChanged("Employees");
                            }
                        }));
-                
             }
         }
         
@@ -79,10 +79,12 @@ namespace TheBureau.ViewModels
         
         private void OpenEditEmployeeWindow(object sender)
         {
-            EditEmployeeView window = new(SelectedItem as Employee);
+            var employeeToEdit = SelectedItem;
+            EditEmployeeView window = new(employeeToEdit);
             if (window.ShowDialog() == true)
             {
                 Update();
+                SelectedItem = _employeeRepository.Get(employeeToEdit.id);
             }
         }
         
@@ -94,13 +96,13 @@ namespace TheBureau.ViewModels
                 OnPropertyChanged("SaveChangesCommand");
             });
 
-        public object SelectedItem
+        public Employee SelectedItem
         {
             get => _selectedItem;
             set
             {
                 _selectedItem = value;
-                SetClientsRequests();
+                SetEmployeeBrigade();
                 OnPropertyChanged("SelectedItem");
             }
         }
@@ -118,7 +120,6 @@ namespace TheBureau.ViewModels
             get => _employeeBrigades;
             set
             {
-                if (SelectedItem is not Employee) return;
                 _employeeBrigades = value;
                 OnPropertyChanged("EmployeeBrigade");
             }
@@ -135,14 +136,14 @@ namespace TheBureau.ViewModels
             }
         }
 
-        void SetClientsRequests()
+        void SetEmployeeBrigade()
         {
-            //todo null??
-            EmployeeBrigade = new ObservableCollection<Brigade>(_brigadeRepository.GetAll().Where(x => x.id == (_selectedItem as Employee)?.brigadeId));
+            EmployeeBrigade = new ObservableCollection<Brigade>(_brigadeRepository.GetAll().Where(x => x.id == _selectedItem?.brigadeId));
         }
-        private void Search(string criteria){
-        
-            Employees = new ObservableCollection<Employee>(_employeeRepository.GetAll()); //find by criteria
+        private void Search(string criteria)
+        {
+            Employees = new ObservableCollection<Employee>(_employeeRepository.FindEmployeesByCriteria(criteria));
+            SelectedItem = Employees.First();
         }
     }
 }

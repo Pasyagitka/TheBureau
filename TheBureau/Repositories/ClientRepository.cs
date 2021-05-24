@@ -2,6 +2,7 @@
 using System.Collections.ObjectModel;
 using System.Data.Entity;
 using System.Linq;
+using TheBureau.Models;
 
 namespace TheBureau.Repositories
 {

@@ -1,5 +1,7 @@
 ﻿using System.Collections.Generic;
 using System.Data.Entity;
+using System.Linq;
+using TheBureau.Models;
 
 namespace TheBureau.Repositories
 {
@@ -33,6 +35,16 @@ namespace TheBureau.Repositories
         public void SaveChanges()
         {
             _context.SaveChanges();
+        }
+
+        public IEnumerable<Employee> FindEmployeesByCriteria(string criteria)
+        {
+            return _context.Employees.Where(x => x.firstname.ToLower().Contains(criteria.ToLower())
+                                       || x.surname.ToLower().Contains(criteria.ToLower()) 
+                                       || x.patronymic.ToLower().Contains(criteria.ToLower())
+                                       || x.email.ToLower().Contains(criteria.ToLower())
+                                       || x.contactNumber.ToString().Contains(criteria)
+                                       || x.id.ToString().Contains(criteria));
         }
     }
 }
