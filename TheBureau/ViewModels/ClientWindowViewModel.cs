@@ -539,7 +539,7 @@ namespace TheBureau.ViewModels
                 {
                     _errorsViewModel.AddError("Corpus", ValidationConst.IncorrectExceeded);
                 }
-                var regex = new Regex(ValidationConst.LettersHyphenRegex);
+                var regex = new Regex(ValidationConst.LettersHyphenDigitsRegex);
                 if (!regex.IsMatch(_corpus!))
                 {
                     _errorsViewModel.AddError("Corpus", ValidationConst.IncorrectCorpus);

@@ -10,22 +10,22 @@ namespace TheBureau.ViewModels
     {
         RequestRepository _requestRepository = new RequestRepository();
 
-        int selectedIndex;
-        private string mainTop;
-        object content;
-        int countRed;
+        int _selectedIndex;
+        private string _mainTop;
+        object _content;
+        int _countRed;
 
-        private ICommand openSettingsCommand;
-        private ICommand logOutCommand;
-        private ICommand closeWindowCommand;
-        private ICommand minimizeWindowCommand;
-        private ICommand maximizeWindowCommand;
+        private ICommand _openSettingsCommand;
+        private ICommand _logOutCommand;
+        private ICommand _closeWindowCommand;
+        private ICommand _minimizeWindowCommand;
+        private ICommand _maximizeWindowCommand;
 
         public ICommand OpenSettingsCommand
         {
             get
             {
-                return openSettingsCommand = new RelayCommand(obj =>
+                return _openSettingsCommand ??= new RelayCommand(obj =>
                 {
                     SettingsWindow sw = new SettingsWindow();
                     if (sw.ShowDialog() == true)
@@ -40,7 +40,7 @@ namespace TheBureau.ViewModels
         {
             get
             {
-                return logOutCommand = new RelayCommand(obj =>
+                return _logOutCommand ??= new RelayCommand(obj =>
                 {
                     Application.Current.Properties["User"] = null;
                     var helloWindow = new HelloWindowView();
@@ -53,61 +53,61 @@ namespace TheBureau.ViewModels
 
         #region Resize
         private WindowState _windowState;
+        //private WindowStyle _windowStyle;
 
         public WindowState  WindowState
         {
-            get { return _windowState; }
+            get => _windowState;
             set
             {
                 _windowState = value;
                 OnPropertyChanged("WindowState");
             }
         }
-        public ICommand CloseWindowCommand
-        {
-            get
+        // public WindowStyle  WindowStyle
+        // {
+        //     get => _windowStyle;
+        //     set
+        //     {
+        //         _windowStyle = value;
+        //         OnPropertyChanged("WindowStyle");
+        //     }
+        // }
+        public ICommand CloseWindowCommand =>
+            _closeWindowCommand ??= new RelayCommand(obj =>
             {
-                return closeWindowCommand = new RelayCommand(obj =>
-                {
-                    Application.Current.Shutdown();
-                });
-            }
-        }
-        public ICommand MinimizeWindowCommand
-        {
-            get
+                Application.Current.Shutdown();
+            });
+
+        public ICommand MinimizeWindowCommand =>
+            _minimizeWindowCommand ??= new RelayCommand(obj =>
             {
-                return minimizeWindowCommand = new RelayCommand(obj =>
-                {
-                    WindowState = WindowState.Minimized;
-                });
-            }
-        }
-        public ICommand MaximizeWindowCommand
-        {
-            get
+                WindowState = WindowState.Minimized;
+            });
+
+        public ICommand MaximizeWindowCommand =>
+            _maximizeWindowCommand ??= new RelayCommand(obj =>
             {
-                return maximizeWindowCommand = new RelayCommand(obj =>
-                {
-                    if (WindowState != WindowState.Maximized)
-                    {
-                        WindowState = WindowState.Maximized;
-                    }
-                    else
-                    {
-                        WindowState = WindowState.Normal;
-                    }
-                });
-            }
-        }
+                // if (WindowState != WindowState.Maximized)
+                // {
+                //     WindowState = WindowState.Maximized;
+                //     WindowStyle = WindowStyle.;
+                // }
+                // else
+                // {
+                //     WindowState = WindowState.Normal;
+                //     WindowStyle = WindowStyle.None;
+                // }
+                WindowState = WindowState != WindowState.Maximized ? WindowState.Maximized : WindowState.Normal;
+            });
 
         #endregion
         public object Content
         {
-            get { return content; }
+            get => _content;
             set
             {
-                content = value;
+                _content = value;
                 CountRed = _requestRepository.GetRedRequestsCount();
                 OnPropertyChanged("Content");
             }
@@ -115,29 +115,29 @@ namespace TheBureau.ViewModels
 
         public string MainTopText
         {
-            get => mainTop;
+            get => _mainTop;
             set
             {
-                mainTop = value;
+                _mainTop = value;
                 OnPropertyChanged("MainTopText");
             }
         }
         public int SelectedIndex
         {
-            get => selectedIndex;
+            get => _selectedIndex;
             set
             {
-                selectedIndex = value;
-                setPage(selectedIndex);
+                _selectedIndex = value;
+                SetPage(_selectedIndex);
                 OnPropertyChanged("SelectedIndex");
             }
         }
         public int CountRed
         {
-            get { return countRed; }
+            get => _countRed;
             set
             {
-                countRed = value;
+                _countRed = value;
                 OnPropertyChanged("CountRed");
             }
         }
@@ -152,7 +152,7 @@ namespace TheBureau.ViewModels
             SelectedIndex = 1;
         }
        
-        public void setPage(int index)
+        public void SetPage(int index)
         {
             switch (index)
             {

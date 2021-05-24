@@ -33,7 +33,7 @@
                 </Button>
             </Grid>
             <StackPanel Grid.Row="1" Grid.Column="0">
-                <Border Background="#f7f7f7f7" CornerRadius="10" Margin="20, 32, 20, 10">
+                <Border Background="{DynamicResource PrimaryLightGrayColor}" CornerRadius="10" Margin="100, 32, 20, 10">
                     <StackPanel Margin="10">
                         <materialDesign:Card Height="50" Background="White" Padding="8" UniformCornerRadius="5" Margin="10">
                             <StackPanel Orientation="Horizontal" VerticalAlignment="Center">

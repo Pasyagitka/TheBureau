@@ -7,9 +7,9 @@
         xmlns:materialDesign="http://materialdesigninxaml.net/winfx/xaml/themes"
         xmlns:viewModels="clr-namespace:TheBureau.ViewModels"
         xmlns:converters="clr-namespace:TheBureau.Converters"
-        mc:Ignorable="d" 
+        mc:Ignorable="d"
         Title="Статистика" MinHeight="720" MinWidth="1280"
-        WindowStyle="None" Background="Transparent" WindowState="{Binding WindowState}"
+        Background="Transparent" WindowState="{Binding WindowState}"
         MaxHeight="{Binding Source={x:Static SystemParameters.MaximizedPrimaryScreenHeight}}"
         MaxWidth="{Binding Source={x:Static SystemParameters.MaximizedPrimaryScreenWidth}}"
         ResizeMode="CanResize"
@@ -59,20 +59,25 @@
         <Grid  Grid.Column="0" Grid.Row="0" Name="TopGrid" Height="30" VerticalAlignment="Top" Background="{DynamicResource DarkMainGrayColor}" MouseDown="TopGrid_OnMouseDown">
             <StackPanel HorizontalAlignment="Right" Orientation="Horizontal"/>
             <StackPanel Orientation="Horizontal" HorizontalAlignment="Right">
-                <Button Content="Выйти" Width="70" Style="{StaticResource DefaultButtonGray}" Background="Transparent" Command="{Binding LogOutCommand}"></Button>
-                <Button Content="Настройки" VerticalAlignment="Center" FontSize="16" Command="{Binding OpenSettingsCommand}" Style="{StaticResource DefaultButtonGray}" Background="Transparent"/>
-                <Button Command="{Binding CloseWindowCommand}"
-                    Name="MainWindowClose"  Width="50"  Height="auto" BorderBrush="Transparent" 
-                    Background="Transparent" DockPanel.Dock="Right">
-                    <materialDesign:PackIcon Kind="Close" Foreground="White"/>
+                <Button  Width="50" Style="{StaticResource DefaultButtonGray}" Background="Transparent" Command="{Binding LogOutCommand}">
+                    <materialDesign:PackIcon Kind="ExitToApp" Foreground="White"/>
+                </Button>
+                <Button  Width="50" VerticalAlignment="Center" FontSize="16" Command="{Binding OpenSettingsCommand}" Style="{StaticResource DefaultButtonGray}" Background="Transparent">
+                    <materialDesign:PackIcon Kind="Settings" Foreground="White"/>
+                </Button>
+                <Button Width="50" Height="auto"  BorderBrush="Transparent" Background="Transparent" DockPanel.Dock="Right" 
+                        Command="{Binding MinimizeWindowCommand}">
+                    <materialDesign:PackIcon Kind="WindowMinimize"  Foreground="White" />
                 </Button>
                 <Button Name="MainWindowResize" Width="50"  Height="auto" BorderBrush="Transparent" Background="Transparent" DockPanel.Dock="Right" 
                         Command="{Binding MaximizeWindowCommand}">
                     <materialDesign:PackIcon Name="MainWindowResizeIcon"  Kind="Resize" Foreground="White"/>
                 </Button>
-                <Button Width="50" Height="auto"  BorderBrush="Transparent" Background="Transparent" DockPanel.Dock="Right" 
-                        Command="{Binding MinimizeWindowCommand}">
-                    <materialDesign:PackIcon Kind="WindowMinimize"  Foreground="White" />
+              
+                <Button Command="{Binding CloseWindowCommand}"
+                    Name="MainWindowClose"  Width="50"  Height="auto" BorderBrush="Transparent" 
+                    Background="Transparent" DockPanel.Dock="Right">
+                    <materialDesign:PackIcon Kind="Close" Foreground="White"/>
                 </Button>
             </StackPanel>
             <TextBlock Name="MainTopName" HorizontalAlignment="Center" VerticalAlignment="Center" FontSize="20" Foreground="White" Text="{Binding MainTopText}"></TextBlock>

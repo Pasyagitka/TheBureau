@@ -1,4 +1,7 @@
-﻿using System.Text.RegularExpressions;
+﻿using System;
+using System.Collections;
+using System.ComponentModel;
+using System.Text.RegularExpressions;
 using System.Web.UI.WebControls;
 using System.Windows;
 using System.Windows.Controls;
@@ -10,7 +13,7 @@ using TheBureau.Views;
 
 namespace TheBureau.ViewModels
 {
-    public class HelloViewModel : ViewModelBase
+    public class HelloViewModel : ViewModelBase, INotifyDataErrorInfo
     {
         private UserRepository _userRepository = new();
         private ErrorsViewModel _errorsViewModel = new();
@@ -27,6 +30,7 @@ namespace TheBureau.ViewModels
         public HelloViewModel()
         {
             FrameContent = new HelloPageView();
+            _errorsViewModel.ErrorsChanged += ErrorsViewModel_ErrorsChanged;
         }
 
         public object FrameContent
@@ -82,70 +86,55 @@ namespace TheBureau.ViewModels
             set
             {
                 _password = value;
+                _errorsViewModel.ClearErrors("Password");
+                if (string.IsNullOrWhiteSpace(_password))
+                {
+                    _errorsViewModel.AddError("Password",ValidationConst.FieldCannotBeEmpty);
+                }
+                if (_password?.Length  < 8 || _password?.Length > 40)
+                {
+                    _errorsViewModel.AddError("Password",ValidationConst.IncorrectPassword);
+                }
                 OnPropertyChanged("Password");
             }
         }
 
         private ICommand _signinCommand;
-        public ICommand SigninCommand
+        public ICommand SigninCommand => _signinCommand ??= new RelayCommand(Auth);
+
+        public void Auth(object obj)
         {
-            get
-            {
-                return _signinCommand ??= new RelayCommand(obj =>
-                {
-                    var passwordBox = obj as PasswordBox;
-                    if (passwordBox == null)
-                        return;
-                    Password = passwordBox.Password;
+            var passwordBox = obj as PasswordBox;
+            if (passwordBox == null)
+                return;
+            Password = passwordBox.Password;
                     
-                    if (TryLogin())
-                    {
-                        var user = Application.Current.Properties["User"] as User;
-                        if (user?.role == 1)
-                        {
-                            var mainWindow = new MainWindowView();
-                            mainWindow.Show();
-                            Application.Current.Windows[0]?.Close();
-                        }
-                        else if (user?.role == 2)
-                        {
-                            var brigadeWindow = new BrigadeWindowView();
-                            brigadeWindow.Show();
-                            Application.Current.Windows[0]?.Close();
-                        }
-                        else
-                        {
-                           Info = ValidationConst.SomethingWentWrong;
-                        }
-                    }
-                });
+            if (TryLogin())
+            {
+                var user = Application.Current.Properties["User"] as User;
+                if (user?.role == 1)
+                {
+                    var mainWindow = new MainWindowView();
+                    mainWindow.Show();
+                    Application.Current.Windows[0]?.Close();
+                }
+                else if (user?.role == 2)
+                {
+                    var brigadeWindow = new BrigadeWindowView();
+                    brigadeWindow.Show();
+                    Application.Current.Windows[0]?.Close();
+                }
+                else
+                {
+                    Info = ValidationConst.SomethingWentWrong;
+                }
             }
         }
 
-        
+        private bool CanAuth(object obj) => !HasErrors;
+
         private bool TryLogin()
         {
-            var regex = new Regex(ValidationConst.LoginRegex);
-            if (!IsLoginValid())
-            {
-                return false;
-            }
-            if (string.IsNullOrEmpty(Password))
-            {
-                Info = ValidationConst.PasswordEmpty;
-                return false;
-            }
-            if (!regex.IsMatch(Login))
-            {
-                Info = ValidationConst.LoginAndPasswordStructure;
-                return false;
-            }
-            if (Password.Length > 70)
-            {
-                Info = ValidationConst.PasswordTooLong;
-                return false;
-            }
-            
             var user = _userRepository.Login(Login, Password);
             if (user == null)
             {
@@ -167,5 +156,20 @@ namespace TheBureau.ViewModels
             Info = ValidationConst.LoginLengthExceeded;
             return false;
         }
+
+        #region Validation
+        public IEnumerable GetErrors(string propertyName)
+        {
+            return _errorsViewModel.GetErrors(propertyName);
+        }
+        public bool HasErrors => _errorsViewModel.HasErrors;
+        public event EventHandler<DataErrorsChangedEventArgs> ErrorsChanged;
+        private void ErrorsViewModel_ErrorsChanged(object sender, DataErrorsChangedEventArgs e)
+        {
+            ErrorsChanged?.Invoke(this, e);
+            OnPropertyChanged("CanAuth");
+        }
+        #endregion
+
     }
 }

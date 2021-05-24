@@ -63,7 +63,9 @@
                     <Button Name="MainWindowMinimize"  Width="30" Height="auto"  BorderBrush="Transparent" Background="Transparent" DockPanel.Dock="Left" Padding="0" Cursor="Hand" Command="{Binding MinimizeWindowCommand}">
                         <materialDesign:PackIcon Width="24" Kind="WindowMinimize"  Foreground="{DynamicResource NiceGrayColor}" Height="16" />
                     </Button>
-                    <Button Content="Выход" Width="70" Foreground="{DynamicResource NiceGrayColor}" Style="{StaticResource DefaultButtonGray}" Background="Transparent" Command="{Binding LogOutCommand}"/>
+                    <Button Width="30" Foreground="{DynamicResource NiceGrayColor}" Style="{StaticResource DefaultButtonGray}" Background="Transparent" Command="{Binding LogOutCommand}">
+                        <Image Source="../Resources/Images/exit.png" Width="20"/>
+                    </Button>
                 </DockPanel>
             </Grid>
             <StackPanel Name="MainWorkspace" DockPanel.Dock="Top">

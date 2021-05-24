@@ -3,6 +3,7 @@
     public static class ValidationConst
     {
         public const string LettersHyphenRegex = @"^[а-яА-Я-]+$";
+        public const string LettersHyphenDigitsRegex = @"^[а-яА-Я0-9-]+$";
         public const string LoginRegex = @"^[a-zA-Z0-9]+$";
         public const string EmailRegex = "[.\\-_a-zA-Z0-9]+@([a-zA-Z0-9][\\-a-zA-Z0-9]+\\.)+[a-zA-Z]{2,6}";
         //private final static String EMAIL_REGEX = "([.[^@\\s]]+)@([.[^@\\s]]+)\\.([a-z]+)"; //todo Г на П
@@ -11,7 +12,6 @@
         public const string SomethingWentWrong = "Что-то пошло не так...";
         public const string PasswordEmpty = "Введите пароль";
         public const string PasswordTooLong = "Пароль должен быть до 20 символов";
-        public const string LoginAndPasswordStructure = "Пароль и имя пользователя могут состоять лишь из цифр и букв";
         public const string WrongLoginOrPassword = "Неверный логин или пароль";
         
         
