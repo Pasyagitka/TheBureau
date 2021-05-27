@@ -9,29 +9,29 @@ namespace TheBureau.ViewModels
 {
     public class StorageViewModel : ViewModelBase
     {
-        ToolRepository _toolRepository = new ToolRepository();
-        AccessoryRepository _accessoryRepository = new AccessoryRepository();
-        EquipmentRepository _equipmentRepository = new EquipmentRepository();
-        
-        ObservableCollection<Tool> tools;
-        ObservableCollection<Accessory> accessories;
-        ObservableCollection<Equipment> equipments;
+        private readonly ToolRepository _toolRepository = new();
+        private readonly AccessoryRepository _accessoryRepository = new();
+        private readonly EquipmentRepository _equipmentRepository = new();
+
+        private ObservableCollection<Tool> _tools;
+        private ObservableCollection<Accessory> _accessories;
+        private ObservableCollection<Equipment> _equipments;
 
         public ObservableCollection<Tool> Tools 
         { 
-            get => tools; 
-            set  {  tools = value;  OnPropertyChanged("Tools"); } 
+            get => _tools; 
+            set  {  _tools = value;  OnPropertyChanged("Tools"); } 
         }
         public ObservableCollection<Accessory> Accessories 
         { 
-            get => accessories; 
-            set  {  accessories = value;  OnPropertyChanged("Accessories");  } 
+            get => _accessories; 
+            set  {  _accessories = value;  OnPropertyChanged("Accessories");  } 
         }
 
         public ObservableCollection<Equipment> Equipments
         {
-            get => equipments;
-            set { equipments = value;  OnPropertyChanged("Equipments");  }
+            get => _equipments;
+            set { _equipments = value;  OnPropertyChanged("Equipments");  }
         }
 
         public StorageViewModel()
@@ -40,6 +40,5 @@ namespace TheBureau.ViewModels
             Accessories = new ObservableCollection<Accessory>(_accessoryRepository.GetAll());
             Equipments = new ObservableCollection<Equipment>(_equipmentRepository.GetAll());
         }
-        
     }
 }

@@ -12,42 +12,34 @@ namespace TheBureau.ViewModels
 {
     public class RequestViewModel : ViewModelBase
     {
-        RequestRepository _requestRepository = new();
-        BrigadeRepository _brigadeRepository = new();
+        private RequestRepository _requestRepository = new();
+        private BrigadeRepository _brigadeRepository = new();
         private RequestEquipmentRepository _requestEquipmentRepository = new();
 
-        ObservableCollection<Request> _requests;
-        ObservableCollection<Brigade> _brigades;
-
-        private RelayCommand _updateRequest;
-        private RelayCommand _hideGreenRequests;
-        private RelayCommand _showAllRequests;
-        private Request _selectedItem;
+        private ObservableCollection<Request> _requests;
+        private ObservableCollection<Brigade> _brigades;
         private ObservableCollection<RequestEquipment> _requestEquipments;
-        
+
+        private Request _selectedItem;
+
+        private ICommand _updateRequest;
+        private ICommand _hideGreenRequests;
+        private ICommand _showAllRequests;
         public ICommand UpdateRequestCommand => _updateRequest ??= new RelayCommand(OpenEditRequest);
-        public ICommand HideGreenRequestsCommand
-        {
-            get
+        public ICommand HideGreenRequestsCommand =>
+            _hideGreenRequests ??= new RelayCommand(o =>
             {
-                return _hideGreenRequests ??= new RelayCommand(o =>
-                {
-                    Requests = new ObservableCollection<Request>(_requestRepository.GetToDoRequests().Reverse());
-                    SelectedItem = Requests.First();
-                });
-            }
-        }
-        public ICommand ShowAllRequestsCommand
-        {
-            get
+                Requests = new ObservableCollection<Request>(_requestRepository.GetToDoRequests().Reverse());
+                SelectedItem = Requests.First();
+            });
+
+        public ICommand ShowAllRequestsCommand =>
+            _showAllRequests ??= new RelayCommand(o =>
             {
-                return _showAllRequests ??= new RelayCommand(o =>
-                {
-                    Requests = new ObservableCollection<Request>(_requestRepository.GetAll().Reverse());
-                    SelectedItem = Requests.First();
-                });
-            }
-        }
+                Requests = new ObservableCollection<Request>(_requestRepository.GetAll().Reverse());
+                SelectedItem = Requests.First();
+            });
+
         public RequestViewModel()
         {
             Update();
@@ -67,20 +59,12 @@ namespace TheBureau.ViewModels
         public ObservableCollection<Brigade> Brigades 
         { 
             get => _brigades; 
-            set 
-            { 
-                _brigades = value; 
-                OnPropertyChanged("Brigades"); 
-            } 
+            set { _brigades = value; OnPropertyChanged("Brigades"); } 
         }
         public ObservableCollection<Request> Requests 
         { 
             get => _requests; 
-            set 
-            { 
-                _requests = value;
-                OnPropertyChanged("Requests"); 
-            } 
+            set { _requests = value; OnPropertyChanged("Requests"); } 
         }
         public void Update()
         {
@@ -112,7 +96,6 @@ namespace TheBureau.ViewModels
                 SelectedItem = _requestRepository.Get(requestToEdit.id);
             }
         }
-
         public void SetEquipment()
         {
             RequestEquipments = new ObservableCollection<RequestEquipment>(_requestEquipmentRepository.GetAllByRequestId(SelectedItem.id));

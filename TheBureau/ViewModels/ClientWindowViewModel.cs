@@ -5,6 +5,7 @@ using System.ComponentModel;
 using System.Text.RegularExpressions;
 using System.Windows;
 using System.Windows.Input;
+using TheBureau.Enums;
 using TheBureau.Models;
 using TheBureau.Repositories;
 using TheBureau.Services;
@@ -14,11 +15,11 @@ namespace TheBureau.ViewModels
 {
     public class ClientWindowViewModel : ViewModelBase, INotifyDataErrorInfo
     {
-        private ErrorsViewModel _errorsViewModel;
-        private RequestRepository _requestRepository;
-        private ClientRepository _clientRepository;
-        private AddressRepository _addressRepository;
-        private ToolRepository _toolRepository = new ToolRepository();
+        private readonly ErrorsViewModel _errorsViewModel = new();
+        private readonly ToolRepository _toolRepository = new();
+        private RequestRepository _requestRepository=new();
+        private ClientRepository _clientRepository=new();
+        private AddressRepository _addressRepository=new();
         private RequestEquipmentRepository _requestEquipmentRepository;
         
         private ObservableCollection<Request> _requests;
@@ -26,7 +27,6 @@ namespace TheBureau.ViewModels
         private WindowState _windowState;
         
         private string _findRequestText;
-        
         private string _firstname;
         private string _surname;
         private string _patronymic;
@@ -230,21 +230,13 @@ namespace TheBureau.ViewModels
         public bool IsRough
         {
             get => _isRough;
-            set
-            {
-                _isRough = value; 
-                OnPropertyChanged("IsRough");
-            }
+            set { _isRough = value; OnPropertyChanged("IsRough"); }
         }
 
         public bool IsClean
         {
             get => _isClean;
-            set
-            {
-                _isClean = value; 
-                OnPropertyChanged("IsClean");
-            }
+            set { _isClean = value; OnPropertyChanged("IsClean"); }
         }
 
         public int Stage
@@ -253,11 +245,11 @@ namespace TheBureau.ViewModels
             {
                 if (IsRough)
                 {
-                    return IsClean ? 3 : 1;
+                    return IsClean ?  (int)Stages.both: (int)Stages.rough;
                     //Черновая + чистовая - 3, черновая - 1
                 }
-                if (IsClean) return 2; //только чистовая
-                return 0;
+                if (IsClean) return (int)Stages.clean; //только чистовая
+                return (int)Stages.both;
             }
         }
         
@@ -295,7 +287,7 @@ namespace TheBureau.ViewModels
             
             var request = new Request
             {
-                clientId = client.id, addressId = address.id, stage=Stage, status = 1, mountingDate=MountingDate,
+                clientId = client.id, addressId = address.id, stage=Stage, status = (int)Statuses.InProcessing, mountingDate=MountingDate,
                 comment = Comment
             };
             _requestRepository.Add(request);
@@ -592,7 +584,6 @@ namespace TheBureau.ViewModels
 
         public ClientWindowViewModel()
         {
-            _errorsViewModel = new ErrorsViewModel();
             _errorsViewModel.ErrorsChanged += ErrorsViewModel_ErrorsChanged;
             Update();
             ResetFields();

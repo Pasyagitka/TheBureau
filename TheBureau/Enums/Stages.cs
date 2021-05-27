@@ -1,9 +1,9 @@
 ﻿namespace TheBureau.Enums
 {
-    public enum Stage
+    public enum Stages
     {
         rough = 1,
-        clean = 2,
-        both = 3
+        clean,
+        both
     }
 }

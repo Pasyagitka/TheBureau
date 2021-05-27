@@ -1,5 +1,6 @@
 ﻿using System.Collections.ObjectModel;
 using System.Windows.Input;
+using TheBureau.Enums;
 using TheBureau.Models;
 using TheBureau.Repositories;
 using TheBureau.Services;
@@ -9,14 +10,19 @@ namespace TheBureau.ViewModels
 {
     public class EditRequestViewModel : ViewModelBase
     {
-        private RequestRepository _requestRepository = new();
-        private BrigadeRepository _brigadeRepository = new();
-        int _selectedBrigadeId;
+        private readonly RequestRepository _requestRepository = new();
+        private readonly BrigadeRepository _brigadeRepository = new();
+
+        private ObservableCollection<Brigade> _brigades;
+        
+        private int _selectedBrigadeId;
         private int _requestStatus;
-        ObservableCollection<Brigade> _brigades;
-        private RelayCommand _updateRequest;
-        private Request _requestForEdit;
         private bool _sendEmail;
+        private Request _requestForEdit;
+
+        
+        private ICommand _updateRequest;
+
 
         public bool SendEmail
         {
@@ -35,11 +41,7 @@ namespace TheBureau.ViewModels
         public Request RequestForEdit
         {
             get => _requestForEdit;
-            set
-            {
-                _requestForEdit = value;
-                OnPropertyChanged("RequestForEdit");
-            }
+            set { _requestForEdit = value; OnPropertyChanged("RequestForEdit"); }
         }
 
         public ICommand UpdateRequestCommand => _updateRequest ??= new RelayCommand(UpdateRequest);
@@ -48,7 +50,7 @@ namespace TheBureau.ViewModels
         {
             bool isStatusChanged = false;
             var request = _requestRepository.Get(RequestForEdit.id);
-            if (Parse(RequestStatus) == 1 || Parse(RequestStatus) == 2 ||Parse(RequestStatus)== 3)
+            if (Parse(RequestStatus) == (int)Statuses.InProcessing || Parse(RequestStatus) == (int)Statuses.InProgress ||Parse(RequestStatus)== (int)Statuses.Done)
             {
                 if (Parse(RequestStatus) != request.status) isStatusChanged = true;
                 request.status = Parse(RequestStatus);
@@ -69,21 +71,13 @@ namespace TheBureau.ViewModels
         public int SelectedBrigadeId
         {
             get => _selectedBrigadeId;
-            set
-            {
-                _selectedBrigadeId = value;
-                OnPropertyChanged("SelectedBrigadeId");
-            }
+            set { _selectedBrigadeId = value; OnPropertyChanged("SelectedBrigadeId"); }
         }
         
         public ObservableCollection<Brigade> Brigades 
         { 
             get => _brigades; 
-            set 
-            { 
-                _brigades = value; 
-                OnPropertyChanged("Brigades"); 
-            } 
+            set { _brigades = value; OnPropertyChanged("Brigades"); } 
         }
         
         public string RequestStatus
@@ -91,9 +85,9 @@ namespace TheBureau.ViewModels
             get => _requestStatus.ToString();
             set
             { //1 - В обработке, 2 - в Процессе, 3 - Готово
-                if (value.Contains("Готово")) _requestStatus = 3; 
-                else if (value.Contains("В процессе")) _requestStatus = 2;
-                else _requestStatus = 1;
+                if (value.Contains("Готово")) _requestStatus = (int)Statuses.Done; 
+                else if (value.Contains("В процессе")) _requestStatus = (int)Statuses.InProgress;
+                else _requestStatus = (int)Statuses.InProcessing;
                 OnPropertyChanged("RequestStatus");
             }
         }

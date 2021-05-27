@@ -9,8 +9,9 @@ namespace TheBureau.ViewModels
 {
     public class SettingsWindowViewModel : ViewModelBase, INotifyDataErrorInfo
     {
-        private readonly ErrorsViewModel _errorsViewModel;
-        private CompanyRepository _companyRepository = new CompanyRepository();
+        private readonly ErrorsViewModel _errorsViewModel=new();
+        private readonly CompanyRepository _companyRepository = new();
+        
         private string _email;
         private string _password;
         
@@ -42,21 +43,14 @@ namespace TheBureau.ViewModels
         }
         public SettingsWindowViewModel()
         {
-            _errorsViewModel = new ErrorsViewModel();
             _errorsViewModel.ErrorsChanged += ErrorsViewModel_ErrorsChanged;
-
             Email = _companyRepository.Get().email;
             Password = _companyRepository.Get().password;
         }
         
-        public ICommand EditSettingsCommand
-        {
-            get { return _editSettingsCommand ??= new RelayCommand(EditSettings, CanEditSettings); }
-        }
-        private bool CanEditSettings(object sender)
-        {
-            return !HasErrors;
-        }
+        public ICommand EditSettingsCommand => _editSettingsCommand ??= new RelayCommand(EditSettings, CanEditSettings);
+        private bool CanEditSettings(object sender) => !HasErrors;
+
         private void EditSettings(object sender)
         {
             var company = _companyRepository.Get();
@@ -66,10 +60,7 @@ namespace TheBureau.ViewModels
         }
 
         #region Validation
-        public IEnumerable GetErrors(string propertyName)
-        {
-            return _errorsViewModel.GetErrors(propertyName);
-        }
+        public IEnumerable GetErrors(string propertyName) => _errorsViewModel.GetErrors(propertyName);
         public bool HasErrors => _errorsViewModel.HasErrors;
         public event EventHandler<DataErrorsChangedEventArgs> ErrorsChanged;
         private void ErrorsViewModel_ErrorsChanged(object sender, DataErrorsChangedEventArgs e)

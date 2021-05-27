@@ -8,7 +8,7 @@ namespace TheBureau.ViewModels
 {
     public class ErrorsViewModel : INotifyDataErrorInfo
     {
-        readonly Dictionary<string, List<string>> _propertyErrors = new Dictionary<string, List<string>>();
+        private readonly Dictionary<string, List<string>> _propertyErrors = new Dictionary<string, List<string>>();
         public bool HasErrors => _propertyErrors.Any();
 
         public event EventHandler<DataErrorsChangedEventArgs> ErrorsChanged;

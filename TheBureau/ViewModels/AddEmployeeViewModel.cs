@@ -16,6 +16,10 @@ namespace TheBureau.ViewModels
         private readonly BrigadeRepository _brigadeRepository = new();
         private readonly ErrorsViewModel _errorsViewModel= new();
         
+        private ObservableCollection<Employee> _employees;
+        private ObservableCollection<Brigade> _brigades;
+        int _selectedBrigadeId;
+        
         private int _id;
         private string _surname;
         private string _firstname;
@@ -23,12 +27,9 @@ namespace TheBureau.ViewModels
         private string _email;
         private decimal _contactNumber;
         private int? _brigadeid;
-        Employee _employee;
+        private Employee _employee;
         
         private ICommand _addEmployeeCommand;
-        private ObservableCollection<Employee> _employees;
-        private ObservableCollection<Brigade> _brigades;
-        int _selectedBrigadeId;
         
         public int SelectedBrigadeId
         {
@@ -204,9 +205,7 @@ namespace TheBureau.ViewModels
         }
         
         public ICommand AddEmployeeCommand => _addEmployeeCommand ??= new RelayCommand(AddEmployee, CanAddEmployee);
-
         private bool CanAddEmployee(object sender) => !HasErrors;
-
         private void AddEmployee(object sender)
         {
             Employee employee = new Employee()

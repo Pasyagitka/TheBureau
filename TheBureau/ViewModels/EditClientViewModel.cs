@@ -7,14 +7,12 @@ using TheBureau.Models;
 using TheBureau.Repositories;
 using TheBureau.Services;
 
-// ReSharper disable All
-
 namespace TheBureau.ViewModels
 {
     public class EditClientViewModel : ViewModelBase, INotifyDataErrorInfo
     {
-        private ErrorsViewModel _errorsViewModel;
-        private ClientRepository _clientRepository = new ClientRepository();
+        private readonly ErrorsViewModel _errorsViewModel = new();
+        private readonly ClientRepository _clientRepository = new();
         
         private int _id;
         private string _surname;
@@ -22,11 +20,11 @@ namespace TheBureau.ViewModels
         private string _patronymic;
         private string _email;
         private decimal _contactNumber;
-        Client _client;
+        private Client _client;
         
         private RelayCommand _editClientCommand;
         
-        #region propetries
+        #region ClientProperties
 
         public int Id
         {
@@ -173,7 +171,7 @@ namespace TheBureau.ViewModels
             }
         }
 
-        public ICommand EditClientCommand { get => _editClientCommand ??= new RelayCommand(EditClient, CanEditClient); }
+        public ICommand EditClientCommand => _editClientCommand ??= new RelayCommand(EditClient, CanEditClient);
 
         private void EditClient(object sender)
         {
@@ -186,13 +184,13 @@ namespace TheBureau.ViewModels
             _clientRepository.Update(clientUpdate);
             _clientRepository.SaveChanges();
         }
-        public bool CanEditClient(object sender)
+
+        private bool CanEditClient(object sender)
         {
             return !HasErrors;
         }
         public EditClientViewModel(Client selectedClient)
         {
-            _errorsViewModel = new ErrorsViewModel();
             _errorsViewModel.ErrorsChanged += ErrorsViewModel_ErrorsChanged;
             Client = selectedClient;
         }

@@ -11,9 +11,9 @@ namespace TheBureau.ViewModels
 {
     public class BrigadeWindowViewModel : ViewModelBase
     {
-        private RequestRepository _requestRepository = new RequestRepository();
-        private BrigadeRepository _brigadeRepository = new BrigadeRepository();
-        private RequestEquipmentRepository _requestEquipmentRepository = new RequestEquipmentRepository();
+        private RequestRepository _requestRepository = new();
+        private BrigadeRepository _brigadeRepository = new();
+        private RequestEquipmentRepository _requestEquipmentRepository = new();
 
 
         private ObservableCollection<Request> _brigadeRequests;
@@ -22,7 +22,6 @@ namespace TheBureau.ViewModels
         private Request _selectedItem;
         
         private string _findRequestText;
-
         
         private WindowState _windowState;
         
@@ -33,7 +32,20 @@ namespace TheBureau.ViewModels
         public ICommand UpdateRequestCommand => _updateRequest ??= new RelayCommand(OpenEditRequest);
         public ICommand CloseWindowCommand => _closeWindowCommand ??= new RelayCommand(obj => { Application.Current.Shutdown(); });
         public ICommand MinimizeWindowCommand => _minimizeWindowCommand ??= new RelayCommand(obj => { WindowState = WindowState.Minimized; });
-
+        public ICommand LogOutCommand
+        {
+            get
+            {
+                return _logOutCommand ??= new RelayCommand(obj =>
+                {
+                    Application.Current.Properties["User"] = null;
+                    var helloWindow = new HelloWindowView();
+                    helloWindow.Show();
+                    Application.Current.Windows[0]?.Close();
+                    OnPropertyChanged("LogOutCommand");
+                });
+            }
+        }
         public WindowState  WindowState
         {
             get => _windowState;
@@ -45,7 +57,7 @@ namespace TheBureau.ViewModels
             set
             {
                 _findRequestText = value;
-                Search(_findRequestText);
+                Search();
                 OnPropertyChanged("FindRequestText");
             }
         }
@@ -53,21 +65,13 @@ namespace TheBureau.ViewModels
         public Brigade CurrentBrigade
         {
             get => _currentBrigade;
-            set
-            {
-                _currentBrigade = value;
-                OnPropertyChanged("CurrentBrigade");
-            }
+            set { _currentBrigade = value; OnPropertyChanged("CurrentBrigade"); }
         }
         
         public ObservableCollection<Request> BrigadeRequests
         {
             get => _brigadeRequests;
-            set
-            {
-                _brigadeRequests = value;
-                OnPropertyChanged("BrigadeRequests");
-            }
+            set { _brigadeRequests = value; OnPropertyChanged("BrigadeRequests"); }
         }
         public Request SelectedItem
         {
@@ -86,7 +90,7 @@ namespace TheBureau.ViewModels
             if (window.ShowDialog() == true)
             {
                 _requestRepository = new RequestRepository();
-                BrigadeRequests = new ObservableCollection<Request>(_requestRepository.GetRequestsByBrigadeId(CurrentBrigade.id));
+                BrigadeRequests = new ObservableCollection<Request>(_requestRepository.GetRequestsByBrigadeId(CurrentBrigade.id).Reverse());
                 SelectedItem = _requestRepository.Get(requestToEdit.id);
             }
         }
@@ -100,7 +104,7 @@ namespace TheBureau.ViewModels
                 if (CurrentBrigade != null)
                 {
                     BrigadeRequests = 
-                        new ObservableCollection<Request>(_requestRepository.GetRequestsByBrigadeId(CurrentBrigade.id));
+                        new ObservableCollection<Request>(_requestRepository.GetRequestsByBrigadeId(CurrentBrigade.id).Reverse());
                     SelectedItem = BrigadeRequests.First();
                 }
             }
@@ -116,26 +120,10 @@ namespace TheBureau.ViewModels
             RequestEquipments = new ObservableCollection<RequestEquipment>(_requestEquipmentRepository.GetAllByRequestId(SelectedItem.id));
         }
         
-        public ICommand LogOutCommand
+        private void Search()
         {
-            get
-            {
-                return _logOutCommand ??= new RelayCommand(obj =>
-                {
-                    Application.Current.Properties["User"] = null;
-                    var helloWindow = new HelloWindowView();
-                    helloWindow.Show();
-                    Application.Current.Windows[0]?.Close();
-                    OnPropertyChanged("LogOutCommand");
-                });
-            }
-        }
-
-        private void Search(string criteria)
-        {
-            BrigadeRequests = new ObservableCollection<Request>(_requestRepository.FindRequestsForBrigadeByCriteria(FindRequestText, _currentBrigade.id));
+            BrigadeRequests = new ObservableCollection<Request>(_requestRepository.FindRequestsForBrigadeByCriteria(FindRequestText, _currentBrigade.id).Reverse());
             SelectedItem = BrigadeRequests.First();
         }
-
     }
 }

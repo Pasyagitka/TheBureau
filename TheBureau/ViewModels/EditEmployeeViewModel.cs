@@ -23,13 +23,12 @@ namespace TheBureau.ViewModels
         private string _email;
         private decimal? _contactNumber;
         private int? _brigadeid;
-        Employee _employee;
+        private Employee _employee;
 
         private ObservableCollection<Brigade> _brigades;
         private int _selectedBrigadeId;
         
         private ICommand _editEmployeeCommand;
-
         public ObservableCollection<Brigade> Brigades 
         { 
             get => _brigades; 
@@ -74,7 +73,6 @@ namespace TheBureau.ViewModels
                 }
                 OnPropertyChanged("Surname");
             }
-
         }
         
         public string Firstname
@@ -162,9 +160,7 @@ namespace TheBureau.ViewModels
                 {
                     _errorsViewModel.AddError("ContactNumber", ValidationConst.FieldCannotBeEmpty);
                 }
-                _contactNumber = decimal.Parse(value!); 
-                
-
+                _contactNumber = decimal.Parse(value!);
                 var regex = new Regex(ValidationConst.ContactNumberRegex);
                 if (!regex.IsMatch(_contactNumber.ToString()))
                 {
@@ -182,7 +178,7 @@ namespace TheBureau.ViewModels
                 _brigadeid = String.IsNullOrWhiteSpace(value) ? null : Int32.Parse(value);
                 OnPropertyChanged("BrigadeId");
             }
-        }
+        }//todo ??
         #endregion
         
         public Employee Employee

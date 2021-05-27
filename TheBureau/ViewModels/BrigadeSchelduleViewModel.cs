@@ -9,49 +9,43 @@ using TheBureau.Repositories;
 
 namespace TheBureau.ViewModels
 {
-    public class HeatSeriesViewModel : ViewModelBase
+    public class BrigadeSchelduleViewModel : ViewModelBase
     {
-        private BrigadeRepository _brigadeRepository = new();
-        private RequestRepository _requestRepository = new();
+        private readonly BrigadeRepository _brigadeRepository = new();
+        private readonly RequestRepository _requestRepository = new();
 
         private ObservableCollection<Brigade> _brigades;
         private ObservableCollection<Request> _requests;
+        
+        private List<string> _brigadeList;
+        private ChartValues<HeatPoint> _values;
 
         public ObservableCollection<Brigade> Brigades
         {
             get => _brigades;
-            set => _brigades = value;
+            set { _brigades = value; OnPropertyChanged("Brigades"); }
         }
 
         public ObservableCollection<Request> Requests
         {
             get => _requests;
-            set => _requests = value;
+            set { _requests = value; OnPropertyChanged("Requests"); }
         }
-
-        private List<string> days;
-        private List<string> _brigadeList;
-        private ChartValues<HeatPoint> values; 
-
-        public List<string> Days
-        {
-            get => days;
-            set { days = value; } 
-        }
+        
+        public List<string> Days { get; set; }
 
         public List<string> BrigadeList
         {
             get => _brigadeList;
-            set { _brigadeList = value; }
+            set { _brigadeList = value; OnPropertyChanged("BrigadeList"); }
         }
-
         public ChartValues<HeatPoint> Values
         {
-            get => values;
-            set { values = value; }
+            get => _values;
+            set {  _values = value; OnPropertyChanged("Values"); }
         }
 
-        public HeatSeriesViewModel()
+        public BrigadeSchelduleViewModel()
         {
             Brigades = new ObservableCollection<Brigade>(_brigadeRepository.GetAll());
             Requests = new ObservableCollection<Request>(_requestRepository.GetAll());

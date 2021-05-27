@@ -1,0 +1,88 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<ClassDiagram MajorVersion="1" MinorVersion="1" MembersFormat="NameAndType">
+  <Class Name="TheBureau.Accessory">
+    <Position X="0.75" Y="7.5" Width="2" />
+    <TypeIdentifier>
+      <HashCode>AAABAAAAIAAAAAAAAAAAAAQAgAAEAAAAAAAAAAAAAgA=</HashCode>
+      <FileName>Models\Accessory.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="TheBureau.Address">
+    <Position X="8.75" Y="3.25" Width="2.25" />
+    <TypeIdentifier>
+      <HashCode>AAACAAAAAAAAAAAQAAAACAAAAAAAAgACAAAAABACAgA=</HashCode>
+      <FileName>Models\Address.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="TheBureau.Brigade">
+    <Position X="8.25" Y="0.5" Width="2.75" />
+    <TypeIdentifier>
+      <HashCode>AAABAAAAAAAAAAAACAAAAAAACAAAAAAAAAAAABAAAgA=</HashCode>
+      <FileName>Models\Brigade.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="TheBureau.Client">
+    <Position X="4.5" Y="7.75" Width="2.25" />
+    <TypeIdentifier>
+      <HashCode>IAAAAAAAAABQAAAgAAAEAAAAAAAAAAAAAAAAABAAAgA=</HashCode>
+      <FileName>Models\Client.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="TheBureau.Company">
+    <Position X="0.75" Y="0.5" Width="2" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAAAAgAAAAAAAAAAAAAAAAAAAAAgAAAAA=</HashCode>
+      <FileName>Models\Company.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="TheBureau.Employee">
+    <Position X="4.5" Y="0.5" Width="2" />
+    <TypeIdentifier>
+      <HashCode>IAAAAAAACABQAAAgAAAEAAAAAAABAAAAAAAAAAAAAgA=</HashCode>
+      <FileName>Models\Employee.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="TheBureau.Equipment">
+    <Position X="0.75" Y="4.75" Width="3.25" />
+    <TypeIdentifier>
+      <HashCode>AAAgACAAAAAAAAAAAIAAAAAAAAABAAAAAAAAAAAAAgA=</HashCode>
+      <FileName>Models\Equipment.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="TheBureau.Request">
+    <Position X="4.5" Y="3.5" Width="3.5" />
+    <TypeIdentifier>
+      <HashCode>AAQgAAAACAAAAAAAAAAAAAAEAAABCAACgAAAAEAAAgQ=</HashCode>
+      <FileName>Models\Request.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="TheBureau.RequestEquipment">
+    <Position X="0.75" Y="2.25" Width="2" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAJAAAAAAAAAAAAAQAAAAAgACAAAAAAAAAAgA=</HashCode>
+      <FileName>Models\RequestEquipment.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="TheBureau.Role">
+    <Position X="12.25" Y="3.5" Width="2.25" />
+    <TypeIdentifier>
+      <HashCode>AAAAAiAAAAAAAAAAAAAAAAAAAAAEAAAAAAAAAAAAAgA=</HashCode>
+      <FileName>Models\Role.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="TheBureau.Tool">
+    <Position X="12.25" Y="6.25" Width="2.25" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAAAAAAAAAAAAAAAAECAAAAAAAAAAAAgA=</HashCode>
+      <FileName>Models\Tool.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="TheBureau.User">
+    <Position X="12.25" Y="0.5" Width="2.25" />
+    <TypeIdentifier>
+      <HashCode>AAAAQAAAAAAAAAAAAAAAABAAAAAAAAAAAAAAAgAAEgI=</HashCode>
+      <FileName>Models\User.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Font Name="Segoe UI" Size="9" />
+</ClassDiagram>

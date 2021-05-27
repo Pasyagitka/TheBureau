@@ -9,108 +9,86 @@ namespace TheBureau.ViewModels
 {
     public class StatisticsViewModel : ViewModelBase
     {
-        private ClientRepository _clientRepository = new ClientRepository();
-        private RequestRepository _requestRepository = new RequestRepository();
-        private BrigadeRepository _brigadeRepository = new BrigadeRepository();
+        private readonly ClientRepository _clientRepository = new();
+        private readonly RequestRepository _requestRepository = new();
+        private readonly BrigadeRepository _brigadeRepository = new();
 
-        private ObservableCollection<Client> clients;
-        private ObservableCollection<Request> requests;
-        private ObservableCollection<Brigade> brigades;
-        int countRed;
-        private int countYellow;
-        private int countGreen;
+        private ObservableCollection<Client> _clients;
+        private ObservableCollection<Request> _requests;
+        private ObservableCollection<Brigade> _brigades;
+        private int _countRed;
+        private int _countYellow;
+        private int _countGreen;
 
-        private ChartValues<int> redValues;
-        private ChartValues<int> yellowValues;
-        private ChartValues<int> greenValues;
+        private ChartValues<int> _redValues;
+        private ChartValues<int> _yellowValues;
+        private ChartValues<int> _greenValues;
 
         public ChartValues<int> RedValues
         {
-            get => redValues;
-            set { redValues = value; OnPropertyChanged("RedValues");}
+            get => _redValues;
+            set { _redValues = value; OnPropertyChanged("RedValues");}
         }
 
         public ChartValues<int> YellowValues
         {
-            get => yellowValues;
-            set { yellowValues = value;  OnPropertyChanged("YellowValues");}
+            get => _yellowValues;
+            set { _yellowValues = value;  OnPropertyChanged("YellowValues");}
         }
 
         public ChartValues<int> GreenValues
         {
-            get => greenValues;
-            set { greenValues = value; OnPropertyChanged("GreenValues");}
+            get => _greenValues;
+            set { _greenValues = value; OnPropertyChanged("GreenValues");}
         }
-
         public ObservableCollection<Client> Clients
         {
-            get => clients;
-            set { clients = value; OnPropertyChanged("Clients"); }
+            get => _clients;
+            set { _clients = value; OnPropertyChanged("Clients"); }
         }
         public ObservableCollection<Request> Requests
         {
-            get => requests;
-            set { requests = value; OnPropertyChanged("Requests"); }
+            get => _requests;
+            set { _requests = value; OnPropertyChanged("Requests"); }
         }
         public ObservableCollection<Brigade> Brigades
         {
-            get => brigades;
-            set { brigades = value; OnPropertyChanged("Brigades"); }
+            get => _brigades;
+            set { _brigades = value; OnPropertyChanged("Brigades"); }
         }
-        
-        public string CountRed
+        public string CountRedRequests
         {
-            get { return $" Новые заявки ( {countRed} )"; }
-            set
-            {
-                countRed = Int32.Parse(value);
-                OnPropertyChanged("CountRed");
-            }
+            get => $" Новые заявки ( {_countRed} )";
+            set { _countRed = Int32.Parse(value); OnPropertyChanged("CountRed"); }
         }
-
-        public int CountRed1
+        public int CountRed
         {
-            get => countRed;
-            set
-            {
-                countRed = value;
-                OnPropertyChanged("CountRed1");
-            }
+            get => _countRed;
+            set { _countRed = value; OnPropertyChanged("CountRed1"); }
         }
         public int CountYellow
         {
-            get => countYellow;
-            set
-            {
-                countYellow = value;
-                OnPropertyChanged("CountYellow");
-            }
+            get => _countYellow;
+            set { _countYellow = value; OnPropertyChanged("CountYellow"); }
         }
         public int CountGreen
         {
-            get => countGreen;
-            set
-            {
-                countGreen = value;
-                OnPropertyChanged("CountGreen");
-            }
+            get => _countGreen;
+            set { _countGreen = value; OnPropertyChanged("CountGreen"); }
         }
-
-
 
         public StatisticsViewModel()
         {
             Clients = new ObservableCollection<Client>(_clientRepository.GetAll());
             Requests = new ObservableCollection<Request>(_requestRepository.GetAll());
             Brigades = new ObservableCollection<Brigade>(_brigadeRepository.GetAll());
-            CountRed1 = _requestRepository.GetRedRequestsCount();
+            
             CountGreen = _requestRepository.GetGreenRequestsCount();
+            CountRed = _requestRepository.GetRedRequestsCount();
             CountYellow = _requestRepository.GetYellowRequestsCount();
 
-            GreenValues = new ChartValues<int>();
-            GreenValues.Add(CountGreen);
-            //GreenValues = new ChartValues<int>(new[] {CountGreen});
-            RedValues = new ChartValues<int>(new[] {CountRed1});
+            GreenValues = new ChartValues<int>(new[] {CountGreen});
+            RedValues = new ChartValues<int>(new[] {CountRed});
             YellowValues = new ChartValues<int>(new[] {CountYellow});
         }
     }

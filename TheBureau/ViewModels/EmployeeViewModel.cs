@@ -9,24 +9,18 @@ namespace TheBureau.ViewModels
 {
     public class EmployeeViewModel : ViewModelBase
     {
-        //todo поиск не работает
         private EmployeeRepository _employeeRepository;
-        private BrigadeRepository _brigadeRepository;
+        private readonly BrigadeRepository _brigadeRepository;
         
         private ObservableCollection<Employee> _employees;
         private ObservableCollection<Brigade> _employeeBrigades;
         
-        private bool _readOnly;
         private Employee _selectedItem;
         private string _findEmployeesText;
-        private int _selectedIndex;
         
         private ICommand _deleteCommand;
-        private ICommand _updateCommand;
-        private ICommand _saveChangesCommand;
         private ICommand _openEditEmployeeWindowCommand;
         private ICommand _openAddEmployeeWindowCommand;
-
         
         public ObservableCollection<Employee> Employees
         {
@@ -87,14 +81,6 @@ namespace TheBureau.ViewModels
                 SelectedItem = _employeeRepository.Get(employeeToEdit.id);
             }
         }
-        
-        public ICommand SaveChangesCommand =>
-            _saveChangesCommand = new RelayCommand(obj =>
-            {
-                Employees = new ObservableCollection<Employee>(_employeeRepository.GetAll());
-                SelectedItem = Employees.First();
-                OnPropertyChanged("SaveChangesCommand");
-            });
 
         public Employee SelectedItem
         {
@@ -118,11 +104,7 @@ namespace TheBureau.ViewModels
         public ObservableCollection<Brigade> EmployeeBrigade
         {
             get => _employeeBrigades;
-            set
-            {
-                _employeeBrigades = value;
-                OnPropertyChanged("EmployeeBrigade");
-            }
+            set { _employeeBrigades = value; OnPropertyChanged("EmployeeBrigade"); }
         }
         
         public string FindEmployeeText
@@ -140,6 +122,7 @@ namespace TheBureau.ViewModels
         {
             EmployeeBrigade = new ObservableCollection<Brigade>(_brigadeRepository.GetAll().Where(x => x.id == _selectedItem?.brigadeId));
         }
+        
         private void Search(string criteria)
         {
             Employees = new ObservableCollection<Employee>(_employeeRepository.FindEmployeesByCriteria(criteria));

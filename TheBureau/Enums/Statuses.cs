@@ -1,6 +1,6 @@
 ﻿namespace TheBureau.Enums
 {
-    public enum Status
+    public enum Statuses
     {
         InProcessing = 1,
         InProgress,

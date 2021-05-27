@@ -1,6 +1,8 @@
 ﻿using System.Collections.ObjectModel;
 using System.Linq;
+using System.Windows.Input;
 using MaterialDesignThemes.Wpf;
+using TheBureau.Enums;
 using TheBureau.Models;
 using TheBureau.Repositories;
 using TheBureau.Services;
@@ -9,38 +11,32 @@ namespace TheBureau.ViewModels
 {
     public class BrigadeViewModel : ViewModelBase
     {
-        BrigadeRepository _brigadeRepository = new BrigadeRepository();
-        private RequestRepository _requestRepository = new RequestRepository();
-        private EmployeeRepository _employeeRepository = new EmployeeRepository();
-        private UserRepository _userRepository = new UserRepository();
+        private const string BrigadeLoginBase = "brigade";
 
-        private string _brigadeLoginBase = "brigade";
-        ObservableCollection<Brigade> _brigades;
-        ObservableCollection<Employee> _employees;
-        private RelayCommand _addBrigade;
-        private RelayCommand _deleteBrigade;
-        object _selectedItem;
-
+        private readonly BrigadeRepository _brigadeRepository = new();
+        private readonly RequestRepository _requestRepository = new();
+        private readonly EmployeeRepository _employeeRepository = new();
+        private readonly UserRepository _userRepository = new();
         
+        private ObservableCollection<Brigade> _brigades;
+        private ObservableCollection<Employee> _employees;
+        
+        private ICommand _addBrigade;
+        private ICommand _deleteBrigade;
+        
+        private Brigade _selectedItem;
+
         public ObservableCollection<Employee> Employees
         {
             get => _employees;
-            set
-            {
-                _employees = value;
-                OnPropertyChanged("Employees");
-            } 
+            set { _employees = value; OnPropertyChanged("Employees"); } 
         }
-        public object SelectedItem
+        public Brigade SelectedItem
         {
             get => _selectedItem;
-            set
-            {
-                _selectedItem = value;
-                OnPropertyChanged("SelectedItem");
-            }
+            set { _selectedItem = value; OnPropertyChanged("SelectedItem"); }
         }
-        public RelayCommand AddBrigade
+        public ICommand AddBrigade
         {
             get
             {
@@ -52,9 +48,9 @@ namespace TheBureau.ViewModels
                     _brigadeRepository.Save();
                     
                     User newUser = new();
-                    newUser.login = _brigadeLoginBase + newBrigade.id;
+                    newUser.login = BrigadeLoginBase + newBrigade.id;
                     newUser.password = PasswordHash.CreateHash(newUser.login);
-                    newUser.role = 2; //todo enums for roles and so on
+                    newUser.role = (int)Roles.brigade;
                     _userRepository.Add(newUser);
                     _userRepository.Save();
 
@@ -66,14 +62,13 @@ namespace TheBureau.ViewModels
                 });
             }
         }
-        public RelayCommand DeleteBrigade
+        public ICommand DeleteBrigade
         {
             get
             {
                 return _deleteBrigade ??= new RelayCommand(obj =>
                 {
-                    //todo selected item криво выделяет обычно
-                    int id = (SelectedItem as Brigade).id;
+                    var id = SelectedItem.id;
                     var userId = _brigadeRepository.Get(id).userId;
 
                     foreach (var employee in Employees.Where(x => x.brigadeId == id))
@@ -105,8 +100,6 @@ namespace TheBureau.ViewModels
             }
         }
         
-
-
         public ObservableCollection<Brigade> Brigades 
         { 
             get => _brigades; 

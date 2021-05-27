@@ -8,12 +8,14 @@ namespace TheBureau.ViewModels
 {
     public class MainWindowViewModel : ViewModelBase
     {
-        RequestRepository _requestRepository = new RequestRepository();
+        readonly RequestRepository _requestRepository = new();
 
-        int _selectedIndex;
-        private string _mainTop;
-        object _content;
-        int _countRed;
+        private int _selectedIndex;
+        private string _mainTopText;
+        private object _content;
+        private int _countRed;
+
+        private WindowState _windowState;
 
         private ICommand _openSettingsCommand;
         private ICommand _logOutCommand;
@@ -30,7 +32,7 @@ namespace TheBureau.ViewModels
                     SettingsWindow sw = new SettingsWindow();
                     if (sw.ShowDialog() == true)
                     {
-                       
+                       //todo что ето
                     }
                     OnPropertyChanged("OpenSettingsCommand");
                 });
@@ -52,54 +54,21 @@ namespace TheBureau.ViewModels
         }
 
         #region Resize
-        private WindowState _windowState;
-        //private WindowStyle _windowStyle;
 
         public WindowState  WindowState
         {
             get => _windowState;
-            set
-            {
-                _windowState = value;
-                OnPropertyChanged("WindowState");
-            }
+            set { _windowState = value; OnPropertyChanged("WindowState"); }
         }
-        // public WindowStyle  WindowStyle
-        // {
-        //     get => _windowStyle;
-        //     set
-        //     {
-        //         _windowStyle = value;
-        //         OnPropertyChanged("WindowStyle");
-        //     }
-        // }
+ 
         public ICommand CloseWindowCommand =>
-            _closeWindowCommand ??= new RelayCommand(obj =>
-            {
-                Application.Current.Shutdown();
-            });
+            _closeWindowCommand ??= new RelayCommand(obj => { Application.Current.Shutdown(); });
 
         public ICommand MinimizeWindowCommand =>
-            _minimizeWindowCommand ??= new RelayCommand(obj =>
-            {
-                WindowState = WindowState.Minimized;
-            });
+            _minimizeWindowCommand ??= new RelayCommand(obj => { WindowState = WindowState.Minimized; });
 
-        public ICommand MaximizeWindowCommand =>
-            _maximizeWindowCommand ??= new RelayCommand(obj =>
-            {
-                // if (WindowState != WindowState.Maximized)
-                // {
-                //     WindowState = WindowState.Maximized;
-                //     WindowStyle = WindowStyle.;
-                // }
-                // else
-                // {
-                //     WindowState = WindowState.Normal;
-                //     WindowStyle = WindowStyle.None;
-                // }
-                WindowState = WindowState != WindowState.Maximized ? WindowState.Maximized : WindowState.Normal;
-            });
+        public ICommand MaximizeWindowCommand => _maximizeWindowCommand ??= new RelayCommand(obj =>
+            { WindowState = WindowState != WindowState.Maximized ? WindowState.Maximized : WindowState.Normal; });
 
         #endregion
         public object Content
@@ -115,12 +84,8 @@ namespace TheBureau.ViewModels
 
         public string MainTopText
         {
-            get => _mainTop;
-            set
-            {
-                _mainTop = value;
-                OnPropertyChanged("MainTopText");
-            }
+            get => _mainTopText;
+            set { _mainTopText = value; OnPropertyChanged("MainTopText"); }
         }
         public int SelectedIndex
         {
@@ -135,24 +100,18 @@ namespace TheBureau.ViewModels
         public int CountRed
         {
             get => _countRed;
-            set
-            {
-                _countRed = value;
-                OnPropertyChanged("CountRed");
-            }
+            set { _countRed = value; OnPropertyChanged("CountRed"); }
         }
 
-  
         public MainWindowViewModel()
         {            
             Content = new StatisticsView();
             WindowState = WindowState.Normal;
-            //todo только 1 раз
             CountRed = _requestRepository.GetRedRequestsCount();
             SelectedIndex = 1;
         }
-       
-        public void SetPage(int index)
+
+        private void SetPage(int index)
         {
             switch (index)
             {
@@ -185,8 +144,6 @@ namespace TheBureau.ViewModels
                     MainTopText = "БЮРО МОНТАЖНИКА";
                     break;                    
             }
-            
         }
-
     }
 }

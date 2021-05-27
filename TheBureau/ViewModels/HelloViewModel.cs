@@ -2,10 +2,10 @@
 using System.Collections;
 using System.ComponentModel;
 using System.Text.RegularExpressions;
-using System.Web.UI.WebControls;
 using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Input;
+using TheBureau.Enums;
 using TheBureau.Models;
 using TheBureau.Repositories;
 using TheBureau.Services;
@@ -15,8 +15,8 @@ namespace TheBureau.ViewModels
 {
     public class HelloViewModel : ViewModelBase, INotifyDataErrorInfo
     {
-        private UserRepository _userRepository = new();
-        private ErrorsViewModel _errorsViewModel = new();
+        private readonly UserRepository _userRepository = new();
+        private readonly ErrorsViewModel _errorsViewModel = new();
 
         private string _login;
         private string _password;
@@ -25,7 +25,16 @@ namespace TheBureau.ViewModels
         private ICommand _closeWindowCommand;
         private ICommand _clientPageSetCommand;
         private ICommand _authPageSetCommand;
+        private ICommand _signinCommand;
+
         private object _frameContent;
+        
+        public ICommand ClientViewSetCommand => _clientPageSetCommand ??= 
+            new RelayCommand(obj => { FrameContent = new HelloPageView(); });
+        public ICommand AuthViewSetCommand => _authPageSetCommand ??= 
+            new RelayCommand(obj => { FrameContent = new AuthenticationPageView(); });
+        public ICommand CloseWindowCommand => _closeWindowCommand ??= 
+            new RelayCommand(obj => { Application.Current.Shutdown(); });
         
         public HelloViewModel()
         {
@@ -42,12 +51,6 @@ namespace TheBureau.ViewModels
                 OnPropertyChanged("FrameContent");
             }
         }
-        public ICommand ClientViewSetCommand => _clientPageSetCommand ??= 
-            new RelayCommand(obj => { FrameContent = new HelloPageView(); });
-        public ICommand AuthViewSetCommand => _authPageSetCommand ??= 
-            new RelayCommand(obj => { FrameContent = new AuthenticationPageView(); });
-        public ICommand CloseWindowCommand => _closeWindowCommand ??= 
-            new RelayCommand(obj => { Application.Current.Shutdown(); });
         
         public string Info
         {
@@ -83,17 +86,11 @@ namespace TheBureau.ViewModels
         public string Password
         {
             get => _password;
-            set
-            {
-                _password = value;
-                OnPropertyChanged("Password");
-            }
+            set { _password = value; OnPropertyChanged("Password"); }
         }
 
-        private ICommand _signinCommand;
         public ICommand SigninCommand => _signinCommand ??= new RelayCommand(Auth, CanAuth);
         private bool CanAuth(object obj) => !HasErrors;
-
         public void Auth(object obj)
         {
             var passwordBox = obj as PasswordBox;
@@ -104,13 +101,13 @@ namespace TheBureau.ViewModels
             if (TryLogin())
             {
                 var user = Application.Current.Properties["User"] as User;
-                if (user?.role == 1)
+                if (user?.role == (int)Roles.admin)
                 {
                     var mainWindow = new MainWindowView();
                     mainWindow.Show();
                     Application.Current.Windows[0]?.Close();
                 }
-                else if (user?.role == 2)
+                else if (user?.role == (int)Roles.brigade)
                 {
                     var brigadeWindow = new BrigadeWindowView();
                     brigadeWindow.Show();
@@ -157,6 +154,5 @@ namespace TheBureau.ViewModels
             OnPropertyChanged("CanAuth");
         }
         #endregion
-
     }
 }

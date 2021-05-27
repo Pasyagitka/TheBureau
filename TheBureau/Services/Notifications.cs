@@ -4,6 +4,7 @@ using System.Net;
 using System.Net.Mail;
 using System.Text;
 using System.Threading.Tasks;
+using TheBureau.Enums;
 using TheBureau.Models;
 using TheBureau.Repositories;
 using TheBureau.Views.Controls;
@@ -44,8 +45,8 @@ namespace TheBureau.Services
             string mountingDateString = String.Format(MountingDate, request.mountingDate.ToString("MM/dd/yyyy"));
             
             string stageToString ="";
-            if (request.stage == 1) stageToString = "Черновая";
-                else if (request.stage == 2) stageToString = "Чистовая";
+            if (request.stage == (int) Enums.Stages.rough) stageToString = "Черновая";
+                else if (request.stage == (int)Enums.Stages.clean) stageToString = "Чистовая";
                 else stageToString = "Черновая и чистовая";
             string stagesString = String.Format(Stages, stageToString);
             
@@ -64,8 +65,8 @@ namespace TheBureau.Services
         public static async void SendRequestStatusChanged(Request request)
         {
             string requestStatus = "";
-            if (request.status == 1) requestStatus = "В обработке";  
-            else if (request.status == 2) requestStatus = "В процессе";
+            if (request.status == (int) Statuses.InProcessing) requestStatus = "В обработке";  
+            else if (request.status == (int)Statuses.InProgress) requestStatus = "В процессе";
             else requestStatus = "Готово";
             
             string statusString = String.Format(StatusChangedMessage, requestStatus);

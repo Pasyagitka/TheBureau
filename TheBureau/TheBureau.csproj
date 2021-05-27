@@ -100,11 +100,12 @@
     <Compile Include="Converters\StatusColorConverter.cs" />
     <Compile Include="Converters\StageConverter.cs" />
     <Compile Include="Converters\StatusConverter.cs" />
+    <Compile Include="Enums\Roles.cs" />
     <Compile Include="Services\Notifications.cs" />
     <Compile Include="Services\PasswordHash.cs" />
     <Compile Include="Services\ValidationConst.cs" />
-    <Compile Include="Enums\Stage.cs" />
-    <Compile Include="Enums\Status.cs" />
+    <Compile Include="Enums\Stages.cs" />
+    <Compile Include="Enums\Statuses.cs" />
     <Compile Include="Models\Accessory.cs" />
     <Compile Include="Models\Address.cs" />
     <Compile Include="Models\Brigade.cs" />
@@ -135,14 +136,13 @@
     <Compile Include="ViewModels\BrigadeWindowViewModel.cs" />
     <Compile Include="ViewModels\ClientWindowViewModel.cs" />
     <Compile Include="ViewModels\ConfirmWindowViewModel.cs" />
-    <Compile Include="ViewModels\EditBrigadeViewModel.cs" />
     <Compile Include="ViewModels\EditClientViewModel.cs" />
     <Compile Include="ViewModels\EditEmployeeViewModel.cs" />
     <Compile Include="ViewModels\EditRequestFromBrigadeViewModel.cs" />
     <Compile Include="ViewModels\EditRequestViewModel.cs" />
     <Compile Include="ViewModels\EmployeeViewModel.cs" />
     <Compile Include="ViewModels\ErrorsViewModel.cs" />
-    <Compile Include="ViewModels\HeatSeriesViewModel.cs" />
+    <Compile Include="ViewModels\BrigadeSchelduleViewModel.cs" />
     <Compile Include="ViewModels\HelloPageViewModel.cs" />
     <Compile Include="ViewModels\HelloViewModel.cs" />
     <Compile Include="ViewModels\InfoWindowViewModel.cs" />
@@ -170,8 +170,8 @@
     <Compile Include="Views\Controls\EmployeeCardSmall.xaml.cs">
       <DependentUpon>EmployeeCardSmall.xaml</DependentUpon>
     </Compile>
-    <Compile Include="Views\Controls\HeatSeries.xaml.cs">
-      <DependentUpon>HeatSeries.xaml</DependentUpon>
+    <Compile Include="Views\Controls\BrigadeSchedule.xaml.cs">
+      <DependentUpon>BrigadeSchedule.xaml</DependentUpon>
     </Compile>
     <Compile Include="Views\Controls\InfoWindow.xaml.cs">
       <DependentUpon>InfoWindow.xaml</DependentUpon>
@@ -291,7 +291,7 @@
     <Page Include="Views\Controls\BrigadeStatChart.xaml" />
     <Page Include="Views\Controls\ConfirmWindow.xaml" />
     <Page Include="Views\Controls\EmployeeCardSmall.xaml" />
-    <Page Include="Views\Controls\HeatSeries.xaml" />
+    <Page Include="Views\Controls\BrigadeSchedule.xaml" />
     <Page Include="Views\Controls\InfoWindow.xaml" />
     <Page Include="Views\Controls\StatChart.xaml" />
     <Page Include="Views\EditClientView.xaml" />
