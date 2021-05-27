@@ -32,15 +32,16 @@
                     </LinearGradientBrush>
                 </Border.Background>
                 <StackPanel   Orientation="Horizontal">
-                <Border Background="White" CornerRadius="5" Margin="20, 10, 0, 10" Width="320">
-                        <TextBox Padding="5" wpf:HintAssist.Hint="Найти работника"
-                                        wpf:TextFieldAssist.DecorationVisibility="Hidden"
-                                        BorderThickness="0"
-                                        VerticalAlignment="Center" Text="{Binding FindEmployeeText, UpdateSourceTrigger=PropertyChanged}"/>
-                </Border>
+                    <Border Background="White" CornerRadius="5" Margin="20, 10, 0, 10" Width="320">
+                            <TextBox Padding="5" wpf:HintAssist.Hint="Найти работника"
+                                            wpf:TextFieldAssist.DecorationVisibility="Hidden"
+                                            BorderThickness="0"
+                                            VerticalAlignment="Center" Text="{Binding FindEmployeeText, UpdateSourceTrigger=PropertyChanged}"/>
+                    </Border>
+                    <wpf:PackIcon Kind="Search" Foreground="White"  Width="29" Height="Auto" Margin="0,16,0,10.6"/>
                 </StackPanel>
             </Border>
-            <ScrollViewer Grid.Column="0" Grid.Row="1">
+            <ScrollViewer Grid.Column="0" Grid.Row="1" Margin="0,0,0,15">
                 <Border Background="{DynamicResource PrimaryLightGrayColor}">
                    <ListView ItemsSource="{Binding Employees, Mode=TwoWay}" SelectedItem="{Binding SelectedItem, Mode=TwoWay}">
                        <ListView.ItemTemplate>
@@ -51,23 +52,23 @@
                    </ListView>
                 </Border>
             </ScrollViewer>
-            <Border Grid.Column="1" Grid.RowSpan="2" Background="White" >
+            <Border Grid.Column="1" Grid.Row="0" Grid.RowSpan="2" Background="White" >
                 <Border Margin="40, 15, 40, 15" CornerRadius="10" Background="{DynamicResource PrimaryLightGrayColor}">
-                    <StackPanel Margin="10">
-                        <ToolBarTray>
+                    <DockPanel Margin="10">
+                        <ToolBarTray DockPanel.Dock="Top">
                             <ToolBar Style="{DynamicResource MaterialDesignToolBar}" ClipToBounds="False">
-                                <Button ToolTip="Добавить" Command="{Binding OpenAddEmployeeWindowCommand}">
+                                <Button ToolTip="Добавить" Command="{Binding OpenAddEmployeeWindowCommand}" Cursor="Hand">
                                     <Image Source="../../Resources/Images/add.png" Width="30"/>
                                 </Button>
-                                <Button ToolTip="Редактировать" Command="{Binding OpenEditEmployeeWindowCommand}">
+                                <Button ToolTip="Редактировать" Command="{Binding OpenEditEmployeeWindowCommand}" Cursor="Hand">
                                     <Image Source="../../Resources/Images/edit.png" Width="30"/>
                                 </Button>
-                                <Button ToolTip="Удалить" Command="{Binding DeleteCommand}">
+                                <Button ToolTip="Удалить" Command="{Binding DeleteCommand}" Cursor="Hand">
                                     <Image Source="../../Resources/Images/delete.png" Width="30"/>
                                 </Button>
                             </ToolBar>
                         </ToolBarTray>
-                        <wpf:Card wpf:ShadowAssist.ShadowDepth="Depth2" Margin="10" Padding="5">
+                        <wpf:Card  DockPanel.Dock="Top" wpf:ShadowAssist.ShadowDepth="Depth2" Margin="10" Padding="5">
                             <ContentControl Grid.Column="0" Grid.Row="1" Content="{Binding SelectedItem, Mode=TwoWay}">
                                 <ContentControl.ContentTemplate>
                                     <DataTemplate>
@@ -104,27 +105,54 @@
                                 </ContentControl.ContentTemplate>
                             </ContentControl>
                         </wpf:Card>
-                        <Separator/>
-                        <Border Background="White"  HorizontalAlignment="Center"  Padding="0" Width="150" Margin="5">
+                        <Separator  DockPanel.Dock="Top"/>
+                        <Border   DockPanel.Dock="Top" Background="White"  HorizontalAlignment="Center"  Padding="0" Width="150" Margin="5">
                             <TextBlock Text="Бригада" Margin="5"  HorizontalAlignment="Center"/>
                         </Border>
         
-                        <Separator/>
-                        <Border Background="White" CornerRadius="10" Margin="10, 10, 0, 10">
-                            <ListView ItemsSource="{Binding EmployeeBrigade}">
-                                <ListView.ItemsPanel>
-                                    <ItemsPanelTemplate>
-                                        <StackPanel Height="320"></StackPanel>
-                                    </ItemsPanelTemplate>
-                                </ListView.ItemsPanel>
-                                <ListView.ItemTemplate>
-                                    <HierarchicalDataTemplate>
-                                        <controls:BrigadeCardSmall Margin="5"/>
-                                    </HierarchicalDataTemplate>
-                                </ListView.ItemTemplate>
-                            </ListView>
+                        <Separator  DockPanel.Dock="Top"/>
+                        <!-- <Border Background="White" CornerRadius="10" Margin="10, 10, 0, 10"> -->
+                        <!--     <ListView ItemsSource="{Binding EmployeeBrigade}"> -->
+                        <!--         <ListView.ItemsPanel> -->
+                        <!--             <ItemsPanelTemplate> -->
+                        <!--                 <StackPanel Height="320"></StackPanel> -->
+                        <!--             </ItemsPanelTemplate> -->
+                        <!--         </ListView.ItemsPanel> -->
+                        <!--         <ListView.ItemTemplate> -->
+                        <!--             <HierarchicalDataTemplate> -->
+                        <!--                 <controls:BrigadeCardSmall Margin="5"/> -->
+                        <!--             </HierarchicalDataTemplate> -->
+                        <!--         </ListView.ItemTemplate> -->
+                        <!--     </ListView> -->
+                        <!-- </Border> -->
+                        <Border  DockPanel.Dock="Top"  Background="White" CornerRadius="10" Margin="10" HorizontalAlignment="Stretch">
+                            <ContentControl Content="{Binding EmployeeBrigade}">
+                                <ContentControl.ContentTemplate>
+                                    <DataTemplate>
+                                        <Border HorizontalAlignment="Stretch">
+                                            <controls:BrigadeCardSmall Width="650" Height="200"/>
+                                        </Border>
+                                    </DataTemplate>
+                                </ContentControl.ContentTemplate>
+                            </ContentControl>
                         </Border>
-                    </StackPanel>
+                        <!-- <Border Background="White" CornerRadius="10" Margin="10" HorizontalAlignment="Stretch"> -->
+                        <!--     <ScrollViewer VerticalScrollBarVisibility="Auto"> -->
+                        <!--         <ListView ItemsSource="{Binding EmployeeBrigade}" Height="300" HorizontalAlignment="Stretch" HorizontalContentAlignment="Center"> -->
+                        <!--             <ListView.ItemsPanel> -->
+                        <!--                 <ItemsPanelTemplate> -->
+                        <!--                     <StackPanel Height="300"></StackPanel> -->
+                        <!--                 </ItemsPanelTemplate> -->
+                        <!--             </ListView.ItemsPanel> -->
+                        <!--             <ListView.ItemTemplate> -->
+                        <!--                 <HierarchicalDataTemplate> -->
+                        <!--                     <controls:BrigadeCardSmall Width="650" Margin="5"/> -->
+                        <!--                 </HierarchicalDataTemplate> -->
+                        <!--             </ListView.ItemTemplate> -->
+                        <!--         </ListView> -->
+                        <!--     </ScrollViewer> -->
+                        <!-- </Border> -->
+                    </DockPanel>
                 </Border>
             </Border>
         </Grid>

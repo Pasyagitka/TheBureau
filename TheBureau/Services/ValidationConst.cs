@@ -11,7 +11,7 @@
 
         public const string SomethingWentWrong = "Что-то пошло не так...";
         public const string PasswordEmpty = "Введите пароль";
-        public const string PasswordTooLong = "Пароль должен быть до 20 символов";
+        public const string PasswordLengthExceeded = "Пароль должен быть от 5 до 20 символов";
         public const string WrongLoginOrPassword = "Неверный логин или пароль";
         
         

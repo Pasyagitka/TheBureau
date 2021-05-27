@@ -62,7 +62,7 @@ namespace TheBureau.ViewModels
             {
                 _login = value; 
                 _errorsViewModel.ClearErrors("Login");
-                
+
                 if (string.IsNullOrWhiteSpace(_login))
                 {
                     _errorsViewModel.AddError("Login", ValidationConst.LoginEmpty);
@@ -86,21 +86,13 @@ namespace TheBureau.ViewModels
             set
             {
                 _password = value;
-                _errorsViewModel.ClearErrors("Password");
-                if (string.IsNullOrWhiteSpace(_password))
-                {
-                    _errorsViewModel.AddError("Password",ValidationConst.FieldCannotBeEmpty);
-                }
-                if (_password?.Length  < 8 || _password?.Length > 40)
-                {
-                    _errorsViewModel.AddError("Password",ValidationConst.IncorrectPassword);
-                }
                 OnPropertyChanged("Password");
             }
         }
 
         private ICommand _signinCommand;
-        public ICommand SigninCommand => _signinCommand ??= new RelayCommand(Auth);
+        public ICommand SigninCommand => _signinCommand ??= new RelayCommand(Auth, CanAuth);
+        private bool CanAuth(object obj) => !HasErrors;
 
         public void Auth(object obj)
         {
@@ -130,11 +122,18 @@ namespace TheBureau.ViewModels
                 }
             }
         }
-
-        private bool CanAuth(object obj) => !HasErrors;
-
         private bool TryLogin()
         {
+            if (string.IsNullOrWhiteSpace(_password))
+            {
+                Info = ValidationConst.FieldCannotBeEmpty;
+                return false;
+            }
+            if (_password?.Length  < 5 || _password?.Length > 20)
+            {
+                Info = ValidationConst.PasswordLengthExceeded;
+                return false;
+            }
             var user = _userRepository.Login(Login, Password);
             if (user == null)
             {
@@ -144,19 +143,7 @@ namespace TheBureau.ViewModels
             Application.Current.Properties["User"] = _userRepository.Get(user.id);
             return true;
         }
-        
-        private bool IsLoginValid()
-        {
-            if (string.IsNullOrEmpty(Login))
-            {
-                Info = ValidationConst.LoginEmpty;
-                return false;
-            }
-            if (_login.Length <= 20) return true;
-            Info = ValidationConst.LoginLengthExceeded;
-            return false;
-        }
-
+ 
         #region Validation
         public IEnumerable GetErrors(string propertyName)
         {

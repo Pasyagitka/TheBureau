@@ -7,7 +7,7 @@
         xmlns:materialDesign="http://materialdesigninxaml.net/winfx/xaml/themes"
         xmlns:viewModels="clr-namespace:TheBureau.ViewModels"
         xmlns:converters="clr-namespace:TheBureau.Converters"
-        mc:Ignorable="d"
+        mc:Ignorable="d" WindowStyle="None"
         Title="Статистика" MinHeight="720" MinWidth="1280"
         Background="Transparent" WindowState="{Binding WindowState}"
         MaxHeight="{Binding Source={x:Static SystemParameters.MaximizedPrimaryScreenHeight}}"
@@ -45,13 +45,9 @@
             <RowDefinition Height="*"/>
         </Grid.RowDefinitions>
         
-        <Frame MinWidth="1210" MinHeight="690" 
-               
-               Margin="70, 0,0,0"
-                Grid.Row="1" Content="{Binding Content, Mode=TwoWay}" 
-                NavigationUIVisibility="Hidden">
+        <Frame MinWidth="1210" MinHeight="690" Margin="70, 0,0,0" Grid.Row="1" Content="{Binding Content, Mode=TwoWay}" NavigationUIVisibility="Hidden">
             <Frame.Background>
-                <ImageBrush ImageSource="C:\Users\Professional\Desktop\images\чб.png" Opacity="0.1"></ImageBrush>
+                <ImageBrush ImageSource="../Resources/Images/background.png" Opacity="0.1"></ImageBrush>
             </Frame.Background>
         </Frame>
         

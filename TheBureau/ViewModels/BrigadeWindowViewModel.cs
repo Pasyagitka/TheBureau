@@ -13,10 +13,14 @@ namespace TheBureau.ViewModels
     {
         private RequestRepository _requestRepository = new RequestRepository();
         private BrigadeRepository _brigadeRepository = new BrigadeRepository();
+        private RequestEquipmentRepository _requestEquipmentRepository = new RequestEquipmentRepository();
+
 
         private ObservableCollection<Request> _brigadeRequests;
+        private ObservableCollection<RequestEquipment> _requestEquipments; 
         private Brigade _currentBrigade;
         private Request _selectedItem;
+        
         private string _findRequestText;
 
         
@@ -71,6 +75,7 @@ namespace TheBureau.ViewModels
             set
             {
                 _selectedItem = value;
+                SetEquipment();
                 OnPropertyChanged("SelectedItem");
             }
         }
@@ -99,6 +104,16 @@ namespace TheBureau.ViewModels
                     SelectedItem = BrigadeRequests.First();
                 }
             }
+        }
+        
+        public ObservableCollection<RequestEquipment> RequestEquipments
+        {
+            get => _requestEquipments;
+            set { _requestEquipments = value; OnPropertyChanged("RequestEquipments");}
+        }
+        public void SetEquipment()
+        {
+            RequestEquipments = new ObservableCollection<RequestEquipment>(_requestEquipmentRepository.GetAllByRequestId(SelectedItem.id));
         }
         
         public ICommand LogOutCommand

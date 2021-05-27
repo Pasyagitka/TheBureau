@@ -11,12 +11,12 @@
     <UserControl.DataContext>
         <viewModels:StorageViewModel/>
     </UserControl.DataContext>
-    <Border CornerRadius="15">
+    <Border CornerRadius="15" Margin="10">
         <DockPanel Margin="10,10,10,20" Name="TablesDockPanel">
-            <TabControl BorderThickness="0" DockPanel.Dock="Top" TabStripPlacement="Top" HorizontalAlignment="Center" materialDesign:ColorZoneAssist.Mode="Standard" Width="{Binding ElementName=TablesDockPanel, Path=ActualWidth}">
-                <TabItem Width="250" Header="Инструменты" Style="{StaticResource MaterialDesignNavigationRailTabItem}">
-                    <Border Background="Beige" CornerRadius="10">
-                        <ListView ItemsSource="{Binding Tools}" BorderThickness="0" >
+            <TabControl BorderThickness="0" DockPanel.Dock="Top" TabStripPlacement="Top" materialDesign:ColorZoneAssist.Mode="Standard" Width="{Binding ElementName=TablesDockPanel, Path=ActualWidth}">
+                <TabItem Width="220" Header="Инструменты" Style="{StaticResource MaterialDesignNavigationRailTabItem}" Cursor="Hand" >
+                    <Border Background="Beige" CornerRadius="10" Width="900">
+                        <ListView ItemsSource="{Binding Tools}" BorderThickness="0" HorizontalAlignment="Stretch">
                             <ListView.View>
                                 <GridView>
                                     <GridViewColumn Header="ID" DisplayMemberBinding="{Binding Path=id}"/>
@@ -27,13 +27,13 @@
                         </ListView>
                     </Border>
                 </TabItem>
-                <TabItem  Width="250" Header="Комплектующие" Style="{StaticResource MaterialDesignNavigationRailTabItem}">
-                    <Border Background="Bisque" CornerRadius="10">
+                <TabItem  Width="220" Header="Комплектующие" Style="{StaticResource MaterialDesignNavigationRailTabItem}" Cursor="Hand">
+                    <Border Background="Bisque" CornerRadius="10" Width="900">
                         <ListView  ItemsSource="{Binding  Accessories}" BorderThickness="0">
                             <ListView.View>
                                 <GridView>
                                     <GridViewColumn Header="ID" Width="80" DisplayMemberBinding="{Binding id}"/> 
-                                    <GridViewColumn Header="Артикул" Width="100" DisplayMemberBinding="{Binding art}"/> 
+                                    <GridViewColumn Header="Артикул" Width="120" DisplayMemberBinding="{Binding art}"/> 
                                     <GridViewColumn Header="Наименование">
                                         <GridViewColumn.CellTemplate>
                                             <DataTemplate>
@@ -41,21 +41,21 @@
                                             </DataTemplate>
                                         </GridViewColumn.CellTemplate>
                                     </GridViewColumn>
-                                    <GridViewColumn Header="Цена"  Width="80" DisplayMemberBinding="{Binding price}"/> 
-                                    <GridViewColumn Header="Тип прибора" Width="80" DisplayMemberBinding="{Binding equipmentId}"/> 
+                                    <GridViewColumn Header="Цена"  Width="100" DisplayMemberBinding="{Binding price}"/> 
+                                    <GridViewColumn Header="Тип прибора" Width="180" DisplayMemberBinding="{Binding equipmentId}"/> 
                                 </GridView>
                             </ListView.View>
                         </ListView>
                     </Border>
                 </TabItem>
-                <TabItem  Width="250" Header="Приборы" Style="{StaticResource MaterialDesignNavigationRailTabItem}">
-                    <Border Background="AntiqueWhite" CornerRadius="10">
-                       <ListView  ItemsSource="{Binding  Equipments}" BorderThickness="0" >
+                <TabItem  Width="220" Header="Приборы" Style="{StaticResource MaterialDesignNavigationRailTabItem}" Cursor="Hand">
+                    <Border Background="AntiqueWhite" CornerRadius="10" Width="900">
+                       <ListView  ItemsSource="{Binding  Equipments}" BorderThickness="0" HorizontalContentAlignment="Center">
                            <ListView.View>
                                <GridView>
-                                   <GridViewColumn Header="ID" DisplayMemberBinding="{Binding id}"/>
-                                   <GridViewColumn Header="Тип прибора" DisplayMemberBinding="{Binding type}"/>
-                                   <GridViewColumn Header="Место монтажа" DisplayMemberBinding="{Binding mounting}"/>
+                                   <GridViewColumn Header="ID" Width="100" DisplayMemberBinding="{Binding id}"/>
+                                   <GridViewColumn Header="Тип прибора"  Width="300"  DisplayMemberBinding="{Binding type}"/>
+                                   <GridViewColumn Header="Место монтажа" Width="300"  DisplayMemberBinding="{Binding mounting}"/>
                                </GridView>
                            </ListView.View>
                        </ListView>

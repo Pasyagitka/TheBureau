@@ -88,7 +88,7 @@ namespace TheBureau.ViewModels
             _brigadeRepository = new BrigadeRepository();
             _requestEquipmentRepository = new RequestEquipmentRepository();
             Requests = new ObservableCollection<Request>(_requestRepository.GetAll().Reverse());
-            Brigades = new ObservableCollection<Brigade>(_brigadeRepository.GetAll().Reverse());
+            Brigades = new ObservableCollection<Brigade>(_brigadeRepository.GetAll());
             SelectedItem = Requests.First();
         }
 
@@ -108,7 +108,7 @@ namespace TheBureau.ViewModels
                 _brigadeRepository = new BrigadeRepository();
                 _requestEquipmentRepository = new RequestEquipmentRepository();
                 Requests = new ObservableCollection<Request>(_requestRepository.GetAll().Reverse());
-                Brigades = new ObservableCollection<Brigade>(_brigadeRepository.GetAll().Reverse());
+                Brigades = new ObservableCollection<Brigade>(_brigadeRepository.GetAll());
                 SelectedItem = _requestRepository.Get(requestToEdit.id);
             }
         }

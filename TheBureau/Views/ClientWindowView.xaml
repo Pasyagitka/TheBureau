@@ -97,7 +97,7 @@
                     <Grid>
                         <TextBlock Style="{StaticResource TB}" TextAlignment="Center" HorizontalAlignment="Center" Height="60" FontSize="20" TextWrapping="WrapWithOverflow" Width="500" Text="Введите в строку поиска фамилию или адрес электронной почты для отображения ваших заявок"/>
                         <ScrollViewer materialDesign:ScrollViewerAssist.IsAutoHideEnabled="True">
-                            <ListView Name="RequestsListView" ItemsSource="{Binding Requests, Mode=TwoWay}">
+                            <ListView Name="RequestsListView" ItemsSource="{Binding Requests, Mode=TwoWay}" HorizontalContentAlignment="Center">
                                 <ListView.ItemTemplate>
                                     <DataTemplate>
                                        <controls:RequestCard/>

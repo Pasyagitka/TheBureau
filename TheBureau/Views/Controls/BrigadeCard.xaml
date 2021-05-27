@@ -32,7 +32,7 @@
 
             </Border>
             
-            <ScrollViewer Grid.ColumnSpan="5" Grid.Column="0" Height="220" VerticalScrollBarVisibility="Disabled" HorizontalScrollBarVisibility="Auto">
+            <ScrollViewer Grid.ColumnSpan="5" Grid.Column="0" Height="220" HorizontalScrollBarVisibility="Auto">
                 <ListView ItemsSource="{Binding Employees}" Height="220" IsHitTestVisible="True">
                     <ListView.ItemContainerStyle>
                         <Style TargetType="{x:Type ListViewItem}">

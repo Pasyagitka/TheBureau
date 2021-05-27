@@ -17,30 +17,24 @@
         <converters:CountConverter x:Key="CountConverter"/>
     </Page.Resources>
     <Border Background="Transparent" CornerRadius="15">
-        <StackPanel Margin="10,10,10,5">
-           <ToolBarTray>
-        <ToolBar Style="{DynamicResource MaterialDesignToolBar}" ClipToBounds="False">
-            <Button ToolTip="Добавить" Command="{Binding AddBrigade}">
-                <Image Source= "../../Resources/Images/add.png" Width="30"/>
-            </Button>
-            <Button ToolTip="Удалить" Command="{Binding DeleteBrigade}">
-                <Image Source="../../Resources/Images/delete.png" Width="30"/>
-            </Button>
-        </ToolBar>
-    </ToolBarTray>
-            <Grid>
-                <Grid.RowDefinitions>
-                    <RowDefinition Height="30"/>
-                    <RowDefinition/>
-                </Grid.RowDefinitions>
-                <TextBlock Grid.Row="0"  Padding="0" Text="{Binding Brigades.Count, Converter={StaticResource CountConverter}}" HorizontalAlignment="Center" FontSize="20" FontWeight="DemiBold"/>
-                
-                
-                <ScrollViewer Grid.Row="1" HorizontalAlignment="Center" VerticalAlignment="Center" Width="1100" Height="570">
+        <DockPanel Margin="10,10,10,5" LastChildFill="True">
+           <ToolBarTray DockPanel.Dock="Top">
+                <ToolBar Style="{DynamicResource MaterialDesignToolBar}" ClipToBounds="False">
+                    <Button ToolTip="Добавить" Command="{Binding AddBrigade}" Cursor="Hand">
+                        <Image Source= "../../Resources/Images/add.png" Width="30"/>
+                    </Button>
+                    <Button ToolTip="Удалить" Command="{Binding DeleteBrigade}" Cursor="Hand">
+                        <Image Source="../../Resources/Images/delete.png" Width="30"/>
+                    </Button>
+                </ToolBar>
+           </ToolBarTray>
+            <DockPanel DockPanel.Dock="Top" LastChildFill="True">
+                <TextBlock  Height="30" DockPanel.Dock="Top"  Padding="0" Text="{Binding Brigades.Count, Converter={StaticResource CountConverter}}" HorizontalAlignment="Center" FontSize="20" FontWeight="DemiBold"/>
+                <ScrollViewer DockPanel.Dock="Top" HorizontalAlignment="Center" Width="1100">
                     <Border>
                         <ListView  HorizontalAlignment="Center" Width="1100" HorizontalContentAlignment="Center"
-                                   ItemsSource="{Binding Brigades, Mode=TwoWay}"
-                                   SelectedItem="{Binding SelectedItem, Mode=TwoWay}">
+                               ItemsSource="{Binding Brigades, Mode=TwoWay}"
+                               SelectedItem="{Binding SelectedItem, Mode=TwoWay}">
                             <ListView.Template>
                                 <ControlTemplate>
                                     <ItemsPresenter />
@@ -51,23 +45,10 @@
                                         <controls:BrigadeCard Margin="15" Width="900" HorizontalAlignment="Center"/>
                                 </HierarchicalDataTemplate>
                             </ListView.ItemTemplate>
-                            <!-- <ListView.ItemContainerStyle> -->
-                            <!--     <Style TargetType="{x:Type ListViewItem}"> -->
-                            <!--         <Setter Property="Background" Value="{DynamicResource LightGreenColor}" /> -->
-                            <!--         <Setter Property="Focusable" Value="True"/> -->
-                            <!--         <Setter Property="Template"> -->
-                            <!--             <Setter.Value> -->
-                            <!--                 <ControlTemplate TargetType="{x:Type ListViewItem}"> -->
-                            <!--                     <ContentPresenter /> -->
-                            <!--                 </ControlTemplate> -->
-                            <!--             </Setter.Value> -->
-                            <!--         </Setter> -->
-                            <!--     </Style> -->
-                            <!-- </ListView.ItemContainerStyle> -->
-                    </ListView>
+                        </ListView>
                     </Border>
                 </ScrollViewer>
-            </Grid>
-        </StackPanel>
+            </DockPanel>
+        </DockPanel>
     </Border>
 </Page>
