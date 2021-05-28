@@ -59,12 +59,12 @@ namespace TheBureau.ViewModels
         public string CountRedRequests
         {
             get => $" Новые заявки ( {_countRed} )";
-            set { _countRed = Int32.Parse(value); OnPropertyChanged("CountRed"); }
+            set { _countRed = Int32.Parse(value); OnPropertyChanged("CountRedRequests"); }
         }
         public int CountRed
         {
             get => _countRed;
-            set { _countRed = value; OnPropertyChanged("CountRed1"); }
+            set { _countRed = value; OnPropertyChanged("CountRed"); }
         }
         public int CountYellow
         {

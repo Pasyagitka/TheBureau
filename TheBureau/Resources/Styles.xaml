@@ -101,37 +101,7 @@
         <Setter Property="VerticalContentAlignment" Value="Center"></Setter>
     </Style>
     
-    <!-- <ControlTemplate x:Key="ValidationTemplate"> -->
-    <!--     ~1~ <Grid> @1@ -->
-    <!--     ~1~     <Ellipse Fill="Red" Opacity="0.8" Width="10" Height="10" @1@ -->
-    <!--     ~1~              HorizontalAlignment="Right" VerticalAlignment="Top" @1@ -->
-    <!--     ~1~              ToolTip="{Binding Path=/ErrorContent}" /> @1@ -->
-    <!--     ~1~     <AdornedElementPlaceholder /> @1@ -->
-    <!--     ~1~ </Grid> @1@ -->
-    <!--     <StackPanel Orientation="Horizontal"> -->
-    <!--         <Border -->
-    <!--                  BorderBrush="{DynamicResource LightOrangeColor}" BorderThickness="2"> -->
-    <!--             <AdornedElementPlaceholder/> -->
-    <!--         </Border> -->
-    <!--         <TextBlock Foreground="{DynamicResource LightYellowColor}" -->
-    <!--                    FontSize="26" FontWeight="Bold">!</TextBlock> -->
-    <!--     </StackPanel> -->
-    <!-- </ControlTemplate> -->
-    <!-- Validation.ErrorTemplate="{StaticResource ValidationTemplate}" -->
-    <!-- <Style x:Key="CustomErrorControlOnErrorStyle" TargetType="TextBox" BasedOn="{StaticResource TextBoxDefault}"> -->
-    <!--     <Setter Property="Validation.ErrorTemplate"> -->
-    <!--         <Setter.Value> -->
-    <!--             <ControlTemplate> -->
-    <!--                 <StackPanel> -->
-    <!--                     <AdornedElementPlaceholder x:Name="placeholder"/> -->
-    <!--                     <TextBlock FontSize="11" FontStyle="Italic" Foreground="Red" -->
-    <!--                                Text="{Binding ElementName=placeholder,  -->
-    <!--                                Path=AdornedElement.(Validation.Errors)[0].ErrorContent}" /> -->
-    <!--                 </StackPanel> -->
-    <!--             </ControlTemplate> -->
-    <!--         </Setter.Value> -->
-    <!--     </Setter> -->
-    <!-- </Style> -->
+  
         <Style x:Key="ValidationTextBox" TargetType="TextBox" BasedOn="{StaticResource TextBoxDefault}">
             <Setter Property="Validation.ErrorTemplate">
                 <Setter.Value>
@@ -199,8 +169,6 @@
             </Setter.Value>
         </Setter>
     </Style>
-
-
-  
+    
 
 </ResourceDictionary>

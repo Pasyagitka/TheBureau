@@ -16,21 +16,11 @@ using TheBureau.ViewModels;
 
 namespace TheBureau.Views
 {
-    /// <summary>
-    /// Логика взаимодействия для ClientsMainView.xaml
-    /// </summary>
     public partial class ClientView : Page
     {
-        // private ClientViewModel _clientViewModel = new ClientViewModel();
         public ClientView()
         {
             InitializeComponent();
-            // DataContext = _clientViewModel;
-        }
-
-        private void ButtonBase_OnClick(object sender, RoutedEventArgs e)
-        {
-           // _clientViewModel.Update();
         }
     }
 }

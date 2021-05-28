@@ -351,8 +351,6 @@ namespace TheBureau.ViewModels
                 var accessories = _accessoryRepository.GetAccessories(requestForNotification.RequestEquipments);
                 Notifications.SendRequestAccept(requestForNotification, tools, accessories);
                 ResetFields();
-
-                OnPropertyChanged("SendRequestCommand");
             }
             catch (Exception)
             {
@@ -631,7 +629,6 @@ namespace TheBureau.ViewModels
                 var helloWindow = new HelloWindowView();
                 helloWindow.Show();
                 Application.Current.Windows[0]?.Close();
-                OnPropertyChanged("LogOutCommand");
             });
 
         public void Update()
@@ -641,7 +638,8 @@ namespace TheBureau.ViewModels
             _addressRepository = new AddressRepository();
             _requestEquipmentRepository = new RequestEquipmentRepository();
         }
-        public void ResetFields()
+
+        private void ResetFields()
         {
             Firstname = String.Empty;
             Surname = String.Empty;

@@ -103,6 +103,7 @@
     <Compile Include="Enums\Roles.cs" />
     <Compile Include="Services\Notifications.cs" />
     <Compile Include="Services\PasswordHash.cs" />
+    <Compile Include="Services\RelayCommand.cs" />
     <Compile Include="Services\ValidationConst.cs" />
     <Compile Include="Enums\Stages.cs" />
     <Compile Include="Enums\Statuses.cs" />
@@ -146,7 +147,6 @@
     <Compile Include="ViewModels\HelloViewModel.cs" />
     <Compile Include="ViewModels\InfoWindowViewModel.cs" />
     <Compile Include="ViewModels\MainWindowViewModel.cs" />
-    <Compile Include="ViewModels\RelayCommand.cs" />
     <Compile Include="ViewModels\SettingsWindowViewModel.cs" />
     <Compile Include="ViewModels\StatisticsViewModel.cs" />
     <Compile Include="ViewModels\BrigadeViewModel.cs" />
@@ -159,9 +159,6 @@
     </Compile>
     <Compile Include="Views\Controls\AdminRequestPanel.xaml.cs">
       <DependentUpon>AdminRequestPanel.xaml</DependentUpon>
-    </Compile>
-    <Compile Include="Views\Controls\BrigadeStatChart.xaml.cs">
-      <DependentUpon>BrigadeStatChart.xaml</DependentUpon>
     </Compile>
     <Compile Include="Views\Controls\EmployeeCardSmall.xaml.cs">
       <DependentUpon>EmployeeCardSmall.xaml</DependentUpon>
@@ -229,9 +226,6 @@
     <Compile Include="Views\Controls\RequestCard.xaml.cs">
       <DependentUpon>RequestCard.xaml</DependentUpon>
     </Compile>
-    <Compile Include="Views\Controls\SidePanel.xaml.cs">
-      <DependentUpon>SidePanel.xaml</DependentUpon>
-    </Compile>
     <Compile Include="Views\HelloPageView.xaml.cs">
       <DependentUpon>HelloPageView.xaml</DependentUpon>
     </Compile>
@@ -283,7 +277,6 @@
     </Page>
     <Page Include="Views\AddEmployeeView.xaml" />
     <Page Include="Views\Controls\AdminRequestPanel.xaml" />
-    <Page Include="Views\Controls\BrigadeStatChart.xaml" />
     <Page Include="Views\Controls\EmployeeCardSmall.xaml" />
     <Page Include="Views\Controls\BrigadeSchedule.xaml" />
     <Page Include="Views\Controls\InfoWindow.xaml" />
@@ -334,9 +327,6 @@
       <Generator>MSBuild:Compile</Generator>
     </Page>
     <Page Include="Views\Controls\RequestCard.xaml">
-      <Generator>MSBuild:Compile</Generator>
-    </Page>
-    <Page Include="Views\Controls\SidePanel.xaml">
       <Generator>MSBuild:Compile</Generator>
     </Page>
     <Page Include="Views\HelloPageView.xaml">

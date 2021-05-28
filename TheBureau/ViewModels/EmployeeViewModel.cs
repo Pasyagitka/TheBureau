@@ -53,7 +53,6 @@ namespace TheBureau.ViewModels
                             _employeeRepository.SaveChanges();
                             Employees.Remove(SelectedItem);
                             SelectedItem = Employees.First();
-                            OnPropertyChanged("Employees");
                         }
                     }
                     catch (Exception e)

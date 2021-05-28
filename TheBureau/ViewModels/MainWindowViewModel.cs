@@ -1,5 +1,4 @@
 ﻿using System;
-using System.Collections.ObjectModel;
 using System.Windows;
 using System.Windows.Input;
 using TheBureau.Repositories;
@@ -33,7 +32,6 @@ namespace TheBureau.ViewModels
                 {
                     SettingsWindow sw = new SettingsWindow();
                     if (sw.ShowDialog() == true) { }
-                    OnPropertyChanged("OpenSettingsCommand");
                 });
             }
         }

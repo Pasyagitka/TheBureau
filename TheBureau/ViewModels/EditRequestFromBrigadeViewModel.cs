@@ -60,8 +60,6 @@ namespace TheBureau.ViewModels
                 {
                     Notifications.SendRequestStatusChanged(request);
                 }
-
-                OnPropertyChanged("Requests");
             }
             catch (Exception e)
             {

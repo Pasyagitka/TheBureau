@@ -47,24 +47,17 @@
                    </ListView>
                 </Border>
             </ScrollViewer>
-            <Border Grid.Column="1" Grid.RowSpan="2" Background="White" >
+            <Border Grid.Column="1" Grid.Row="0" Grid.RowSpan="2" Background="White" >
                 <Border Margin="25, 15, 30, 15" CornerRadius="10" Background="{DynamicResource PrimaryLightGrayColor}">
                     <DockPanel Margin="10" LastChildFill="True">
                         <ToolBarTray DockPanel.Dock="Top">
                             <ToolBar Style="{DynamicResource MaterialDesignToolBar}" ClipToBounds="False">
-                                <Button ToolTip="Сохранить" Click="ButtonBase_OnClick" Cursor="Hand">
-                                    <Image Source="../../Resources/Images/save.png" Width="30"/>
-                                </Button>
                                 <Button ToolTip="Редактировать" Command="{Binding OpenEditClientWindowCommand}" Cursor="Hand">
                                     <Image Source="../../Resources/Images/edit.png" Width="30"/>
                                 </Button>
                                 <Button ToolTip="Удалить" Command="{Binding DeleteCommand}" Cursor="Hand">
                                     <Image Source="../../Resources/Images/delete.png" Width="30"/>
                                 </Button>
-                                <!-- <ToggleButton Style="{StaticResource MaterialDesignSwitchToggleButton}"></ToggleButton> -->
-                                <!-- <ToggleButton Name="ToggleButton1" Command="{Binding EditCommand}" IsChecked="{Binding ReadOnly}" Content="Редактировать" Width="237" Height="50" HorizontalAlignment="Left" Style="{StaticResource MaterialDesignActionLightToggleButton}" -->
-                                <!--               materialDesign:ToggleButtonAssist.OnContent="" -->
-                                <!--               Background="Transparent" Margin="0,0,0,-0.4"/> -->
                             </ToolBar>
                         </ToolBarTray>
                         <materialDesign:Card DockPanel.Dock="Top" materialDesign:ShadowAssist.ShadowDepth="Depth2" Margin="10" Padding="5">
@@ -117,23 +110,6 @@
                                     </ListView>
                             </ScrollViewer>
                         </Border>
-                        <!-- <Border DockPanel.Dock="Top" Background="White" CornerRadius="10" Margin="10, 10, 10, 10" HorizontalAlignment="Stretch" Name="ContainerRequests" Height="500"> -->
-                        <!--     <ScrollViewer VerticalScrollBarVisibility="Auto" Name="ScrollViewerRequests" Height="500"> -->
-                        <!--         <ListView ItemsSource="{Binding ClientRequests}" Height="500" -->
-                        <!--                   HorizontalAlignment="Stretch" HorizontalContentAlignment="Center" ScrollViewer.HorizontalScrollBarVisibility="Disabled" ScrollViewer.VerticalScrollBarVisibility="Disabled"  ScrollViewer.CanContentScroll="False" > -->
-                        <!--             ~1~ <ListView.ItemsPanel> @1@ -->
-                        <!--             ~1~     <ItemsPanelTemplate> @1@ -->
-                        <!--             ~1~         <StackPanel Height="320"></StackPanel> @1@ -->
-                        <!--             ~1~     </ItemsPanelTemplate> @1@ -->
-                        <!--             ~1~ </ListView.ItemsPanel> @1@ -->
-                        <!--             <ListView.ItemTemplate> -->
-                        <!--                 <HierarchicalDataTemplate> -->
-                        <!--                     <controls:RequestCard Margin="5"/> -->
-                        <!--                 </HierarchicalDataTemplate> -->
-                        <!--             </ListView.ItemTemplate> -->
-                        <!--         </ListView> -->
-                        <!--     </ScrollViewer> -->
-                        <!-- </Border> -->
                     </DockPanel>
                 </Border>
             </Border>

@@ -42,7 +42,6 @@ namespace TheBureau.ViewModels
                     var helloWindow = new HelloWindowView();
                     helloWindow.Show();
                     Application.Current.Windows[0]?.Close();
-                    OnPropertyChanged("LogOutCommand");
                 });
             }
         }
@@ -115,7 +114,8 @@ namespace TheBureau.ViewModels
             get => _requestEquipments;
             set { _requestEquipments = value; OnPropertyChanged("RequestEquipments");}
         }
-        public void SetEquipment()
+
+        private void SetEquipment()
         {
             RequestEquipments = new ObservableCollection<RequestEquipment>(_requestEquipmentRepository.GetAllByRequestId(SelectedItem.id));
         }
