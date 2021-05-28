@@ -8,7 +8,6 @@ namespace TheBureau.Models
     public partial class Client
     {
 
-        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2214:DoNotCallOverridableMethodsInConstructors")]
         public Client()
         {
             Requests = new HashSet<Request>();

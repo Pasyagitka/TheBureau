@@ -7,7 +7,6 @@ namespace TheBureau.Models
     [Table("Equipment")]
     public partial class Equipment
     {
-        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2214:DoNotCallOverridableMethodsInConstructors")]
         public Equipment()
         {
             Accessories = new HashSet<Accessory>();
@@ -25,10 +24,8 @@ namespace TheBureau.Models
         [StringLength(5)]
         public string mounting { get; set; }
 
-        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
         public virtual ICollection<Accessory> Accessories { get; set; }
 
-        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
         public virtual ICollection<RequestEquipment> RequestEquipments { get; set; }
     }
 }

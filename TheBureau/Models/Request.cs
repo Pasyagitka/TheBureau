@@ -8,7 +8,6 @@ namespace TheBureau.Models
     [Table("Request")]
     public partial class Request
     {
-        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2214:DoNotCallOverridableMethodsInConstructors")]
         public Request()
         {
             RequestEquipments = new HashSet<RequestEquipment>();
@@ -38,7 +37,6 @@ namespace TheBureau.Models
 
         public virtual Client Client { get; set; }
 
-        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
         public virtual ICollection<RequestEquipment> RequestEquipments { get; set; }
     }
 }

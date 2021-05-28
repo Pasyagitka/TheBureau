@@ -6,7 +6,6 @@ namespace TheBureau.Models
     [Table("Brigade")]
     public partial class Brigade
     {
-        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2214:DoNotCallOverridableMethodsInConstructors")]
         public Brigade()
         {
             Employees = new HashSet<Employee>();
@@ -17,10 +16,8 @@ namespace TheBureau.Models
 
         public int? userId { get; set; }
 
-        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
         public virtual ICollection<Employee> Employees { get; set; }
 
-        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
         public virtual ICollection<Request> Requests { get; set; }
 
         public virtual User User { get; set; }
