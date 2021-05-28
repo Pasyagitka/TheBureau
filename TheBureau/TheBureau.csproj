@@ -93,9 +93,7 @@
       <SubType>Code</SubType>
     </Compile>
     <Compile Include="Converters\AddressConverter.cs" />
-    <Compile Include="Converters\BoolToReadOnlyConverter.cs" />
     <Compile Include="Converters\CountConverter.cs" />
-    <Compile Include="Converters\EditingBorderConverter.cs" />
     <Compile Include="Converters\NameConverter.cs" />
     <Compile Include="Converters\StatusColorConverter.cs" />
     <Compile Include="Converters\StageConverter.cs" />
