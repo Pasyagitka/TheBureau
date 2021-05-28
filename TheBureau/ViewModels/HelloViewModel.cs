@@ -10,6 +10,7 @@ using TheBureau.Models;
 using TheBureau.Repositories;
 using TheBureau.Services;
 using TheBureau.Views;
+using TheBureau.Views.Controls;
 
 namespace TheBureau.ViewModels
 {
@@ -93,52 +94,72 @@ namespace TheBureau.ViewModels
         private bool CanAuth(object obj) => !HasErrors;
         public void Auth(object obj)
         {
-            var passwordBox = obj as PasswordBox;
-            if (passwordBox == null)
-                return;
-            Password = passwordBox.Password;
-                    
-            if (TryLogin())
+            try
             {
-                var user = Application.Current.Properties["User"] as User;
-                if (user?.role == (int)Roles.admin)
+                var passwordBox = obj as PasswordBox;
+                if (passwordBox == null)
+                    return;
+                Password = passwordBox.Password;
+
+                if (TryLogin())
                 {
-                    var mainWindow = new MainWindowView();
-                    mainWindow.Show();
-                    Application.Current.Windows[0]?.Close();
+                    var user = Application.Current.Properties["User"] as User;
+                    if (user?.role == (int) Roles.admin)
+                    {
+                        var mainWindow = new MainWindowView();
+                        mainWindow.Show();
+                        Application.Current.Windows[0]?.Close();
+                    }
+                    else if (user?.role == (int) Roles.brigade)
+                    {
+                        var brigadeWindow = new BrigadeWindowView();
+                        brigadeWindow.Show();
+                        Application.Current.Windows[0]?.Close();
+                    }
+                    else
+                    {
+                        Info = ValidationConst.SomethingWentWrong;
+                    }
                 }
-                else if (user?.role == (int)Roles.brigade)
-                {
-                    var brigadeWindow = new BrigadeWindowView();
-                    brigadeWindow.Show();
-                    Application.Current.Windows[0]?.Close();
-                }
-                else
-                {
-                    Info = ValidationConst.SomethingWentWrong;
-                }
+            }
+            catch (Exception e)
+            {
+                InfoWindow infoWindow = new InfoWindow("Ошибка", "Ошибка при авторизации");
+                infoWindow.ShowDialog();
             }
         }
         private bool TryLogin()
         {
-            if (string.IsNullOrWhiteSpace(_password))
+            try
             {
-                Info = ValidationConst.FieldCannotBeEmpty;
+                if (string.IsNullOrWhiteSpace(_password))
+                {
+                    Info = ValidationConst.FieldCannotBeEmpty;
+                    return false;
+                }
+
+                if (_password?.Length < 5 || _password?.Length > 20)
+                {
+                    Info = ValidationConst.PasswordLengthExceeded;
+                    return false;
+                }
+
+                var user = _userRepository.Login(Login, Password);
+                if (user == null)
+                {
+                    Info = ValidationConst.WrongLoginOrPassword;
+                    return false;
+                }
+
+                Application.Current.Properties["User"] = _userRepository.Get(user.id);
+                return true;
+            }
+            catch (Exception)
+            {
+                InfoWindow infoWindow = new InfoWindow("Ошибка", "Ошибка при проверке пароля");
+                infoWindow.ShowDialog();
                 return false;
             }
-            if (_password?.Length  < 5 || _password?.Length > 20)
-            {
-                Info = ValidationConst.PasswordLengthExceeded;
-                return false;
-            }
-            var user = _userRepository.Login(Login, Password);
-            if (user == null)
-            {
-                Info = ValidationConst.WrongLoginOrPassword;
-                return false;
-            }
-            Application.Current.Properties["User"] = _userRepository.Get(user.id);
-            return true;
         }
  
         #region Validation

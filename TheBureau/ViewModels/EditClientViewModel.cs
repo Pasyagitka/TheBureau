@@ -6,6 +6,7 @@ using System.Windows.Input;
 using TheBureau.Models;
 using TheBureau.Repositories;
 using TheBureau.Services;
+using TheBureau.Views.Controls;
 
 namespace TheBureau.ViewModels
 {
@@ -50,7 +51,7 @@ namespace TheBureau.ViewModels
                     _errorsViewModel.AddError("Surname", ValidationConst.NameLengthExceeded);
                 }
                 var regex = new Regex(ValidationConst.LettersHyphenRegex);
-                if (!regex.IsMatch(_surname))
+                if (!regex.IsMatch(_surname!))
                 {
                     _errorsViewModel.AddError("Surname", ValidationConst.IncorrectSurname);
                 }
@@ -175,14 +176,22 @@ namespace TheBureau.ViewModels
 
         private void EditClient(object sender)
         {
-            var clientUpdate = _clientRepository.Get(Id);
-            clientUpdate.firstname = Firstname;
-            clientUpdate.surname = Surname;
-            clientUpdate.patronymic = Patronymic;
-            clientUpdate.email = Email;
-            clientUpdate.contactNumber = decimal.Parse(ContactNumber);
-            _clientRepository.Update(clientUpdate);
-            _clientRepository.SaveChanges();
+            try
+            {
+                var clientUpdate = _clientRepository.Get(Id);
+                clientUpdate.firstname = Firstname;
+                clientUpdate.surname = Surname;
+                clientUpdate.patronymic = Patronymic;
+                clientUpdate.email = Email;
+                clientUpdate.contactNumber = decimal.Parse(ContactNumber);
+                _clientRepository.Update(clientUpdate);
+                _clientRepository.SaveChanges();
+            }
+            catch (Exception)
+            {
+                InfoWindow infoWindow = new InfoWindow("Ошибка", "Ошибка при редактировании клиента");
+                infoWindow.ShowDialog();
+            }
         }
 
         private bool CanEditClient(object sender)

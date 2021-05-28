@@ -4,6 +4,7 @@ using System.ComponentModel;
 using System.Windows.Input;
 using TheBureau.Repositories;
 using TheBureau.Services;
+using TheBureau.Views.Controls;
 
 namespace TheBureau.ViewModels
 {
@@ -34,7 +35,7 @@ namespace TheBureau.ViewModels
                 {
                     _errorsViewModel.AddError("Password",ValidationConst.FieldCannotBeEmpty);
                 }
-                if (_password.Length  < 8 || _password.Length > 40)
+                if (_password != null && (_password.Length  < 8 || _password.Length > 40))
                 {
                     _errorsViewModel.AddError("Password",ValidationConst.IncorrectPassword);
                 }
@@ -53,10 +54,18 @@ namespace TheBureau.ViewModels
 
         private void EditSettings(object sender)
         {
-            var company = _companyRepository.Get();
-            company.password = Password;
-            _companyRepository.Update();
-            _companyRepository.SaveChanges();
+            try
+            {
+                var company = _companyRepository.Get();
+                company.password = Password;
+                _companyRepository.Update();
+                _companyRepository.SaveChanges();
+            }
+            catch (Exception)
+            {
+                InfoWindow infoWindow = new InfoWindow("Ошибка", "Ошибка при редактировании настроек");
+                infoWindow.ShowDialog();
+            }
         }
 
         #region Validation

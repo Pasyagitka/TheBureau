@@ -59,16 +59,5 @@ namespace TheBureau.Repositories
         {
             _context.SaveChanges();
         }
-
-        public IEnumerable<Accessory> GetAccessories(IEnumerable<RequestEquipment> equipment)
-        { //todo accessories
-            var types = equipment.Select(x => x.equipmentId).Distinct();
-            IEnumerable<Accessory> result = new List<Accessory>();
-            foreach (var type in types)
-            {
-                result = _context.Accessories.Where(x => x.equipmentId == type);
-            }
-            return result;
-        }
     }
 }

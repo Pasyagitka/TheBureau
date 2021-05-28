@@ -1,8 +1,10 @@
-﻿using System.Collections.ObjectModel;
+﻿using System;
+using System.Collections.ObjectModel;
 using System.Windows;
 using System.Windows.Input;
 using TheBureau.Repositories;
 using TheBureau.Views;
+using TheBureau.Views.Controls;
 
 namespace TheBureau.ViewModels
 {
@@ -30,10 +32,7 @@ namespace TheBureau.ViewModels
                 return _openSettingsCommand ??= new RelayCommand(obj =>
                 {
                     SettingsWindow sw = new SettingsWindow();
-                    if (sw.ShowDialog() == true)
-                    {
-                       //todo что ето
-                    }
+                    if (sw.ShowDialog() == true) { }
                     OnPropertyChanged("OpenSettingsCommand");
                 });
             }
@@ -44,11 +43,19 @@ namespace TheBureau.ViewModels
             {
                 return _logOutCommand ??= new RelayCommand(obj =>
                 {
-                    Application.Current.Properties["User"] = null;
-                    var helloWindow = new HelloWindowView();
-                    helloWindow.Show();
-                    Application.Current.Windows[0]?.Close();
-                    OnPropertyChanged("LogOutCommand");
+                    try
+                    {
+                        Application.Current.Properties["User"] = null;
+                        var helloWindow = new HelloWindowView();
+                        helloWindow.Show();
+                        Application.Current.Windows[0]?.Close();
+                        OnPropertyChanged("LogOutCommand");
+                    }
+                    catch (Exception)
+                    {
+                        InfoWindow infoWindow = new InfoWindow("Ошибка", "Ошибка при выходе из аккаунта");
+                        infoWindow.ShowDialog();
+                    }
                 });
             }
         }

@@ -13,7 +13,7 @@
     </Window.DataContext>
     <Border Background="{DynamicResource LightGreenColor}" CornerRadius="10" >
         <Border CornerRadius="10" Background="White" Margin="10">
-            <StackPanel>
+            <StackPanel Margin="20">
                 <TextBlock Text="Фамилия" HorizontalAlignment="Center"/>
                 <TextBox Width="300" Height="40" Text="{Binding Surname, UpdateSourceTrigger=PropertyChanged}" Style="{StaticResource TextBoxValidationTemplateDefault}"/>
                 <TextBlock Text="Имя" HorizontalAlignment="Center"/>
@@ -25,10 +25,9 @@
                 <TextBlock Text="Контактный телефон" HorizontalAlignment="Center"/>
                 <TextBox Width="300" Height="40" Text="{Binding ContactNumber, UpdateSourceTrigger=PropertyChanged}" Style="{StaticResource TextBoxValidationTemplateDefault}" PreviewTextInput="NumericTextBox_OnPreviewTextInput"/>
                 <TextBlock Text="ID бригады" HorizontalAlignment="Center"/>
-                <!-- <TextBox Width="300" Height="40" Text="{Binding BrigadeId, UpdateSourceTrigger=PropertyChanged}" Style="{StaticResource TextBoxValidationTemplateDefault}" PreviewTextInput="NumericTextBox_OnPreviewTextInput"/> -->
                 <ComboBox Width="300" Height="30" SelectedValue="{Binding SelectedBrigadeId, UpdateSourceTrigger=PropertyChanged}" SelectedValuePath="id" IsSynchronizedWithCurrentItem="True"  
                           Margin="5" ItemsSource="{Binding Brigades, UpdateSourceTrigger=PropertyChanged}" DisplayMemberPath="id"/>
-                <StackPanel Orientation="Horizontal">
+                <StackPanel Orientation="Horizontal" HorizontalAlignment="Center">
                     <Button Height="40" Width="160" Content="Отменить" IsCancel="True" Style="{StaticResource DefaultButtonGray}" Margin="10"></Button>
                     <Button Content="Сохранить"  Width="160" Command="{Binding AddEmployeeCommand}" Click="Save_OnClick" Style="{StaticResource DefaultButtonGray}" Margin="10"></Button>
                 </StackPanel>

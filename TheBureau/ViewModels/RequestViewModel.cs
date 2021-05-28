@@ -7,6 +7,7 @@ using System.Windows.Input;
 using TheBureau.Models;
 using TheBureau.Repositories;
 using TheBureau.Views;
+using TheBureau.Views.Controls;
 
 namespace TheBureau.ViewModels
 {
@@ -84,16 +85,24 @@ namespace TheBureau.ViewModels
 
         private void OpenEditRequest(object o)
         {
-            var requestToEdit = SelectedItem;
-            EditRequestView window = new(requestToEdit);
-            if (window.ShowDialog() == true)
+            try
             {
-                _requestRepository = new RequestRepository();
-                _brigadeRepository = new BrigadeRepository();
-                _requestEquipmentRepository = new RequestEquipmentRepository();
-                Requests = new ObservableCollection<Request>(_requestRepository.GetAll().Reverse());
-                Brigades = new ObservableCollection<Brigade>(_brigadeRepository.GetAll());
-                SelectedItem = _requestRepository.Get(requestToEdit.id);
+                var requestToEdit = SelectedItem;
+                EditRequestView window = new(requestToEdit);
+                if (window.ShowDialog() == true)
+                {
+                    _requestRepository = new RequestRepository();
+                    _brigadeRepository = new BrigadeRepository();
+                    _requestEquipmentRepository = new RequestEquipmentRepository();
+                    Requests = new ObservableCollection<Request>(_requestRepository.GetAll().Reverse());
+                    Brigades = new ObservableCollection<Brigade>(_brigadeRepository.GetAll());
+                    SelectedItem = _requestRepository.Get(requestToEdit.id);
+                }
+            }
+            catch (Exception)
+            {
+                InfoWindow infoWindow = new InfoWindow("Ошибка", "Ошибка при редактировании заявки");
+                infoWindow.ShowDialog();
             }
         }
         public void SetEquipment()

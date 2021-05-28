@@ -1,6 +1,8 @@
-﻿using System.Windows;
+﻿using System;
+using System.Windows;
 using System.Windows.Input;
 using TheBureau.Views;
+using TheBureau.Views.Controls;
 
 namespace TheBureau.ViewModels
 {
@@ -13,9 +15,17 @@ namespace TheBureau.ViewModels
             {
                 return _enterAsClientCommand ??= new RelayCommand(obj =>
                 {
-                    var clientMainWindow = new ClientWindowView();
-                    Application.Current.Windows[0]?.Close();
-                    clientMainWindow.Show();
+                    try
+                    {
+                        var clientMainWindow = new ClientWindowView();
+                        Application.Current.Windows[0]?.Close();
+                        clientMainWindow.Show();
+                    }
+                    catch (Exception e)
+                    {
+                        InfoWindow infoWindow = new InfoWindow("Ошибка", "Ошибка при входе как клиент");
+                        infoWindow.ShowDialog();
+                    }
                 });
             }
         }

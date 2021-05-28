@@ -1,11 +1,14 @@
-﻿using System.Collections.ObjectModel;
+﻿using System;
+using System.Collections.ObjectModel;
 using System.Linq;
+using System.Windows;
 using System.Windows.Input;
 using MaterialDesignThemes.Wpf;
 using TheBureau.Enums;
 using TheBureau.Models;
 using TheBureau.Repositories;
 using TheBureau.Services;
+using TheBureau.Views.Controls;
 
 namespace TheBureau.ViewModels
 {
@@ -42,23 +45,31 @@ namespace TheBureau.ViewModels
             {
                 return _addBrigade ??= new RelayCommand(obj =>
                 {
-                    Brigade newBrigade = new();
-                    newBrigade.userId = null;
-                    _brigadeRepository.Add(newBrigade);
-                    _brigadeRepository.Save();
-                    
-                    User newUser = new();
-                    newUser.login = BrigadeLoginBase + newBrigade.id;
-                    newUser.password = PasswordHash.CreateHash(newUser.login);
-                    newUser.role = (int)Roles.brigade;
-                    _userRepository.Add(newUser);
-                    _userRepository.Save();
+                    try
+                    {
+                        Brigade newBrigade = new();
+                        newBrigade.userId = null;
+                        _brigadeRepository.Add(newBrigade);
+                        _brigadeRepository.Save();
 
-                    newBrigade.userId = newUser.id;
-                    _brigadeRepository.Update(newBrigade);
-                    _brigadeRepository.Save();
-                    
-                    Brigades = new ObservableCollection<Brigade>(_brigadeRepository.GetAll());
+                        User newUser = new();
+                        newUser.login = BrigadeLoginBase + newBrigade.id;
+                        newUser.password = PasswordHash.CreateHash(newUser.login);
+                        newUser.role = (int) Roles.brigade;
+                        _userRepository.Add(newUser);
+                        _userRepository.Save();
+
+                        newBrigade.userId = newUser.id;
+                        _brigadeRepository.Update(newBrigade);
+                        _brigadeRepository.Save();
+
+                        Brigades = new ObservableCollection<Brigade>(_brigadeRepository.GetAll());
+                    }
+                    catch (Exception)
+                    {
+                        InfoWindow infoWindow = new InfoWindow("Ошибка", "Ошибка при создании бригады");
+                        infoWindow.ShowDialog();
+                    }
                 });
             }
         }
@@ -68,34 +79,44 @@ namespace TheBureau.ViewModels
             {
                 return _deleteBrigade ??= new RelayCommand(obj =>
                 {
-                    var id = SelectedItem.id;
-                    var userId = _brigadeRepository.Get(id).userId;
+                    try
+                    {
+                        var id = SelectedItem.id;
+                        var userId = _brigadeRepository.Get(id).userId;
 
-                    foreach (var employee in Employees.Where(x => x.brigadeId == id))
-                    {
-                        employee.brigadeId = null;
-                        _employeeRepository.Update(employee);
-                    }
-                    _employeeRepository.SaveChanges();
-                    
-                    if (userId != null)
-                    {
-                        _userRepository.Delete((int) userId);
-                    }
+                        foreach (var employee in Employees.Where(x => x.brigadeId == id))
+                        {
+                            employee.brigadeId = null;
+                            _employeeRepository.Update(employee);
+                        }
 
-                    var r = _requestRepository.GetRequestsByBrigadeId(id);
-                    foreach (var rq in r)
-                    {
-                        rq.brigadeId = null;
-                        _requestRepository.Update(rq);
+                        _employeeRepository.SaveChanges();
+
+                        if (userId != null)
+                        {
+                            _userRepository.Delete((int) userId);
+                        }
+
+                        var r = _requestRepository.GetRequestsByBrigadeId(id);
+                        foreach (var rq in r)
+                        {
+                            rq.brigadeId = null;
+                            _requestRepository.Update(rq);
+                        }
+
+                        _requestRepository.Save();
+                        _brigadeRepository.Delete(id);
+                        _brigadeRepository.Save();
+                        _userRepository.Save();
+
+                        SelectedItem = Brigades.First();
+                        Brigades = new ObservableCollection<Brigade>(_brigadeRepository.GetAll());
                     }
-                    _requestRepository.Save();
-                    _brigadeRepository.Delete(id);
-                    _brigadeRepository.Save();
-                    _userRepository.Save();
-                    
-                    SelectedItem = Brigades.First();
-                    Brigades = new ObservableCollection<Brigade>(_brigadeRepository.GetAll());
+                    catch (Exception)
+                    {
+                        InfoWindow infoWindow = new InfoWindow("Ошибка", "Ошибка при удалении бригады");
+                        infoWindow.ShowDialog();
+                    }
                 });
             }
         }

@@ -16,8 +16,7 @@ namespace TheBureau.Services
         private static readonly string CompanyName = "БЮРО МОНТАЖНИКА";
         private static readonly int PORT = 587;
         private static readonly string HOST = "smtp.gmail.com";
-        //todo check exceptions
-        
+
         private static readonly string RequestAcceptSubject = "Ваша заявка на монтаж принята!";
         private static readonly string RequestStatusChangedSubject = "Изменен статус вашей заявки!";
 
@@ -32,7 +31,6 @@ namespace TheBureau.Services
         private static string Accessory = "<p style=\"text-align: left;\"><span></span><span><strong>Комплектующие (артикул, наименование, цена за комплект)</strong>:<br/></span></p>";
         private static string StatusChangedMessage = "Текущий статус вашей заявки: {0}";
         private static string TotalAccessoriesPrice = "<p style=\"text-align: left;\"><span></span><span><strong>Итого за комплектующие</strong>: {0}<br/></span></p>";
-
         #endregion
         
         public static async void SendRequestAccept(Request request, IEnumerable<Tool> tools, IEnumerable<Accessory> accessories)
@@ -77,7 +75,7 @@ namespace TheBureau.Services
         
         public static async Task SendEmail(string clientEmail, string subject, string body)
         {
-            String Result = "";
+            String result = "";
             try
             {
                 CompanyRepository _companyRepository = new();
@@ -93,25 +91,22 @@ namespace TheBureau.Services
                         sc.DeliveryMethod = SmtpDeliveryMethod.Network;
                         sc.UseDefaultCredentials = false;
                         sc.Credentials = new NetworkCredential(credentials.email, credentials.password);
-                        //sc.SendCompleted += new SendCompletedEventHandler(SendCompletedCallback);
                         await sc.SendMailAsync(letter);
-                        Result = "Письмо успешно отправлено клиенту.";
-                        InfoWindow infoWindow = new InfoWindow("Успех!", Result);
+                        result = "Письмо успешно отправлено клиенту.";
+                        InfoWindow infoWindow = new InfoWindow("Успех!", result);
                         infoWindow.ShowDialog();
                     }
                 }
             }
             catch (Exception e)
             {
-                Result = String.Format("Ошибка отправки письма: {0}", e.Message);
-                InfoWindow infoWindow = new InfoWindow("Ошибка!", Result);
+                result = String.Format("Ошибка отправки письма: {0}", e.Message);
+                InfoWindow infoWindow = new InfoWindow("Ошибка!", result);
                 infoWindow.ShowDialog();
             }
-            //MessageBox.Show(Result);
-            //await dlg.ShowAsync();
         }
 
-        public static string GetTable<T>(IEnumerable<T> list, params Func<T, object>[] columns)
+        private static string GetTable<T>(IEnumerable<T> list, params Func<T, object>[] columns)
         {
             var sb = new StringBuilder();
             sb.Append("<table>");

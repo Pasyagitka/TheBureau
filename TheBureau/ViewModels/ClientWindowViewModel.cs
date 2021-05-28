@@ -2,6 +2,7 @@
 using System.Collections;
 using System.Collections.ObjectModel;
 using System.ComponentModel;
+using System.Linq;
 using System.Text.RegularExpressions;
 using System.Windows;
 using System.Windows.Input;
@@ -10,6 +11,7 @@ using TheBureau.Models;
 using TheBureau.Repositories;
 using TheBureau.Services;
 using TheBureau.Views;
+using TheBureau.Views.Controls;
 
 namespace TheBureau.ViewModels
 {
@@ -20,6 +22,7 @@ namespace TheBureau.ViewModels
         private RequestRepository _requestRepository=new();
         private ClientRepository _clientRepository=new();
         private AddressRepository _addressRepository=new();
+        private AccessoryRepository _accessoryRepository = new();
         private RequestEquipmentRepository _requestEquipmentRepository;
         
         private ObservableCollection<Request> _requests;
@@ -257,81 +260,105 @@ namespace TheBureau.ViewModels
         private bool CanSendRequest(object sender) => !HasErrors;
         private void SendRequest(object sender)
         {
-            Address address;
-            Client client;
-            
-            //Если адрес есть в базе, он не дублируется (берется существующий)
-            if(!_addressRepository.IsDuplicateAddress(City, Street, Int32.Parse(House), Corpus, Int32.Parse(Flat)))
+            try
             {
-                address = _addressRepository.FindAddress(City, Street, Int32.Parse(House), Corpus, Int32.Parse(Flat));
-            }
-            else
-            {
-                address = new Address{country = "Беларусь",city=City, street = Street, house = Int32.Parse(House), 
-                    corpus = Corpus, flat = Int32.Parse(Flat)};
-                _addressRepository.Add(address);
-                _addressRepository.Save();
-            }
-            //Если клиент есть в базе, он не дублируется (берется существующий)
-            if (!_clientRepository.IsDuplicateClient(Surname, Firstname, Patronymic, Email, ContactNumber))
-            {
-                client = _clientRepository.FindClient(Surname, Firstname, Patronymic, Email, ContactNumber);
-            }
-            else
-            {
-                client = new Client{firstname = Firstname, patronymic = Patronymic, surname = Surname, 
-                    email = Email, contactNumber = Decimal.Parse(ContactNumber)};
-                _clientRepository.Add(client);
-                _clientRepository.Save();
-            }
-            
-            var request = new Request
-            {
-                clientId = client.id, addressId = address.id, stage=Stage, status = (int)Statuses.InProcessing, mountingDate=MountingDate,
-                comment = Comment
-            };
-            _requestRepository.Add(request);
-            _requestRepository.Save();
-            
-            //Количество приборов каждого типа в оборудовании заявки
-            if (Int32.Parse(RpQuantity) != 0 && RadiatorCheckBox) {
-                var requestEquipmentRP = new RequestEquipment  {  requestId = request.id, equipmentId = "RP", quantity = Int32.Parse(RpQuantity) };
-                _requestEquipmentRepository.Add(requestEquipmentRP);
-            }
-            if (Int32.Parse(RsQuantity) != 0 && RadiatorCheckBox)
-            {
-                var requestEquipmentRS = new RequestEquipment { requestId = request.id, equipmentId = "RS", quantity = Int32.Parse(RsQuantity)};
-                _requestEquipmentRepository.Add(requestEquipmentRS);
-            }
-            if (Int32.Parse(KpQuantity) != 0 && ConvectorCheckBox)
-            {
-                var requestEquipmentKP = new RequestEquipment { requestId = request.id, equipmentId = "HP", quantity = Int32.Parse(KpQuantity) };
-                _requestEquipmentRepository.Add(requestEquipmentKP);
-            }
+                Address address;
+                Client client;
 
-            if (Int32.Parse(KsQuantity) != 0 && ConvectorCheckBox)
-            {
-                var requestEquipmentKS = new RequestEquipment  { requestId = request.id, equipmentId = "HS", quantity = Int32.Parse(KsQuantity) };
-                _requestEquipmentRepository.Add(requestEquipmentKS);
+                //Если адрес есть в базе, он не дублируется (берется существующий)
+                if (!_addressRepository.IsDuplicateAddress(City, Street, Int32.Parse(House), Corpus, Int32.Parse(Flat)))
+                {
+                    address = _addressRepository.FindAddress(City, Street, Int32.Parse(House), Corpus,
+                        Int32.Parse(Flat));
+                }
+                else
+                {
+                    address = new Address
+                    {
+                        country = "Беларусь", city = City, street = Street, house = Int32.Parse(House),
+                        corpus = Corpus, flat = Int32.Parse(Flat)
+                    };
+                    _addressRepository.Add(address);
+                    _addressRepository.Save();
+                }
+
+                //Если клиент есть в базе, он не дублируется (берется существующий)
+                if (!_clientRepository.IsDuplicateClient(Surname, Firstname, Patronymic, Email, ContactNumber))
+                {
+                    client = _clientRepository.FindClient(Surname, Firstname, Patronymic, Email, ContactNumber);
+                }
+                else
+                {
+                    client = new Client
+                    {
+                        firstname = Firstname, patronymic = Patronymic, surname = Surname,
+                        email = Email, contactNumber = Decimal.Parse(ContactNumber)
+                    };
+                    _clientRepository.Add(client);
+                    _clientRepository.Save();
+                }
+
+                var request = new Request
+                {
+                    clientId = client.id, addressId = address.id, stage = Stage, status = (int) Statuses.InProcessing,
+                    mountingDate = MountingDate,
+                    comment = Comment
+                };
+                _requestRepository.Add(request);
+                _requestRepository.Save();
+
+                //Количество приборов каждого типа в оборудовании заявки
+                if (Int32.Parse(RpQuantity) != 0 && RadiatorCheckBox)
+                {
+                    var requestEquipmentRP = new RequestEquipment
+                        {requestId = request.id, equipmentId = "RP", quantity = Int32.Parse(RpQuantity)};
+                    _requestEquipmentRepository.Add(requestEquipmentRP);
+                }
+
+                if (Int32.Parse(RsQuantity) != 0 && RadiatorCheckBox)
+                {
+                    var requestEquipmentRS = new RequestEquipment
+                        {requestId = request.id, equipmentId = "RS", quantity = Int32.Parse(RsQuantity)};
+                    _requestEquipmentRepository.Add(requestEquipmentRS);
+                }
+
+                if (Int32.Parse(KpQuantity) != 0 && ConvectorCheckBox)
+                {
+                    var requestEquipmentKP = new RequestEquipment
+                        {requestId = request.id, equipmentId = "HP", quantity = Int32.Parse(KpQuantity)};
+                    _requestEquipmentRepository.Add(requestEquipmentKP);
+                }
+
+                if (Int32.Parse(KsQuantity) != 0 && ConvectorCheckBox)
+                {
+                    var requestEquipmentKS = new RequestEquipment
+                        {requestId = request.id, equipmentId = "HS", quantity = Int32.Parse(KsQuantity)};
+                    _requestEquipmentRepository.Add(requestEquipmentKS);
+                }
+
+                if (Int32.Parse(VpQuantity) != 0 && ConvectorVPCheckBox)
+                {
+                    var requestEquipmentVP = new RequestEquipment
+                        {requestId = request.id, equipmentId = "VP", quantity = Int32.Parse(VpQuantity)};
+                    _requestEquipmentRepository.Add(requestEquipmentVP);
+                }
+                _requestEquipmentRepository.Save();
+                Update();
+                
+                //Получение сформированной записи из БД, отправка уведомления на почту клиента
+                var requestForNotification = _requestRepository.Get(request.id);
+                var tools = _toolRepository.GetByStage(requestForNotification.stage);
+                var accessories = _accessoryRepository.GetAccessories(requestForNotification.RequestEquipments);
+                Notifications.SendRequestAccept(requestForNotification, tools, accessories);
+                ResetFields();
+
+                OnPropertyChanged("SendRequestCommand");
             }
-
-            if (Int32.Parse(VpQuantity) != 0 && ConvectorVPCheckBox)
+            catch (Exception)
             {
-                var requestEquipmentVP = new RequestEquipment { requestId = request.id, equipmentId = "VP", quantity = Int32.Parse(VpQuantity)  };
-                _requestEquipmentRepository.Add(requestEquipmentVP);
+                InfoWindow infoWindow = new InfoWindow("Ошибка", "Ошибка при отправке заявки");
+                infoWindow.ShowDialog();
             }
-            _requestEquipmentRepository.Save();
-            Update();
-
-            
-            //Получение сформированной записи из БД, отправка уведолмения на почту клиента
-            var requestForNotification = _requestRepository.Get(request.id);
-            var tools = _toolRepository.GetByStage(requestForNotification.stage);
-            var accessories = _requestEquipmentRepository.GetAccessories(requestForNotification.RequestEquipments);
-            Notifications.SendRequestAccept(requestForNotification, tools, accessories);
-            ResetFields();
-
-            OnPropertyChanged("SendRequestCommand");
         }
 
         
@@ -348,12 +375,12 @@ namespace TheBureau.ViewModels
                 {
                     _errorsViewModel.AddError("Firstname", ValidationConst.FieldCannotBeEmpty);
                 }
-                if (_firstname.Length is > 20 or < 2)
+                if (_firstname?.Length is > 20 or < 2)
                 {
                     _errorsViewModel.AddError("Firstname", ValidationConst.NameLengthExceeded);
                 }
                 var regex = new Regex(ValidationConst.LettersHyphenRegex);
-                if (!regex.IsMatch(_firstname))
+                if (!regex.IsMatch(_firstname!))
                 {
                     _errorsViewModel.AddError("Firstname",  ValidationConst.IncorrectFirstname);
                 }
@@ -372,12 +399,12 @@ namespace TheBureau.ViewModels
                 {
                     _errorsViewModel.AddError("Surname", ValidationConst.FieldCannotBeEmpty);
                 }
-                if (_surname.Length is > 20 or < 2)
+                if (_surname?.Length is > 20 or < 2)
                 {
                     _errorsViewModel.AddError("Surname", ValidationConst.NameLengthExceeded);
                 }
                 var regex = new Regex(ValidationConst.LettersHyphenRegex);
-                if (!regex.IsMatch(_surname))
+                if (!regex.IsMatch(_surname!))
                 {
                     _errorsViewModel.AddError("Surname", ValidationConst.IncorrectSurname);
                 }
@@ -409,7 +436,6 @@ namespace TheBureau.ViewModels
                 OnPropertyChanged("Patronymic");
             }
         }
-        //todo проверка на длину всех строк (фио и тд) - как в бд
         public string Email
         {
             get => _email;
@@ -421,12 +447,12 @@ namespace TheBureau.ViewModels
                 {
                     _errorsViewModel.AddError("Email", ValidationConst.FieldCannotBeEmpty);
                 }
-                if (_email.Length > 255)
+                if (_email?.Length > 255)
                 {
                     _errorsViewModel.AddError("Email", ValidationConst.EmailLengthExceeded);
                 }
                 var regex = new Regex(ValidationConst.EmailRegex);
-                if (!regex.IsMatch(_email))
+                if (!regex.IsMatch(_email!))
                 {
                     _errorsViewModel.AddError("Email", ValidationConst.IncorrectEmailStructure);
                 }
@@ -443,7 +469,7 @@ namespace TheBureau.ViewModels
                 {
                     _errorsViewModel.AddError("ContactNumber", ValidationConst.FieldCannotBeEmpty);
                 }
-                _contactNumber = decimal.Parse(value); 
+                _contactNumber = decimal.Parse(value!); 
                 
                 var regex = new Regex(ValidationConst.ContactNumberRegex);
                 if (!regex.IsMatch(_contactNumber.ToString()))
@@ -469,8 +495,12 @@ namespace TheBureau.ViewModels
                     {
                         _errorsViewModel.AddError("City", ValidationConst.FieldCannotBeEmpty);
                     }
+                    if (_city?.Length > 30)
+                    {
+                        _errorsViewModel.AddError("City", ValidationConst.MaxLength30);
+                    }
                     var regex = new Regex(ValidationConst.LettersHyphenRegex);
-                    if (!regex.IsMatch(_city))
+                    if (!regex.IsMatch(_city!))
                     {
                         _errorsViewModel.AddError("City", ValidationConst.IncorrectCity);
                     }
@@ -490,8 +520,12 @@ namespace TheBureau.ViewModels
                 {
                     _errorsViewModel.AddError("Street", ValidationConst.FieldCannotBeEmpty);
                 }
+                if (_street?.Length > 30)
+                {
+                    _errorsViewModel.AddError("Street", ValidationConst.MaxLength30);
+                }
                 var regex = new Regex(ValidationConst.LettersHyphenRegex);
-                if (!regex.IsMatch(_street))
+                if (!regex.IsMatch(_street!))
                 {
                     _errorsViewModel.AddError("Street", ValidationConst.IncorrectStreet);
                 }
@@ -508,7 +542,7 @@ namespace TheBureau.ViewModels
                 {
                     _errorsViewModel.AddError("House", ValidationConst.FieldCannotBeEmpty);
                 }
-                _house = int.Parse(value);
+                _house = int.Parse(value!);
                 if (_house > 300 || _house == 0)
                 {
                     _errorsViewModel.AddError("House", ValidationConst.IncorrectHouse);
@@ -549,8 +583,7 @@ namespace TheBureau.ViewModels
                 {
                     _errorsViewModel.AddError("Flat", ValidationConst.FieldCannotBeEmpty);
                 }
-                
-                _flat = int.Parse(value); 
+                _flat = int.Parse(value!); 
 
                 if (_flat > 1011 || _flat == 0)
                 {
@@ -588,6 +621,8 @@ namespace TheBureau.ViewModels
             Update();
             ResetFields();
             WindowState = WindowState.Normal;
+            IsClean = true;
+            IsRough = true;
         }
 
         public ICommand LogOutCommand => new RelayCommand(obj =>

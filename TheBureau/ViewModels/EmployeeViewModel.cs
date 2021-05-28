@@ -1,9 +1,11 @@
-﻿using System.Collections.ObjectModel;
+﻿using System;
+using System.Collections.ObjectModel;
 using System.Linq;
 using System.Windows.Input;
 using TheBureau.Models;
 using TheBureau.Repositories;
 using TheBureau.Views;
+using TheBureau.Views.Controls;
 
 namespace TheBureau.ViewModels
 {
@@ -39,20 +41,27 @@ namespace TheBureau.ViewModels
         {
             get
             {
-                return _deleteCommand ??
-                       (_deleteCommand = new RelayCommand(obj =>
-                       {
-                           var empl = SelectedItem as Employee;
-                           if (empl != null)
-                           {
-                               int clientid = empl.id;
-                               _employeeRepository.Delete(clientid);
-                               _employeeRepository.SaveChanges();
-                               Employees.Remove(SelectedItem as Employee); //todo REMOVE?? or new
-                               SelectedItem = Employees.First();
-                               OnPropertyChanged("Employees");
-                           }
-                       }));
+                return _deleteCommand ??= new RelayCommand(obj =>
+                {
+                    try
+                    {
+                        var empl = SelectedItem;
+                        if (empl != null)
+                        {
+                            int clientid = empl.id;
+                            _employeeRepository.Delete(clientid);
+                            _employeeRepository.SaveChanges();
+                            Employees.Remove(SelectedItem);
+                            SelectedItem = Employees.First();
+                            OnPropertyChanged("Employees");
+                        }
+                    }
+                    catch (Exception e)
+                    {
+                        InfoWindow infoWindow = new InfoWindow("Ошибка", "Ошибка при удалении работника");
+                        infoWindow.ShowDialog();
+                    }
+                });
             }
         }
         

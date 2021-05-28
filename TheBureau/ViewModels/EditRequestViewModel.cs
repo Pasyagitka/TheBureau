@@ -1,9 +1,11 @@
-﻿using System.Collections.ObjectModel;
+﻿using System;
+using System.Collections.ObjectModel;
 using System.Windows.Input;
 using TheBureau.Enums;
 using TheBureau.Models;
 using TheBureau.Repositories;
 using TheBureau.Services;
+using TheBureau.Views.Controls;
 using static System.Int32;
 
 namespace TheBureau.ViewModels
@@ -18,8 +20,8 @@ namespace TheBureau.ViewModels
         private int _selectedBrigadeId;
         private int _requestStatus;
         private bool _sendEmail;
+        
         private Request _requestForEdit;
-
         
         private ICommand _updateRequest;
 
@@ -48,24 +50,35 @@ namespace TheBureau.ViewModels
 
         private void UpdateRequest(object o)
         {
-            bool isStatusChanged = false;
-            var request = _requestRepository.Get(RequestForEdit.id);
-            if (Parse(RequestStatus) == (int)Statuses.InProcessing || Parse(RequestStatus) == (int)Statuses.InProgress ||Parse(RequestStatus)== (int)Statuses.Done)
+            try
             {
-                if (Parse(RequestStatus) != request.status) isStatusChanged = true;
-                request.status = Parse(RequestStatus);
-            }
-            if (SelectedBrigadeId == 0) request.brigadeId = null;
-            else 
-                request.brigadeId = SelectedBrigadeId;
-            _requestRepository.Update(request);
-            _requestRepository.Save();
+                bool isStatusChanged = false;
+                var request = _requestRepository.Get(RequestForEdit.id);
+                if (Parse(RequestStatus) == (int) Statuses.InProcessing ||
+                    Parse(RequestStatus) == (int) Statuses.InProgress || Parse(RequestStatus) == (int) Statuses.Done)
+                {
+                    if (Parse(RequestStatus) != request.status) isStatusChanged = true;
+                    request.status = Parse(RequestStatus);
+                }
 
-            if (isStatusChanged && SendEmail)
-            {
-                Notifications.SendRequestStatusChanged(request);
+                if (SelectedBrigadeId == 0) request.brigadeId = null;
+                else
+                    request.brigadeId = SelectedBrigadeId;
+                _requestRepository.Update(request);
+                _requestRepository.Save();
+
+                if (isStatusChanged && SendEmail)
+                {
+                    Notifications.SendRequestStatusChanged(request);
+                }
+
+                OnPropertyChanged("Requests");
             }
-            OnPropertyChanged("Requests");
+            catch (Exception e)
+            {
+                InfoWindow infoWindow = new InfoWindow("Ошибка", "Ошибка при редактировании заявки");
+                infoWindow.ShowDialog();
+            }
         }
 
         public int SelectedBrigadeId

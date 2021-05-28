@@ -1,9 +1,11 @@
-﻿using System.Collections.ObjectModel;
+﻿using System;
+using System.Collections.ObjectModel;
 using System.Linq;
 using System.Windows.Input;
 using TheBureau.Models;
 using TheBureau.Repositories;
 using TheBureau.Views;
+using TheBureau.Views.Controls;
 
 namespace TheBureau.ViewModels
 {
@@ -28,49 +30,64 @@ namespace TheBureau.ViewModels
         {
             get
             {
-                return _deleteCommand ??
-                       (_deleteCommand = new RelayCommand(obj =>
-                       {
-                           int clientid = SelectedItem.id;
-                           var clientRequests = _requestRepository.FindByClientId(clientid);
-                           var addresses = clientRequests.Select(x=>x.addressId).ToList();
-                           var requestsid = clientRequests.Select(x=>x.id).ToList();
-  
-                           foreach (var id in requestsid)
-                           {
-                               _requestEquipmentRepository.DeleteByRequestId(id);
-                           }
-                           _requestEquipmentRepository.Save();
-                           
-                           foreach (var request in clientRequests.ToList())
-                           {
-                               _requestRepository.Delete(request.id);
-                           }
-                           _requestRepository.Save();
-                           
-                           foreach (var id in addresses)
-                           {
-                               _addressRepository.Delete(id);
-                           }
-                           _addressRepository.Save();
-                           _clientRepository.Delete(clientid);
-                           _clientRepository.Save();
-                           Clients = new ObservableCollection<Client>(_clientRepository.GetAll());
-                           SelectedItem = Clients.First();
-                       }));
+                return _deleteCommand ??= new RelayCommand(obj =>
+                {
+                    try
+                    {
+                        int clientid = SelectedItem.id;
+                        var clientRequests = _requestRepository.FindByClientId(clientid);
+                        var addresses = clientRequests.Select(x => x.addressId).ToList();
+                        var requestsid = clientRequests.Select(x => x.id).ToList();
+
+                        foreach (var id in requestsid)
+                        {
+                            _requestEquipmentRepository.DeleteByRequestId(id);
+                        }
+                        _requestEquipmentRepository.Save();
+
+                        foreach (var request in clientRequests.ToList())
+                        {
+                            _requestRepository.Delete(request.id);
+                        }
+                        _requestRepository.Save();
+                        
+                        foreach (var id in addresses)
+                        {
+                            _addressRepository.Delete(id);
+                        }
+                        _addressRepository.Save();
+                        _clientRepository.Delete(clientid);
+                        _clientRepository.Save();
+                        Clients = new ObservableCollection<Client>(_clientRepository.GetAll());
+                        SelectedItem = Clients.First();
+                    }
+                    catch (Exception)
+                    {
+                        InfoWindow infoWindow = new InfoWindow("Ошибка", "Ошибка при удалении клиента");
+                        infoWindow.ShowDialog();
+                    }
+                });
             }
         }
         public ICommand OpenEditClientWindowCommand => _openEditClientWindowCommand ??= new RelayCommand(OpenEditClientWindow);
 
         private void OpenEditClientWindow(object sender)
         {
-            var clientToEdit = SelectedItem;
-            EditClientView window = new(clientToEdit);
-            if (window.ShowDialog() == true)
+            try
             {
-                _clientRepository = new ClientRepository();
-                Clients = new ObservableCollection<Client>(_clientRepository.GetAll());
-                SelectedItem = _clientRepository.Get(clientToEdit.id);
+                var clientToEdit = SelectedItem;
+                EditClientView window = new(clientToEdit);
+                if (window.ShowDialog() == true)
+                {
+                    _clientRepository = new ClientRepository();
+                    Clients = new ObservableCollection<Client>(_clientRepository.GetAll());
+                    SelectedItem = _clientRepository.Get(clientToEdit.id);
+                }
+            }
+            catch (Exception)
+            {
+                InfoWindow infoWindow = new InfoWindow("Ошибка", "Ошибка при редактировании клиента");
+                infoWindow.ShowDialog();
             }
         }
         public ObservableCollection<Client> Clients

@@ -11,7 +11,6 @@ namespace TheBureau
 
         private void App_OnStartup(object sender, StartupEventArgs e)
         {
-            //todo попробовать запоминать юзера
             Application.Current.Properties["User"] = null;
         }
         protected override void OnStartup(StartupEventArgs e)
@@ -23,13 +22,12 @@ namespace TheBureau
             }
             catch (AbandonedMutexException)
             {
-                //handle the rare case of an abandoned mutex
-                //in the case of my app this isn't a problem, and I can just continue
                 mutexAccessed = true;
             }
-
             if (mutexAccessed)
+            {
                 base.OnStartup(e);
+            }
             else
             {
                 MessageBox.Show("Приложение уже запущено", "Отмена", MessageBoxButton.OK, MessageBoxImage.Error);

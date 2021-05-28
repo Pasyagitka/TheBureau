@@ -5,15 +5,16 @@ using TheBureau.Enums;
 using TheBureau.Models;
 using TheBureau.Repositories;
 using TheBureau.Services;
+using TheBureau.Views.Controls;
 
 namespace TheBureau.ViewModels
 {
     public class EditRequestFromBrigadeViewModel : ViewModelBase
     {
-        private RequestRepository _requestRepository = new RequestRepository();
-        private BrigadeRepository _brigadeRepository = new();
+        private readonly RequestRepository _requestRepository = new();
         private int _requestStatus;
-        private RelayCommand _updateRequest;
+        
+        private ICommand _updateRequest;
         private Request _requestForEdit;
         private bool _sendEmail;
 
@@ -40,23 +41,33 @@ namespace TheBureau.ViewModels
 
         private void UpdateRequest(object o)
         {
-            bool isStatusChanged = false;
-            var request = _requestRepository.Get(RequestForEdit.id);
-            if (Int32.Parse(RequestStatus) == (int)Statuses.InProcessing || 
-                Int32.Parse(RequestStatus) == (int)Statuses.InProgress || 
-                Int32.Parse(RequestStatus)== (int)Statuses.Done)
+            try
             {
-                if (Int32.Parse(RequestStatus) != request.status) isStatusChanged = true;
-                request.status = Int32.Parse(RequestStatus);
-            }
-            _requestRepository.Update(request);
-            _requestRepository.Save();
+                bool isStatusChanged = false;
+                var request = _requestRepository.Get(RequestForEdit.id);
+                if (Int32.Parse(RequestStatus) == (int) Statuses.InProcessing ||
+                    Int32.Parse(RequestStatus) == (int) Statuses.InProgress ||
+                    Int32.Parse(RequestStatus) == (int) Statuses.Done)
+                {
+                    if (Int32.Parse(RequestStatus) != request.status) isStatusChanged = true;
+                    request.status = Int32.Parse(RequestStatus);
+                }
 
-            if (isStatusChanged && SendEmail)
-            {
-                Notifications.SendRequestStatusChanged(request);
+                _requestRepository.Update(request);
+                _requestRepository.Save();
+
+                if (isStatusChanged && SendEmail)
+                {
+                    Notifications.SendRequestStatusChanged(request);
+                }
+
+                OnPropertyChanged("Requests");
             }
-            OnPropertyChanged("Requests");
+            catch (Exception e)
+            {
+                InfoWindow infoWindow = new InfoWindow("Ошибка", "Ошибка при редактировании заявки");
+                infoWindow.ShowDialog();
+            }
         }
 
         public string RequestStatus

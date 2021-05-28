@@ -7,6 +7,7 @@ using System.Windows.Input;
 using TheBureau.Models;
 using TheBureau.Repositories;
 using TheBureau.Services;
+using TheBureau.Views.Controls;
 
 namespace TheBureau.ViewModels
 {
@@ -208,14 +209,22 @@ namespace TheBureau.ViewModels
         private bool CanAddEmployee(object sender) => !HasErrors;
         private void AddEmployee(object sender)
         {
-            Employee employee = new Employee()
+            try
             {
-                firstname = Firstname, surname = Surname, patronymic = Patronymic, email = Email,
-                contactNumber = decimal.Parse(ContactNumber),
-                brigadeId = SelectedBrigadeId == 0 ? (int?) null : SelectedBrigadeId
-            };
-            _employeeRepository.Add(employee);
-            _employeeRepository.SaveChanges();
+                Employee employee = new Employee()
+                {
+                    firstname = Firstname, surname = Surname, patronymic = Patronymic, email = Email,
+                    contactNumber = decimal.Parse(ContactNumber),
+                    brigadeId = SelectedBrigadeId == 0 ? null : SelectedBrigadeId
+                };
+                _employeeRepository.Add(employee);
+                _employeeRepository.SaveChanges();
+            }
+            catch (Exception)
+            {
+                InfoWindow infoWindow = new InfoWindow("Ошибка", "Ошибка при создании работника");
+                infoWindow.ShowDialog();
+            }
         }
         
         #region  Validation

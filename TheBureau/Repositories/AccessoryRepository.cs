@@ -1,4 +1,5 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using System.Linq;
 using TheBureau.Models;
 
@@ -29,6 +30,19 @@ namespace TheBureau.Repositories
                 totalPrice += accessory.price;
             }
             return totalPrice;
+        }
+        
+        public IEnumerable<Accessory> GetAccessories(IEnumerable<RequestEquipment> equipment)
+        {
+            List<Accessory> result = new List<Accessory>();
+            foreach (var eq in equipment)
+            {
+                for (int i = 0; i < eq.quantity; i++)
+                {
+                    result.AddRange(_context.Accessories.Where(x => x.equipmentId == eq.equipmentId));
+                }
+            }
+            return result.OrderByDescending(x=>x.price);
         }
     }
 }

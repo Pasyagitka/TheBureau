@@ -7,6 +7,7 @@ using System.Windows.Input;
 using TheBureau.Models;
 using TheBureau.Repositories;
 using TheBureau.Services;
+using TheBureau.Views.Controls;
 
 namespace TheBureau.ViewModels
 {
@@ -178,7 +179,7 @@ namespace TheBureau.ViewModels
                 _brigadeid = String.IsNullOrWhiteSpace(value) ? null : Int32.Parse(value);
                 OnPropertyChanged("BrigadeId");
             }
-        }//todo ??
+        }
         #endregion
         
         public Employee Employee
@@ -218,7 +219,8 @@ namespace TheBureau.ViewModels
             }
             catch (Exception e)
             {
-                Console.WriteLine(e.Message);
+                InfoWindow infoWindow = new InfoWindow("Ошибка", "Ошибка при редактировании работника");
+                infoWindow.ShowDialog();
             }
         }
 

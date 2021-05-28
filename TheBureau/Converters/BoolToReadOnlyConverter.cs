@@ -9,13 +9,13 @@ namespace TheBureau.Converters
     {
         public object Convert(object value, Type targetType, object parameter, CultureInfo culture)
         {
-            bool val = (bool)value;
+            bool val = value != null && (bool)value;
             return !val;
         }
 
         public object ConvertBack(object value, Type targetType, object parameter, CultureInfo culture)
         {
-            bool val = (bool)value;
+            bool val = value != null && (bool)value;
             return !val;
         }
     }

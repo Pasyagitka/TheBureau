@@ -5,11 +5,12 @@ namespace TheBureau.Views.Controls
 {
     public partial class InfoWindow : Window
     {
-        private InfoWindowViewModel _viewModel; 
-        //todo addviewmodels to default ctor
+        private readonly InfoWindowViewModel _viewModel; 
         public InfoWindow()
         {
             InitializeComponent();
+            _viewModel = new InfoWindowViewModel("Ошибка","Непредвиденная ошибка");
+            DataContext = _viewModel;
         }
         public InfoWindow(string status, string message)
         {
