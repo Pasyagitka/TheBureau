@@ -55,7 +55,7 @@ namespace TheBureau.ViewModels
                             SelectedItem = Employees.First();
                         }
                     }
-                    catch (Exception e)
+                    catch (Exception)
                     {
                         InfoWindow infoWindow = new InfoWindow("Ошибка", "Ошибка при удалении работника");
                         infoWindow.ShowDialog();
@@ -72,21 +72,37 @@ namespace TheBureau.ViewModels
 
         private void OpenAddEmployeeWindow(object sender)
         {
-            AddEmployeeView view = new();
-            if (view.ShowDialog() == true)
+            try
             {
-                Update();
+                AddEmployeeView view = new();
+                if (view.ShowDialog() == true)
+                {
+                    Update();
+                }
+            }
+            catch (Exception)
+            {
+                InfoWindow infoWindow = new InfoWindow("Ошибка", "Ошибка при добавлении работника");
+                infoWindow.ShowDialog();
             }
         }
         
         private void OpenEditEmployeeWindow(object sender)
         {
-            var employeeToEdit = SelectedItem;
-            EditEmployeeView window = new(employeeToEdit);
-            if (window.ShowDialog() == true)
+            try
             {
-                Update();
-                SelectedItem = _employeeRepository.Get(employeeToEdit.id);
+                var employeeToEdit = SelectedItem;
+                EditEmployeeView window = new(employeeToEdit);
+                if (window.ShowDialog() == true)
+                {
+                    Update();
+                    SelectedItem = _employeeRepository.Get(employeeToEdit.id);
+                }
+            }
+            catch (Exception)
+            {
+                InfoWindow infoWindow = new InfoWindow("Ошибка", "Ошибка при изменении работника");
+                infoWindow.ShowDialog();
             }
         }
 

@@ -41,7 +41,9 @@ namespace TheBureau.ViewModels
 
         public RequestViewModel()
         {
-            Update();
+            Requests = new ObservableCollection<Request>(_requestRepository.GetAll().Reverse());
+            Brigades = new ObservableCollection<Brigade>(_brigadeRepository.GetAll());
+            SelectedItem = Requests.First();
         }
         
         public Request SelectedItem
@@ -64,15 +66,6 @@ namespace TheBureau.ViewModels
         { 
             get => _requests; 
             set { _requests = value; OnPropertyChanged("Requests"); } 
-        }
-        public void Update()
-        {
-            _requestRepository = new RequestRepository();
-            _brigadeRepository = new BrigadeRepository();
-            _requestEquipmentRepository = new RequestEquipmentRepository();
-            Requests = new ObservableCollection<Request>(_requestRepository.GetAll().Reverse());
-            Brigades = new ObservableCollection<Brigade>(_brigadeRepository.GetAll());
-            SelectedItem = Requests.First();
         }
 
         public ObservableCollection<RequestEquipment> RequestEquipments
@@ -103,7 +96,8 @@ namespace TheBureau.ViewModels
                 infoWindow.ShowDialog();
             }
         }
-        public void SetEquipment()
+
+        private void SetEquipment()
         {
             RequestEquipments = new ObservableCollection<RequestEquipment>(_requestEquipmentRepository.GetAllByRequestId(SelectedItem.id));
         }

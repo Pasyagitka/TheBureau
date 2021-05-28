@@ -47,7 +47,6 @@ namespace TheBureau.ViewModels
                         var helloWindow = new HelloWindowView();
                         helloWindow.Show();
                         Application.Current.Windows[0]?.Close();
-                        OnPropertyChanged("LogOutCommand");
                     }
                     catch (Exception)
                     {

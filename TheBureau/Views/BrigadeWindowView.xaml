@@ -36,7 +36,7 @@
                     </Border.Background>
                     <DockPanel LastChildFill="True" DockPanel.Dock="Top">
                         <Border Background="White" CornerRadius="5" Margin="10, 10, 0, 10">
-                            <TextBox Padding="5" materialDesign:HintAssist.Hint="Найти заявку"
+                            <TextBox Padding="5" materialDesign:HintAssist.Hint="Найти заявку (улица, фамилия клиента, ID)"
                                         materialDesign:TextFieldAssist.DecorationVisibility="Hidden"
                                         BorderThickness="0"
                                         MinWidth="200"

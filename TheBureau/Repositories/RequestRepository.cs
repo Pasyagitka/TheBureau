@@ -84,45 +84,41 @@ namespace TheBureau.Repositories
         }
         public IEnumerable<Request> FindRequestsForBrigadeByCriteria(string criteria, int brigadeId)
         {
-            return GetAll().Where(x => x.Address.street.ToLower().Contains(criteria.ToLower())
-                                       || x.Client.surname.ToLower().Contains(criteria.ToLower())
-                                       || x.brigadeId.ToString().Contains(criteria)
-                                       || x.id.ToString().Contains(criteria)
+            return GetAll().Where(x => (x.Address.street.ToLower().Contains(criteria.ToLower()) ||
+                                                x.Client.surname.ToLower().Contains(criteria.ToLower()) || 
+                                                x.id.ToString().Contains(criteria)) 
+                                       && x.brigadeId == brigadeId
             );
-            //return GetRequestsBySurnameOrEmail(criteria).Where(x => x.brigadeId == brigadeId);
         }
 
-        public void DeleteRequestsOfClient(int clientId)
-        {
-            var clientRequests = FindByClientId(clientId);
-            List<int> addresses = new();
-            List<int> requestsid = new();
-            foreach (var request in clientRequests)
-            {
-                addresses.Add(request.addressId);
-                requestsid.Add(request.id);
-                Delete(request.id);
-            }
-
-            foreach (var id in addresses)
-            {
-                var address = _context.Addresses.Find(id);
-                if (address != null)
-                {
-                    _context.Addresses.Remove(address);
-                }
-            }
-
-            foreach (var id in requestsid)
-            {
-                var equipments = _context.RequestEquipments.Where(x=>x.requestId == id);
-                foreach (var e in equipments)
-                {
-                    _context.RequestEquipments.Remove(e);
-                }
-            }
-            
-        }
+        // public void DeleteRequestsOfClient(int clientId)
+        // {
+        //     var clientRequests = FindByClientId(clientId);
+        //     List<int> addresses = new();
+        //     List<int> requestsid = new();
+        //     foreach (var request in clientRequests)
+        //     {
+        //         addresses.Add(request.addressId);
+        //         requestsid.Add(request.id);
+        //         Delete(request.id);
+        //     }
+        //     foreach (var id in addresses)
+        //     {
+        //         var address = _context.Addresses.Find(id);
+        //         if (address != null)
+        //         {
+        //             _context.Addresses.Remove(address);
+        //         }
+        //     }
+        //     foreach (var id in requestsid)
+        //     {
+        //         var equipments = _context.RequestEquipments.Where(x=>x.requestId == id);
+        //         foreach (var e in equipments)
+        //         {
+        //             _context.RequestEquipments.Remove(e);
+        //         }
+        //     }
+        // }
 
         public int RequestForBrigadeForCertainDay(int currentBridageId, DayOfWeek currentDayOfWeek)
         {
@@ -145,31 +141,5 @@ namespace TheBureau.Repositories
             }
             return count;
         }
-        
-        #region  async
-        public Task<List<Request>> GetRequestsAsync()
-        {
-            return _context.Requests.ToListAsync();
-        }
-        public Task<Request> GetRequestsAsync(int Id)
-        {
-            return _context.Requests.FirstOrDefaultAsync(a => a.id == Id);
-        }
-        public async Task<Request> AddRequestsAsync(Request customer)
-        {
-            _context.Requests.Add(customer);
-            await _context.SaveChangesAsync();
-            return customer;
-        }
-        public async Task DeleteRequestAsync(int customerId)
-        {
-            var customer = _context.Requests.FirstOrDefault(c => c.id == customerId);
-            if (customer != null)
-            {
-                _context.Requests.Remove(customer);
-            }
-            await _context.SaveChangesAsync();
-        }
-        #endregion
     }
 }

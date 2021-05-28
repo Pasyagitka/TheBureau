@@ -21,7 +21,7 @@ namespace TheBureau.ViewModels
                         Application.Current.Windows[0]?.Close();
                         clientMainWindow.Show();
                     }
-                    catch (Exception e)
+                    catch (Exception)
                     {
                         InfoWindow infoWindow = new InfoWindow("Ошибка", "Ошибка при входе как клиент");
                         infoWindow.ShowDialog();

@@ -72,7 +72,7 @@ namespace TheBureau.ViewModels
                     Notifications.SendRequestStatusChanged(request);
                 }
             }
-            catch (Exception e)
+            catch (Exception)
             {
                 InfoWindow infoWindow = new InfoWindow("Ошибка", "Ошибка при редактировании заявки");
                 infoWindow.ShowDialog();

@@ -12,8 +12,8 @@ namespace TheBureau.ViewModels
     public class BrigadeWindowViewModel : ViewModelBase
     {
         private RequestRepository _requestRepository = new();
-        private BrigadeRepository _brigadeRepository = new();
-        private RequestEquipmentRepository _requestEquipmentRepository = new();
+        private readonly BrigadeRepository _brigadeRepository = new();
+        private readonly RequestEquipmentRepository _requestEquipmentRepository = new();
 
 
         private ObservableCollection<Request> _brigadeRequests;

@@ -33,7 +33,7 @@
                 </Border.Background>
                 <StackPanel   Orientation="Horizontal">
                     <Border Background="White" CornerRadius="5" Margin="20, 10, 0, 10" Width="320">
-                            <TextBox Padding="5" wpf:HintAssist.Hint="Найти работника"
+                            <TextBox Padding="5" wpf:HintAssist.Hint="Найти работника (ФИО, почта, телефон, ID, бригада)"
                                             wpf:TextFieldAssist.DecorationVisibility="Hidden"
                                             BorderThickness="0"
                                             VerticalAlignment="Center" Text="{Binding FindEmployeeText, UpdateSourceTrigger=PropertyChanged}"/>

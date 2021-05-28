@@ -46,11 +46,7 @@ namespace TheBureau.ViewModels
         public object FrameContent
         {
             get => _frameContent;
-            set
-            {
-                _frameContent = value;
-                OnPropertyChanged("FrameContent");
-            }
+            set { _frameContent = value; OnPropertyChanged("FrameContent"); }
         }
         
         public string Info
@@ -122,7 +118,7 @@ namespace TheBureau.ViewModels
                     }
                 }
             }
-            catch (Exception e)
+            catch (Exception)
             {
                 InfoWindow infoWindow = new InfoWindow("Ошибка", "Ошибка при авторизации");
                 infoWindow.ShowDialog();

@@ -122,7 +122,9 @@ namespace TheBureau.ViewModels
         }
         public ClientViewModel()
         {
-            Update();
+            _clientRepository = new ClientRepository();
+            Clients = new ObservableCollection<Client>(_clientRepository.GetAll());
+            SelectedItem = Clients.First();
         }
         void SetClientsRequests()
         {
@@ -131,12 +133,6 @@ namespace TheBureau.ViewModels
         private void Search(string criteria)
         {
             Clients = new ObservableCollection<Client>(_clientRepository.FindClientsByCriteria(criteria));
-            SelectedItem = Clients.First();
-        }
-        public void Update()
-        {
-            _clientRepository = new ClientRepository();
-            Clients = new ObservableCollection<Client>(_clientRepository.GetAll());
             SelectedItem = Clients.First();
         }
     }

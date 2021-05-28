@@ -5,7 +5,7 @@ using TheBureau.Models;
 
 namespace TheBureau.Repositories
 {
-    public class BrigadeRepository
+    public class BrigadeRepository : IRepository<Brigade>
     {
         private Model _context = new Model();
         public IEnumerable<Brigade> GetAll()

@@ -44,6 +44,7 @@ namespace TheBureau.Repositories
                                        || x.patronymic.ToLower().Contains(criteria.ToLower())
                                        || x.email.ToLower().Contains(criteria.ToLower())
                                        || x.contactNumber.ToString().Contains(criteria)
+                                       || x.brigadeId.ToString().Contains(criteria)
                                        || x.id.ToString().Contains(criteria));
         }
     }
