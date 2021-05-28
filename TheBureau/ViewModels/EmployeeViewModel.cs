@@ -31,10 +31,18 @@ namespace TheBureau.ViewModels
         }
         public EmployeeViewModel()
         {
-            _employeeRepository = new EmployeeRepository();
-            _brigadeRepository = new BrigadeRepository();
-            Employees = new ObservableCollection<Employee>(_employeeRepository.GetAll());
-            SelectedItem = Employees.First();
+            try
+            {
+                _employeeRepository = new EmployeeRepository();
+                _brigadeRepository = new BrigadeRepository();
+                Employees = new ObservableCollection<Employee>(_employeeRepository.GetAll());
+                SelectedItem = Employees.First();
+            }
+            catch (Exception)
+            {
+                InfoWindow infoWindow = new InfoWindow("Ошибка", "Ошибка при открытии страницы работников");
+                infoWindow.ShowDialog();
+            }
         }
 
         public ICommand DeleteCommand
@@ -119,10 +127,18 @@ namespace TheBureau.ViewModels
         
         public void Update()
         {
-            _employeeRepository = new EmployeeRepository();
-            Employees = new ObservableCollection<Employee>(_employeeRepository.GetAll());
-            EmployeeBrigade = new ObservableCollection<Brigade>(_brigadeRepository.GetAll());
-            SelectedItem = Employees.First();
+            try
+            {
+                _employeeRepository = new EmployeeRepository();
+                Employees = new ObservableCollection<Employee>(_employeeRepository.GetAll());
+                EmployeeBrigade = new ObservableCollection<Brigade>(_brigadeRepository.GetAll());
+                SelectedItem = Employees.First();
+            }
+            catch (Exception)
+            {
+                InfoWindow infoWindow = new InfoWindow("Ошибка", "Ошибка при обновлении данных");
+                infoWindow.ShowDialog();
+            }
         }
         
         public ObservableCollection<Brigade> EmployeeBrigade
@@ -144,13 +160,25 @@ namespace TheBureau.ViewModels
 
         void SetEmployeeBrigade()
         {
-            EmployeeBrigade = new ObservableCollection<Brigade>(_brigadeRepository.GetAll().Where(x => x.id == _selectedItem?.brigadeId));
+            if (SelectedItem != null)
+            {
+                EmployeeBrigade = new ObservableCollection<Brigade>(_brigadeRepository.GetAll().Where(x => x.id == SelectedItem.brigadeId));
+            }
         }
         
         private void Search(string criteria)
         {
-            Employees = new ObservableCollection<Employee>(_employeeRepository.FindEmployeesByCriteria(criteria));
-            SelectedItem = Employees.First();
+            try
+            {
+                Employees = new ObservableCollection<Employee>(_employeeRepository.FindEmployeesByCriteria(criteria));
+                SelectedItem = Employees.First();
+            }
+            catch (Exception)
+            {
+                EmployeeBrigade = new ObservableCollection<Brigade>();
+                InfoWindow infoWindow = new InfoWindow("Ошибка", "Не удалось отобразить работников");
+                infoWindow.ShowDialog();
+            }
         }
     }
 }

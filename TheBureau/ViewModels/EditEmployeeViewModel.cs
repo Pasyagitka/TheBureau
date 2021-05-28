@@ -217,7 +217,7 @@ namespace TheBureau.ViewModels
                 _employeeRepository.Update(clientUpdate);
                 _employeeRepository.SaveChanges();
             }
-            catch (Exception e)
+            catch (Exception)
             {
                 InfoWindow infoWindow = new InfoWindow("Ошибка", "Ошибка при редактировании работника");
                 infoWindow.ShowDialog();

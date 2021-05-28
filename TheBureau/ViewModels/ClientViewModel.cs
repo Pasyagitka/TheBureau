@@ -34,32 +34,36 @@ namespace TheBureau.ViewModels
                 {
                     try
                     {
-                        int clientid = SelectedItem.id;
-                        var clientRequests = _requestRepository.FindByClientId(clientid);
-                        var addresses = clientRequests.Select(x => x.addressId).ToList();
-                        var requestsid = clientRequests.Select(x => x.id).ToList();
+                        if (SelectedItem != null)
+                        {
+                            int clientid = SelectedItem.id;
+                            var clientRequests = _requestRepository.FindByClientId(clientid);
+                            var addresses = clientRequests.Select(x => x.addressId).ToList();
+                            var requestsid = clientRequests.Select(x => x.id).ToList();
 
-                        foreach (var id in requestsid)
-                        {
-                            _requestEquipmentRepository.DeleteByRequestId(id);
-                        }
-                        _requestEquipmentRepository.Save();
+                            foreach (var id in requestsid)
+                            {
+                                _requestEquipmentRepository.DeleteByRequestId(id);
+                            }
+                            _requestEquipmentRepository.Save();
 
-                        foreach (var request in clientRequests.ToList())
-                        {
-                            _requestRepository.Delete(request.id);
+                            foreach (var request in clientRequests.ToList())
+                            {
+                                _requestRepository.Delete(request.id);
+                            }
+                            _requestRepository.Save();
+
+                            foreach (var id in addresses)
+                            {
+                                _addressRepository.Delete(id);
+                            }
+                            _addressRepository.Save();
+                            
+                            _clientRepository.Delete(clientid);
+                            _clientRepository.Save();
+                            Clients = new ObservableCollection<Client>(_clientRepository.GetAll());
+                            SelectedItem = Clients.First();
                         }
-                        _requestRepository.Save();
-                        
-                        foreach (var id in addresses)
-                        {
-                            _addressRepository.Delete(id);
-                        }
-                        _addressRepository.Save();
-                        _clientRepository.Delete(clientid);
-                        _clientRepository.Save();
-                        Clients = new ObservableCollection<Client>(_clientRepository.GetAll());
-                        SelectedItem = Clients.First();
                     }
                     catch (Exception)
                     {
@@ -75,13 +79,16 @@ namespace TheBureau.ViewModels
         {
             try
             {
-                var clientToEdit = SelectedItem;
-                EditClientView window = new(clientToEdit);
-                if (window.ShowDialog() == true)
+                if (SelectedItem != null)
                 {
-                    _clientRepository = new ClientRepository();
-                    Clients = new ObservableCollection<Client>(_clientRepository.GetAll());
-                    SelectedItem = _clientRepository.Get(clientToEdit.id);
+                    var clientToEdit = SelectedItem;
+                    EditClientView window = new(clientToEdit);
+                    if (window.ShowDialog() == true)
+                    {
+                        _clientRepository = new ClientRepository();
+                        Clients = new ObservableCollection<Client>(_clientRepository.GetAll());
+                        SelectedItem = _clientRepository.Get(clientToEdit.id);
+                    }
                 }
             }
             catch (Exception)
@@ -122,18 +129,39 @@ namespace TheBureau.ViewModels
         }
         public ClientViewModel()
         {
-            _clientRepository = new ClientRepository();
-            Clients = new ObservableCollection<Client>(_clientRepository.GetAll());
-            SelectedItem = Clients.First();
+            try
+            {
+                _clientRepository = new ClientRepository();
+                Clients = new ObservableCollection<Client>(_clientRepository.GetAll());
+                SelectedItem = Clients.First();
+            }
+            catch (Exception)
+            {
+                InfoWindow infoWindow = new InfoWindow("Ошибка", "Ошибка при открытии страницы клиента");
+                infoWindow.ShowDialog();
+            }
         }
         void SetClientsRequests()
         {
-            ClientRequests = new ObservableCollection<Request>(_requestRepository.GetAll().Where(x => x.clientId == _selectedItem.id));
+            if (SelectedItem != null)
+            {
+                ClientRequests = new ObservableCollection<Request>(_requestRepository.GetAll()
+                    .Where(x => x.clientId == SelectedItem.id));
+            }
         }
         private void Search(string criteria)
         {
-            Clients = new ObservableCollection<Client>(_clientRepository.FindClientsByCriteria(criteria));
-            SelectedItem = Clients.First();
+            try
+            {
+                Clients = new ObservableCollection<Client>(_clientRepository.FindClientsByCriteria(criteria));
+                SelectedItem = Clients.First();
+            }
+            catch (Exception)
+            {
+                ClientRequests = new ObservableCollection<Request>();
+                InfoWindow infoWindow = new InfoWindow("Ошибка", "Не удалось отобразить клиентов");
+                infoWindow.ShowDialog();
+            }
         }
     }
 }

@@ -1,9 +1,7 @@
 ﻿using System;
 using System.Collections.ObjectModel;
 using System.Linq;
-using System.Windows;
 using System.Windows.Input;
-using MaterialDesignThemes.Wpf;
 using TheBureau.Enums;
 using TheBureau.Models;
 using TheBureau.Repositories;
@@ -81,36 +79,39 @@ namespace TheBureau.ViewModels
                 {
                     try
                     {
-                        var id = SelectedItem.id;
-                        var userId = _brigadeRepository.Get(id).userId;
-
-                        foreach (var employee in Employees.Where(x => x.brigadeId == id))
+                        if (SelectedItem != null)
                         {
-                            employee.brigadeId = null;
-                            _employeeRepository.Update(employee);
+                            var id = SelectedItem.id;
+                            var userId = _brigadeRepository.Get(id).userId;
+
+                            foreach (var employee in Employees.Where(x => x.brigadeId == id))
+                            {
+                                employee.brigadeId = null;
+                                _employeeRepository.Update(employee);
+                            }
+
+                            _employeeRepository.SaveChanges();
+
+                            if (userId != null)
+                            {
+                                _userRepository.Delete((int) userId);
+                            }
+
+                            var r = _requestRepository.GetRequestsByBrigadeId(id);
+                            foreach (var rq in r)
+                            {
+                                rq.brigadeId = null;
+                                _requestRepository.Update(rq);
+                            }
+
+                            _requestRepository.Save();
+                            _brigadeRepository.Delete(id);
+                            _brigadeRepository.Save();
+                            _userRepository.Save();
+
+                            SelectedItem = Brigades.First();
+                            Brigades = new ObservableCollection<Brigade>(_brigadeRepository.GetAll());
                         }
-
-                        _employeeRepository.SaveChanges();
-
-                        if (userId != null)
-                        {
-                            _userRepository.Delete((int) userId);
-                        }
-
-                        var r = _requestRepository.GetRequestsByBrigadeId(id);
-                        foreach (var rq in r)
-                        {
-                            rq.brigadeId = null;
-                            _requestRepository.Update(rq);
-                        }
-
-                        _requestRepository.Save();
-                        _brigadeRepository.Delete(id);
-                        _brigadeRepository.Save();
-                        _userRepository.Save();
-
-                        SelectedItem = Brigades.First();
-                        Brigades = new ObservableCollection<Brigade>(_brigadeRepository.GetAll());
                     }
                     catch (Exception)
                     {
@@ -130,11 +131,20 @@ namespace TheBureau.ViewModels
                 OnPropertyChanged("Brigades"); 
             } 
         }
+
         public BrigadeViewModel()
         {
-            Brigades = new ObservableCollection<Brigade>(_brigadeRepository.GetAll());
-            Employees = new ObservableCollection<Employee>(_employeeRepository.GetAll());
-            SelectedItem = Brigades.First();
+            try
+            {
+                Brigades = new ObservableCollection<Brigade>(_brigadeRepository.GetAll());
+                Employees = new ObservableCollection<Employee>(_employeeRepository.GetAll());
+                SelectedItem = Brigades.First();
+            }
+            catch (Exception)
+            {
+                InfoWindow infoWindow = new InfoWindow("Ошибка", "Ошибка при открытии страницы бригады");
+                infoWindow.ShowDialog();
+            }
         }
         
     }

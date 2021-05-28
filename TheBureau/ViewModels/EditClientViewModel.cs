@@ -201,7 +201,10 @@ namespace TheBureau.ViewModels
         public EditClientViewModel(Client selectedClient)
         {
             _errorsViewModel.ErrorsChanged += ErrorsViewModel_ErrorsChanged;
-            Client = selectedClient;
+            if (selectedClient != null)
+            {
+                Client = selectedClient;
+            }
         }
         
         #region Validation

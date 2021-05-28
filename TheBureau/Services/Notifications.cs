@@ -78,8 +78,8 @@ namespace TheBureau.Services
             String result = "";
             try
             {
-                CompanyRepository _companyRepository = new();
-                var credentials = _companyRepository.Get();
+                CompanyRepository companyRepository = new();
+                var credentials = companyRepository.Get();
                 using (MailMessage letter = new MailMessage(CompanyName + "<" + credentials.email + ">", clientEmail))
                 {
                     letter.Subject = subject;

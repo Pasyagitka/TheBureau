@@ -1,4 +1,5 @@
-﻿using System.Collections.ObjectModel;
+﻿using System;
+using System.Collections.ObjectModel;
 using System.Linq;
 using System.Web.UI.WebControls.Expressions;
 using System.Windows;
@@ -6,6 +7,7 @@ using System.Windows.Input;
 using TheBureau.Models;
 using TheBureau.Repositories;
 using TheBureau.Views;
+using TheBureau.Views.Controls;
 
 namespace TheBureau.ViewModels
 {
@@ -38,10 +40,18 @@ namespace TheBureau.ViewModels
             {
                 return _logOutCommand ??= new RelayCommand(obj =>
                 {
-                    Application.Current.Properties["User"] = null;
-                    var helloWindow = new HelloWindowView();
-                    helloWindow.Show();
-                    Application.Current.Windows[0]?.Close();
+                    try
+                    {
+                        Application.Current.Properties["User"] = null;
+                        var helloWindow = new HelloWindowView();
+                        helloWindow.Show();
+                        Application.Current.Windows[0]?.Close();
+                    }
+                    catch (Exception)
+                    {
+                        InfoWindow infoWindow = new InfoWindow("Ошибка", "Не удалось выйти из аккаунта");
+                        infoWindow.ShowDialog();
+                    }
                 });
             }
         }
@@ -84,28 +94,47 @@ namespace TheBureau.ViewModels
         }
         private void OpenEditRequest(object o)
         {
-            var requestToEdit = SelectedItem;
-            EditRequestFromBrigadeView window = new(requestToEdit);
-            if (window.ShowDialog() == true)
+            try
             {
-                _requestRepository = new RequestRepository();
-                BrigadeRequests = new ObservableCollection<Request>(_requestRepository.GetRequestsByBrigadeId(CurrentBrigade.id).Reverse());
-                SelectedItem = _requestRepository.Get(requestToEdit.id);
+                var requestToEdit = SelectedItem;
+                EditRequestFromBrigadeView window = new(requestToEdit);
+                if (window.ShowDialog() == true)
+                {
+                    _requestRepository = new RequestRepository();
+                    BrigadeRequests =
+                        new ObservableCollection<Request>(_requestRepository.GetRequestsByBrigadeId(CurrentBrigade.id)
+                            .Reverse());
+                    SelectedItem = _requestRepository.Get(requestToEdit.id);
+                }
+            }
+            catch (Exception)
+            {
+                InfoWindow infoWindow = new InfoWindow("Ошибка", "Ошибка при открытии окна изменения заявки");
+                infoWindow.ShowDialog();
             }
         }
         public BrigadeWindowViewModel()
         {
-            WindowState = WindowState.Normal;
-            var user = Application.Current.Properties["User"] as User;
-            if (user!= null)
+            try
             {
-                CurrentBrigade = _brigadeRepository.GetAll().FirstOrDefault(x => x.userId == user.id);
-                if (CurrentBrigade != null)
+                WindowState = WindowState.Normal;
+                var user = Application.Current.Properties["User"] as User;
+                if (user != null)
                 {
-                    BrigadeRequests = 
-                        new ObservableCollection<Request>(_requestRepository.GetRequestsByBrigadeId(CurrentBrigade.id).Reverse());
-                    SelectedItem = BrigadeRequests.First();
+                    CurrentBrigade = _brigadeRepository.GetAll().FirstOrDefault(x => x.userId == user.id);
+                    if (CurrentBrigade != null)
+                    {
+                        BrigadeRequests =
+                            new ObservableCollection<Request>(_requestRepository
+                                .GetRequestsByBrigadeId(CurrentBrigade.id).Reverse());
+                        SelectedItem = BrigadeRequests.First();
+                    }
                 }
+            }
+            catch (Exception)
+            {
+                InfoWindow infoWindow = new InfoWindow("Ошибка", "Ошибка при открытии окна бригады");
+                infoWindow.ShowDialog();
             }
         }
         
@@ -117,13 +146,25 @@ namespace TheBureau.ViewModels
 
         private void SetEquipment()
         {
-            RequestEquipments = new ObservableCollection<RequestEquipment>(_requestEquipmentRepository.GetAllByRequestId(SelectedItem.id));
+            if (SelectedItem != null)
+            {
+                RequestEquipments = new ObservableCollection<RequestEquipment>(_requestEquipmentRepository.GetAllByRequestId(SelectedItem.id));
+            }
         }
         
         private void Search()
         {
-            BrigadeRequests = new ObservableCollection<Request>(_requestRepository.FindRequestsForBrigadeByCriteria(FindRequestText, _currentBrigade.id).Reverse());
-            SelectedItem = BrigadeRequests.First();
+            try
+            {
+                BrigadeRequests = new ObservableCollection<Request>(_requestRepository
+                    .FindRequestsForBrigadeByCriteria(FindRequestText, _currentBrigade.id).Reverse());
+                SelectedItem = BrigadeRequests.First();
+            }
+            catch (Exception)
+            {
+                InfoWindow infoWindow = new InfoWindow("Ошибка", "Не удалось отобразить заявки");
+                infoWindow.ShowDialog();
+            }
         }
     }
 }

@@ -7,6 +7,7 @@ namespace TheBureau.Repositories
     { 
         IEnumerable<T> GetAll();
         T Get(int id);
+        public void Update(T item);
         void Add(T item);
         void Delete(int id);
     }

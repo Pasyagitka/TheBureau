@@ -28,22 +28,46 @@ namespace TheBureau.ViewModels
         public ICommand HideGreenRequestsCommand =>
             _hideGreenRequests ??= new RelayCommand(o =>
             {
-                Requests = new ObservableCollection<Request>(_requestRepository.GetToDoRequests().Reverse());
-                SelectedItem = Requests.First();
+                try
+                {
+                    Requests = new ObservableCollection<Request>(_requestRepository.GetToDoRequests().Reverse());
+                    SelectedItem = Requests.First();
+                }
+                catch (Exception)
+                {
+                    InfoWindow infoWindow = new InfoWindow("Ошибка", "Ошибка при выполнении команды");
+                    infoWindow.ShowDialog();
+                }
             });
 
         public ICommand ShowAllRequestsCommand =>
             _showAllRequests ??= new RelayCommand(o =>
             {
-                Requests = new ObservableCollection<Request>(_requestRepository.GetAll().Reverse());
-                SelectedItem = Requests.First();
+                try
+                {
+                    Requests = new ObservableCollection<Request>(_requestRepository.GetAll().Reverse());
+                    SelectedItem = Requests.First();
+                }
+                catch (Exception)
+                {
+                    InfoWindow infoWindow = new InfoWindow("Ошибка", "Ошибка при выполнении команды");
+                    infoWindow.ShowDialog();
+                }
             });
 
         public RequestViewModel()
         {
-            Requests = new ObservableCollection<Request>(_requestRepository.GetAll().Reverse());
-            Brigades = new ObservableCollection<Brigade>(_brigadeRepository.GetAll());
-            SelectedItem = Requests.First();
+            try
+            {
+                Requests = new ObservableCollection<Request>(_requestRepository.GetAll().Reverse());
+                Brigades = new ObservableCollection<Brigade>(_brigadeRepository.GetAll());
+                SelectedItem = Requests.First();
+            }
+            catch (Exception)
+            {
+                InfoWindow infoWindow = new InfoWindow("Ошибка", "Ошибка при открытии страницы заявок");
+                infoWindow.ShowDialog();
+            }
         }
         
         public Request SelectedItem
@@ -78,16 +102,19 @@ namespace TheBureau.ViewModels
         {
             try
             {
-                var requestToEdit = SelectedItem;
-                EditRequestView window = new(requestToEdit);
-                if (window.ShowDialog() == true)
+                if (SelectedItem != null)
                 {
-                    _requestRepository = new RequestRepository();
-                    _brigadeRepository = new BrigadeRepository();
-                    _requestEquipmentRepository = new RequestEquipmentRepository();
-                    Requests = new ObservableCollection<Request>(_requestRepository.GetAll().Reverse());
-                    Brigades = new ObservableCollection<Brigade>(_brigadeRepository.GetAll());
-                    SelectedItem = _requestRepository.Get(requestToEdit.id);
+                    var requestToEdit = SelectedItem;
+                    EditRequestView window = new(requestToEdit);
+                    if (window.ShowDialog() == true)
+                    {
+                        _requestRepository = new RequestRepository();
+                        _brigadeRepository = new BrigadeRepository();
+                        _requestEquipmentRepository = new RequestEquipmentRepository();
+                        Requests = new ObservableCollection<Request>(_requestRepository.GetAll().Reverse());
+                        Brigades = new ObservableCollection<Brigade>(_brigadeRepository.GetAll());
+                        SelectedItem = _requestRepository.Get(requestToEdit.id);
+                    }
                 }
             }
             catch (Exception)
@@ -99,7 +126,10 @@ namespace TheBureau.ViewModels
 
         private void SetEquipment()
         {
-            RequestEquipments = new ObservableCollection<RequestEquipment>(_requestEquipmentRepository.GetAllByRequestId(SelectedItem.id));
+            if (SelectedItem != null)
+            {
+                RequestEquipments = new ObservableCollection<RequestEquipment>(_requestEquipmentRepository.GetAllByRequestId(SelectedItem.id));
+            }
         }
     }
 }

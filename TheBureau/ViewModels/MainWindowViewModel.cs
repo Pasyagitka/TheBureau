@@ -30,8 +30,18 @@ namespace TheBureau.ViewModels
             {
                 return _openSettingsCommand ??= new RelayCommand(obj =>
                 {
-                    SettingsWindow sw = new SettingsWindow();
-                    if (sw.ShowDialog() == true) { }
+                    try
+                    {
+                        SettingsWindow sw = new SettingsWindow();
+                        if (sw.ShowDialog() == true)
+                        {
+                        }
+                    }
+                    catch (Exception)
+                    {
+                        InfoWindow infoWindow = new InfoWindow("Ошибка", "Ошибка при открытии окна настроек");
+                        infoWindow.ShowDialog();
+                    }
                 });
             }
         }

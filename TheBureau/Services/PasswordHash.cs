@@ -5,7 +5,7 @@ namespace TheBureau.Services
 {
     public class PasswordHash
     {
-        public const int SaltByteSize = 24;
+        private const int SaltByteSize = 24;
         public const int HashByteSize = 24;
         public const int Pbkdf2Iterations = 1000;
 
@@ -22,9 +22,7 @@ namespace TheBureau.Services
 
             // Hash the password and encode the parameters
             byte[] hash = PBKDF2(password, salt, Pbkdf2Iterations, HashByteSize);
-            return Pbkdf2Iterations + ":" +
-                Convert.ToBase64String(salt) + ":" +
-                Convert.ToBase64String(hash);
+            return Pbkdf2Iterations + ":" + Convert.ToBase64String(salt) + ":" + Convert.ToBase64String(hash);
         }
 
         /// <summary>

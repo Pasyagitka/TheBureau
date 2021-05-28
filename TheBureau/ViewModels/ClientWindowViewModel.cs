@@ -22,7 +22,7 @@ namespace TheBureau.ViewModels
         private RequestRepository _requestRepository=new();
         private ClientRepository _clientRepository=new();
         private AddressRepository _addressRepository=new();
-        private AccessoryRepository _accessoryRepository = new();
+        private readonly AccessoryRepository _accessoryRepository = new();
         private RequestEquipmentRepository _requestEquipmentRepository;
         
         private ObservableCollection<Request> _requests;
@@ -265,23 +265,15 @@ namespace TheBureau.ViewModels
                 Address address;
                 Client client;
 
-                //Если адрес есть в базе, он не дублируется (берется существующий)
-                if (!_addressRepository.IsDuplicateAddress(City, Street, Int32.Parse(House), Corpus, Int32.Parse(Flat)))
+               
+                address = new Address
                 {
-                    address = _addressRepository.FindAddress(City, Street, Int32.Parse(House), Corpus,
-                        Int32.Parse(Flat));
-                }
-                else
-                {
-                    address = new Address
-                    {
-                        country = "Беларусь", city = City, street = Street, house = Int32.Parse(House),
-                        corpus = Corpus, flat = Int32.Parse(Flat)
-                    };
-                    _addressRepository.Add(address);
-                    _addressRepository.Save();
-                }
-
+                    country = "Беларусь", city = City, street = Street, house = Int32.Parse(House),
+                    corpus = Corpus, flat = Int32.Parse(Flat)
+                };
+                _addressRepository.Add(address);
+                _addressRepository.Save();
+                
                 //Если клиент есть в базе, он не дублируется (берется существующий)
                 if (!_clientRepository.IsDuplicateClient(Surname, Firstname, Patronymic, Email, ContactNumber))
                 {
@@ -377,10 +369,14 @@ namespace TheBureau.ViewModels
                 {
                     _errorsViewModel.AddError("Firstname", ValidationConst.NameLengthExceeded);
                 }
-                var regex = new Regex(ValidationConst.LettersHyphenRegex);
-                if (!regex.IsMatch(_firstname!))
+
+                if (_firstname != null)
                 {
-                    _errorsViewModel.AddError("Firstname",  ValidationConst.IncorrectFirstname);
+                    var regex = new Regex(ValidationConst.LettersHyphenRegex);
+                    if (!regex.IsMatch(_firstname))
+                    {
+                        _errorsViewModel.AddError("Firstname",  ValidationConst.IncorrectFirstname);
+                    }
                 }
                 OnPropertyChanged("Firstname");
             }
@@ -401,10 +397,14 @@ namespace TheBureau.ViewModels
                 {
                     _errorsViewModel.AddError("Surname", ValidationConst.NameLengthExceeded);
                 }
-                var regex = new Regex(ValidationConst.LettersHyphenRegex);
-                if (!regex.IsMatch(_surname!))
+
+                if (_surname != null)
                 {
-                    _errorsViewModel.AddError("Surname", ValidationConst.IncorrectSurname);
+                      var regex = new Regex(ValidationConst.LettersHyphenRegex);
+                    if (!regex.IsMatch(_surname))
+                    {
+                        _errorsViewModel.AddError("Surname", ValidationConst.IncorrectSurname);
+                    }
                 }
                 OnPropertyChanged("Surname");
             }
@@ -426,10 +426,14 @@ namespace TheBureau.ViewModels
                 {
                     _errorsViewModel.AddError("Patronymic", ValidationConst.NameLengthExceeded);
                 }
-                var regex = new Regex(ValidationConst.LettersHyphenRegex);
-                if (!regex.IsMatch(_patronymic!))
+
+                if (_patronymic != null)
                 {
-                    _errorsViewModel.AddError("Patronymic", ValidationConst.IncorrectPatronymic);
+                    var regex = new Regex(ValidationConst.LettersHyphenRegex);
+                    if (!regex.IsMatch(_patronymic))
+                    {
+                        _errorsViewModel.AddError("Patronymic", ValidationConst.IncorrectPatronymic);
+                    }
                 }
                 OnPropertyChanged("Patronymic");
             }
@@ -449,10 +453,13 @@ namespace TheBureau.ViewModels
                 {
                     _errorsViewModel.AddError("Email", ValidationConst.EmailLengthExceeded);
                 }
-                var regex = new Regex(ValidationConst.EmailRegex);
-                if (!regex.IsMatch(_email!))
+                if (_email != null)
                 {
-                    _errorsViewModel.AddError("Email", ValidationConst.IncorrectEmailStructure);
+                    var regex = new Regex(ValidationConst.EmailRegex);
+                    if (!regex.IsMatch(_email))
+                    {
+                        _errorsViewModel.AddError("Email", ValidationConst.IncorrectEmailStructure);
+                    }
                 }
                 OnPropertyChanged("Email");
             }
@@ -467,8 +474,9 @@ namespace TheBureau.ViewModels
                 {
                     _errorsViewModel.AddError("ContactNumber", ValidationConst.FieldCannotBeEmpty);
                 }
-                _contactNumber = decimal.Parse(value!); 
-                
+                _contactNumber = decimal.Parse(value!);
+
+          
                 var regex = new Regex(ValidationConst.ContactNumberRegex);
                 if (!regex.IsMatch(_contactNumber.ToString()))
                 {
@@ -497,11 +505,16 @@ namespace TheBureau.ViewModels
                     {
                         _errorsViewModel.AddError("City", ValidationConst.MaxLength30);
                     }
-                    var regex = new Regex(ValidationConst.LettersHyphenRegex);
-                    if (!regex.IsMatch(_city!))
+
+                    if (_city != null)
                     {
-                        _errorsViewModel.AddError("City", ValidationConst.IncorrectCity);
+                        var regex = new Regex(ValidationConst.LettersHyphenRegex);
+                        if (!regex.IsMatch(_city))
+                        {
+                            _errorsViewModel.AddError("City", ValidationConst.IncorrectCity);
+                        }
                     }
+                   
                     OnPropertyChanged("City"); 
                 }
             }
@@ -522,10 +535,13 @@ namespace TheBureau.ViewModels
                 {
                     _errorsViewModel.AddError("Street", ValidationConst.MaxLength30);
                 }
-                var regex = new Regex(ValidationConst.LettersHyphenRegex);
-                if (!regex.IsMatch(_street!))
+                if (_street != null)
                 {
-                    _errorsViewModel.AddError("Street", ValidationConst.IncorrectStreet);
+                    var regex = new Regex(ValidationConst.LettersHyphenRegex);
+                    if (!regex.IsMatch(_street))
+                    {
+                        _errorsViewModel.AddError("Street", ValidationConst.IncorrectStreet);
+                    }
                 }
                 OnPropertyChanged("Street"); 
             }
@@ -540,10 +556,15 @@ namespace TheBureau.ViewModels
                 {
                     _errorsViewModel.AddError("House", ValidationConst.FieldCannotBeEmpty);
                 }
-                _house = int.Parse(value!);
-                if (_house > 300 || _house == 0)
+
+                if (value != null)
                 {
-                    _errorsViewModel.AddError("House", ValidationConst.IncorrectHouse);
+                    _house = int.Parse(value);
+                    if (_house > 300 || _house == 0)
+                    {
+                        _errorsViewModel.AddError("House", ValidationConst.IncorrectHouse);
+                    }
+                    
                 }
                 OnPropertyChanged("House"); 
             }
@@ -563,10 +584,14 @@ namespace TheBureau.ViewModels
                 {
                     _errorsViewModel.AddError("Corpus", ValidationConst.IncorrectExceeded);
                 }
-                var regex = new Regex(ValidationConst.LettersHyphenDigitsRegex);
-                if (!regex.IsMatch(_corpus!))
+
+                if (_corpus != null)
                 {
-                    _errorsViewModel.AddError("Corpus", ValidationConst.IncorrectCorpus);
+                    var regex = new Regex(ValidationConst.LettersHyphenDigitsRegex);
+                    if (!regex.IsMatch(_corpus))
+                    {
+                        _errorsViewModel.AddError("Corpus", ValidationConst.IncorrectCorpus);
+                    }
                 }
                 OnPropertyChanged("Corpus");
             }
@@ -581,11 +606,14 @@ namespace TheBureau.ViewModels
                 {
                     _errorsViewModel.AddError("Flat", ValidationConst.FieldCannotBeEmpty);
                 }
-                _flat = int.Parse(value!); 
-
-                if (_flat > 1011 || _flat == 0)
+                if (value != null)
                 {
-                    _errorsViewModel.AddError("Flat", ValidationConst.IncorrectFlat);
+                    _flat = int.Parse(value); 
+
+                    if (_flat > 1011 || _flat == 0)
+                    {
+                        _errorsViewModel.AddError("Flat", ValidationConst.IncorrectFlat);
+                    }
                 }
                 OnPropertyChanged("Flat");
             }
@@ -625,10 +653,18 @@ namespace TheBureau.ViewModels
 
         public ICommand LogOutCommand => new RelayCommand(obj =>
             {
-                Application.Current.Properties["User"] = null;
-                var helloWindow = new HelloWindowView();
-                helloWindow.Show();
-                Application.Current.Windows[0]?.Close();
+                try
+                {
+                    Application.Current.Properties["User"] = null;
+                    var helloWindow = new HelloWindowView();
+                    helloWindow.Show();
+                    Application.Current.Windows[0]?.Close();
+                }
+                catch (Exception)
+                {
+                    InfoWindow infoWindow = new InfoWindow("Ошибка", "Не удалось выйти из аккаунта");
+                    infoWindow.ShowDialog();
+                }
             });
 
         public void Update()

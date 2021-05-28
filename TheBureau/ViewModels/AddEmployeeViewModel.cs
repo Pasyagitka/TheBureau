@@ -17,7 +17,6 @@ namespace TheBureau.ViewModels
         private readonly BrigadeRepository _brigadeRepository = new();
         private readonly ErrorsViewModel _errorsViewModel= new();
         
-        private ObservableCollection<Employee> _employees;
         private ObservableCollection<Brigade> _brigades;
         int _selectedBrigadeId;
         
@@ -67,10 +66,13 @@ namespace TheBureau.ViewModels
                 {
                     _errorsViewModel.AddError("Surname", ValidationConst.NameLengthExceeded);
                 }
-                var regex = new Regex(ValidationConst.LettersHyphenRegex);
-                if (!regex.IsMatch(_surname!))
+                if (_surname != null)
                 {
-                    _errorsViewModel.AddError("Surname", ValidationConst.IncorrectSurname);
+                    var regex = new Regex(ValidationConst.LettersHyphenRegex);
+                    if (!regex.IsMatch(_surname))
+                    {
+                        _errorsViewModel.AddError("Surname", ValidationConst.IncorrectSurname);
+                    }
                 }
                 OnPropertyChanged("Surname");
             }
@@ -93,10 +95,13 @@ namespace TheBureau.ViewModels
                 {
                     _errorsViewModel.AddError("Firstname", ValidationConst.NameLengthExceeded);
                 }
-                var regex = new Regex(ValidationConst.LettersHyphenRegex);
-                if (!regex.IsMatch(_firstname!))
+                if (_firstname != null)
                 {
-                    _errorsViewModel.AddError("Firstname",  ValidationConst.IncorrectFirstname);
+                    var regex = new Regex(ValidationConst.LettersHyphenRegex);
+                    if (!regex.IsMatch(_firstname))
+                    {
+                        _errorsViewModel.AddError("Firstname", ValidationConst.IncorrectFirstname);
+                    }
                 }
                 OnPropertyChanged("Firstname");
             }
@@ -118,10 +123,13 @@ namespace TheBureau.ViewModels
                 {
                     _errorsViewModel.AddError("Patronymic", ValidationConst.NameLengthExceeded);
                 }
-                var regex = new Regex(ValidationConst.LettersHyphenRegex);
-                if (!regex.IsMatch(_patronymic!))
+                if (_patronymic != null)
                 {
-                    _errorsViewModel.AddError("Patronymic", ValidationConst.IncorrectPatronymic);
+                    var regex = new Regex(ValidationConst.LettersHyphenRegex);
+                    if (!regex.IsMatch(_patronymic))
+                    {
+                        _errorsViewModel.AddError("Patronymic", ValidationConst.IncorrectPatronymic);
+                    }
                 }
                 OnPropertyChanged("Patronymic");
             }
@@ -142,10 +150,14 @@ namespace TheBureau.ViewModels
                 {
                     _errorsViewModel.AddError("Email", ValidationConst.EmailLengthExceeded);
                 }
-                var regex = new Regex(ValidationConst.EmailRegex);
-                if (!regex.IsMatch(_email!))
+
+                if (_email != null)
                 {
-                    _errorsViewModel.AddError("Email", ValidationConst.IncorrectEmailStructure);
+                    var regex = new Regex(ValidationConst.EmailRegex);
+                    if (!regex.IsMatch(_email))
+                    {
+                        _errorsViewModel.AddError("Email", ValidationConst.IncorrectEmailStructure);
+                    }
                 }
                 OnPropertyChanged("Email");
             }
@@ -163,10 +175,14 @@ namespace TheBureau.ViewModels
                 {
                     _errorsViewModel.AddError("ContactNumber", ValidationConst.FieldCannotBeEmpty);
                 }
-                var regex = new Regex(ValidationConst.ContactNumberRegex);
-                if (!regex.IsMatch(_contactNumber.ToString()))
+
+                if (ContactNumber != null)
                 {
-                    _errorsViewModel.AddError("ContactNumber", ValidationConst.IncorrectNumberStructure);
+                    var regex = new Regex(ValidationConst.ContactNumberRegex);
+                    if (!regex.IsMatch(_contactNumber.ToString()))
+                    {
+                        _errorsViewModel.AddError("ContactNumber", ValidationConst.IncorrectNumberStructure);
+                    }
                 }
                 OnPropertyChanged("ContactNumber");
             }

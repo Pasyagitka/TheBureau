@@ -71,10 +71,13 @@ namespace TheBureau.ViewModels
                 {
                     _errorsViewModel.AddError("Login", ValidationConst.LoginLengthExceeded);
                 }
-                var regex = new Regex(ValidationConst.LoginRegex);
-                if (!regex.IsMatch(_login!))
+                if (_login != null)
                 {
-                    _errorsViewModel.AddError("Login", ValidationConst.IncorrectLoginStructure);
+                    var regex = new Regex(ValidationConst.LoginRegex);
+                    if (!regex.IsMatch(_login))
+                    {
+                        _errorsViewModel.AddError("Login", ValidationConst.IncorrectLoginStructure);
+                    }
                 }
                 OnPropertyChanged("Login");
             }
@@ -93,8 +96,7 @@ namespace TheBureau.ViewModels
             try
             {
                 var passwordBox = obj as PasswordBox;
-                if (passwordBox == null)
-                    return;
+                if (passwordBox == null) return;
                 Password = passwordBox.Password;
 
                 if (TryLogin())
@@ -128,25 +130,23 @@ namespace TheBureau.ViewModels
         {
             try
             {
-                if (string.IsNullOrWhiteSpace(_password))
+                if (string.IsNullOrWhiteSpace(Password))
                 {
                     Info = ValidationConst.FieldCannotBeEmpty;
                     return false;
                 }
 
-                if (_password?.Length < 5 || _password?.Length > 20)
+                if (Password?.Length < 5 || Password?.Length > 20)
                 {
                     Info = ValidationConst.PasswordLengthExceeded;
                     return false;
                 }
-
                 var user = _userRepository.Login(Login, Password);
                 if (user == null)
                 {
                     Info = ValidationConst.WrongLoginOrPassword;
                     return false;
                 }
-
                 Application.Current.Properties["User"] = _userRepository.Get(user.id);
                 return true;
             }
