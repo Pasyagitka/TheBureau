@@ -25,7 +25,7 @@
                     <TextBlock Text="{Binding Employees.Count}" FontSize="20" HorizontalAlignment="Center" Foreground="Orange"/>
                 </StackPanel>
             </StackPanel>
-            <Border Grid.Column="3" Grid.ColumnSpan="2" Panel.ZIndex="5" CornerRadius="12" HorizontalAlignment="right" Height="160" VerticalAlignment="Top" Width="280" Margin="0, 60,0,0">
+            <Border Grid.Column="3" Grid.ColumnSpan="2"  CornerRadius="12" HorizontalAlignment="right" Height="160" VerticalAlignment="Top" Width="280" Margin="0, 60,0,0">
             <Border.Background>
                 <ImageBrush ImageSource="../../Resources/Images/brigade.png" Stretch="Uniform" />
             </Border.Background>
