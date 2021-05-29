@@ -5,7 +5,7 @@
         public const string LettersHyphenRegex = @"^[а-яА-Я-]+$";
         public const string LettersHyphenDigitsRegex = @"^[а-яА-Я0-9-]+$";
         public const string LoginRegex = @"^[a-zA-Z0-9]+$";
-        public const string EmailRegex = "[.\\-_a-zA-Z0-9]+@([a-zA-Z0-9][\\-a-zA-Z0-9]+\\.)+[a-zA-Z]{2,6}";
+        public const string EmailRegex = @"^[^@\s]+@[^@\s]+\.[^@\s]+$";
         public const string ContactNumberRegex = @"^375((17|25|29|33|44))[0-9]{7}$";
 
         public const string SomethingWentWrong = "Что-то пошло не так...";
@@ -35,5 +35,8 @@
         public const string IncorrectCorpus = "Номер корпуса может состоять лишь из букв кириллицы и знака \"-\"";
         public const string IncorrectFlat = "Номер квартиры должен быть от 1 до 1011";
         public const string IncorrectPassword = "Длина пароля должна быть от 8 до 40 символов";
+        
+        // public const string EmailRegex = "[.\\-_a-zA-Z0-9]+@([a-zA-Z0-9][\\-a-zA-Z0-9]+\\.)+[a-zA-Z]{2,6}";
+
     }
 }
